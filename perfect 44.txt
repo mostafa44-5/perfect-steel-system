@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Steel - Project Management</title>
+    <style>
+        /* تنسيق الألوان العام (أسود وبرتقالي) */
+        :root {
+            --bg-color: #121212;
+            --card-bg: rgba(30, 30, 30, 0.85); 
+            --primary-color: #ff6600; 
+            --text-color: #ffffff;
+            --text-muted: #a0a0a0;
+            --border-color: #333333;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --excel-color: #107c41; 
+            --attendance-color: #007bff;
+            --revenue-color: #ffcc00; 
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.85)), url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .main-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 30px;
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin-bottom: 25px;
+            backdrop-filter: blur(5px);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+        }
+
+        .main-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(255, 102, 0, 0.15); }
+
+        .brand-title { color: var(--primary-color); margin: 0 0 5px 0; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
+        .brand-subtitle { color: var(--text-muted); font-size: 0.9rem; letter-spacing: 4px; margin-bottom: 25px; text-transform: uppercase; }
+
+        .section-box { border-top: 1px solid var(--border-color); padding-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 15px; }
+        .section-label { color: var(--text-color); font-size: 1.1rem; font-weight: bold; }
+
+        .admin-actions { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 450px; justify-content: center; margin-top: 5px; }
+
+        .btn-admin {
+            flex: 1; min-width: 120px; padding: 10px; background-color: transparent; color: var(--primary-color);
+            border: 1px dashed var(--primary-color); border-radius: 6px; font-size: 0.9rem; font-weight: bold;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); text-decoration: none;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+
+        .btn-admin:hover { background-color: var(--primary-color); color: #000; border-style: solid; transform: scale(1.05); box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4); }
+
+        .btn-excel { border-color: var(--excel-color) !important; color: var(--excel-color) !important; }
+        .btn-attendance { border-color: var(--attendance-color) !important; color: var(--attendance-color) !important; }
+        .btn-revenue { border-color: var(--revenue-color) !important; color: var(--revenue-color) !important; } 
+        
+        .btn-revenue:hover { background-color: var(--revenue-color) !important; color: #000 !important; box-shadow: 0 5px 15px rgba(255, 204, 0, 0.5) !important; }
+
+        .custom-select, .custom-input {
+            width: 100%; max-width: 320px; background-color: #2a2a2a; color: #fff; border: 1px solid var(--border-color);
+            padding: 12px 15px; font-size: 1rem; border-radius: 6px; outline: none; box-sizing: border-box;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        .custom-select { color: var(--primary-color); font-weight: bold; cursor: pointer; }
+        .custom-select:hover, .custom-input:hover { border-color: var(--primary-color); transform: translateY(-2px); }
+
+        .project-finance-card {
+            background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 25px; width: 100%; max-width: 550px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            box-sizing: border-box; backdrop-filter: blur(5px); margin-bottom: 20px;
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+        }
+
+        .finance-title { color: var(--primary-color); margin: 0 0 20px 0; font-size: 1.4rem; text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .revenue-title { color: var(--revenue-color) !important; border-bottom-color: var(--revenue-color) !important; }
+
+        .tabs-container { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 12px; background: none; border: none; color: var(--text-muted); font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+        .tab-btn.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); background-color: rgba(255, 102, 0, 0.05); }
+
+        .btn-submit { width: 100%; padding: 12px; background-color: var(--primary-color); color: #000; border: none; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: all 0.3s; }
+        .btn-submit:hover { background-color: #e05500; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4); }
+
+        .balance-board { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; background: #151515; padding: 15px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .balance-item { text-align: center; }
+        .balance-item.full-width { grid-column: span 2; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 5px; }
+        .balance-item p { margin: 0; font-size: 1.3rem; font-weight: bold; }
+
+        .logs-container { margin-top: 20px; max-height: 200px; overflow-y: auto; border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .log-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: right; }
+        .log-table td { padding: 8px; border-bottom: 1px solid #2a2a2a; }
+
+        .loading-overlay { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); color:var(--primary-color); justify-content:center; align-items:center; font-weight:bold; border-radius:8px; z-index: 10; font-size:1.1rem; }
+
+        .hidden { display: none !important; }
+        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="main-card">
+        <h1 class="brand-title">Perfect Steel</h1>
+        <div class="brand-subtitle">Industrial Solutions</div>
+
+        <div class="section-box">
+            <span class="section-label">اختر المستخدم:</span>
+            <select class="custom-select" id="userSelect" onchange="onUserChange()">
+                <option value="" disabled selected>-- اختر المهندس --</option>
+                <option value="mostafa">eng : mostafa</option>
+                <option value="ahmed">eng : ahmed</option>
+                <option value="mohamed">eng : mohamed</option>
+            </select>
+            
+            <div class="admin-actions hidden" id="adminBox">
+                <button class="btn-admin" onclick="addCustomProject()">إضافة مشروع ➕</button>
+                <button class="btn-admin" onclick="addCustomEmployee()">إضافة موظف 👤</button>
+                <a class="btn-admin btn-excel" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank">شيت المرتبات 📊</a>
+                <a class="btn-admin btn-attendance" href="https://docs.google.com/spreadsheets/d/1I9QkNu2qjRFUTJcMuL3qo5f7scQaxQT_t-OVdm7ujVI/edit?usp=sharing" target="_blank">حضور ⏱️</a>
+                <button class="btn-admin btn-revenue hidden" id="revenueBtn" onclick="toggleRevenueCard()">دفعات الشركات 💰</button>
+            </div>
+        </div>
+
+        <div class="section-box hidden" id="projectSection">
+            <span class="section-label">المشاريع (Projects):</span>
+            <select class="custom-select" id="projectSelect" onchange="onProjectChange()">
+                <option value="" disabled selected>-- اختر المشروع --</option>
+                <option value="New Cairo">New Cairo</option>
+                <option value="Old Cairo">Old Cairo</option>
+                <option value="Helwan">Helwan</option>
+                <option value="Ismailia">Ismailia</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="project-finance-card hidden fade-in" id="revenueCard">
+        <div class="finance-title revenue-title">إدخال دفعة من شركة</div>
+        <div class="form-group" style="display:flex; flex-direction:column; gap:8px; margin-bottom:15px; text-align:right;">
+            <label>المبلغ المستلم:</label>
+            <input type="number" id="companyAmt" class="custom-input" placeholder="0.00">
+        </div>
+        <div class="form-group" style="display:flex; flex-direction:column; gap:8px; margin-bottom:15px; text-align:right;">
+            <label>وصف الدفعة (عبارة عن إيه):</label>
+            <select id="companyDesc" class="custom-select" style="max-width:100%; color:#fff;">
+                <option value="دفعة مقدمة (Down Payment)">دفعة مقدمة (Down Payment)</option>
+                <option value="مستخلص جاري (Progress Payment)">مستخلص جاري (Progress Payment)</option>
+                <option value="دفعة توريد خامات">دفعة توريد خامات</option>
+                <option value="دفعة ختامية (Final Payment)">دفعة ختامية (Final Payment)</option>
+                <option value="أخرى">أخرى</option>
+            </select>
+        </div>
+        <button class="btn-submit" style="background-color:var(--revenue-color);" onclick="submitCompanyRevenue()">تأكيد حفظ الدفعة</button>
+    </div>
+
+    <div class="project-finance-card hidden" id="financeCard" style="position: relative;">
+        <div id="loadingOverlay" class="loading-overlay">جاري تحميل البيانات لايف... 🔄</div>
+        <div class="finance-title" id="financeTitle">حسابات المشروع</div>
+        <div class="balance-board">
+            <div class="balance-item full-width"><h4>الصافي المتبقي</h4><p id="netBalance" style="color: var(--primary-color);">0.00 ج.م</p></div>
+            <div class="balance-item"><h4>الإيرادات (+)</h4><p id="totalIncome" style="color: var(--success-color);">0.00 ج.م</p></div>
+            <div class="balance-item"><h4>المصروفات (-)</h4><p id="totalExpense" style="color: var(--danger-color);">0.00 ج.م</p></div>
+        </div>
+        <div class="tabs-container">
+            <button class="tab-btn active" id="incTabBtn" onclick="switchTab('incomeTab', this)">إيراد</button>
+            <button class="tab-btn" id="expTabBtn" onclick="switchTab('expenseTab', this)">مصروف</button>
+        </div>
+        <div id="incomeTab" class="tab-content active" style="display:block;">
+            <input type="number" id="incomeAmount" class="custom-input" style="margin-bottom:10px;" placeholder="المبلغ">
+            <input type="text" id="incomeDesc" class="custom-input" placeholder="البيان">
+            <button class="btn-submit" onclick="addTransaction('إيراد (+)', 'عام', 'incomeAmount', 'incomeDesc')">تأكيد</button>
+        </div>
+        <div id="expenseTab" class="tab-content" style="display:none;">
+            <select id="expenseCategory" class="custom-select" style="margin-bottom:10px; color:#fff; max-width:100%;">
+                <option value="FOOD">Food</option><option value="TRAVEL">Travel</option><option value="WORK">Work</option><option value="SALARY">Salary</option>
+            </select>
+            <input type="number" id="expenseAmount" class="custom-input" style="margin-bottom:10px;" placeholder="المبلغ">
+            <input type="text" id="expenseDesc" class="custom-input" placeholder="الوصف">
+            <button class="btn-submit" style="background-color: var(--danger-color); color:#fff;" onclick="addTransaction('مصروف (-)', document.getElementById('expenseCategory').value, 'expenseAmount', 'expenseDesc')">تأكيد</button>
+        </div>
+        <div class="logs-container"><table class="log-table"><tbody id="logBody"></tbody></table></div>
+    </div>
+
+    <script>
+        // ⚠️ حط الرابط الطويل بتاع الـ Apps Script هنا بين القوسين عشان يشتغل الحفظ الفوري
+        const SCRIPT_URL = ""; 
+
+        let currentProject = "", currentEngineer = "", allTransactions = [];
+
+        const PASSWORDS = {
+            "mostafa": "111",
+            "ahmed": "222",
+            "mohamed": "333"
+        };
+
+        function onUserChange() {
+            let userSelect = document.getElementById("userSelect").value;
+            let adminBox = document.getElementById("adminBox");
+            let revBtn = document.getElementById("revenueBtn");
+
+            let passwordInput = prompt("برجاء إدخال كلمة المرور الخاصة بك:");
+            
+            if (passwordInput === PASSWORDS[userSelect]) {
+                adminBox.classList.remove("hidden");
+                adminBox.classList.add("fade-in");
+                
+                if (userSelect === "ahmed") revBtn.classList.remove("hidden");
+                else revBtn.classList.add("hidden");
+                
+                document.getElementById("projectSection").classList.remove("hidden");
+            } else {
+                alert("❌ كلمة المرور غير صحيحة! تم رفض الدخول.");
+                document.getElementById("userSelect").selectedIndex = 0;
+                adminBox.classList.add("hidden");
+                document.getElementById("projectSection").classList.add("hidden");
+            }
+
+            document.getElementById("financeCard").classList.add("hidden");
+            document.getElementById("revenueCard").classList.add("hidden");
+        }
+
+        function toggleRevenueCard() {
+            let card = document.getElementById("revenueCard");
+            if(currentProject === "") { alert("برجاء اختيار المشروع أولاً"); return; }
+            card.classList.toggle("hidden");
+        }
+
+        function onProjectChange() {
+            currentProject = document.getElementById("projectSelect").value;
+            currentEngineer = document.getElementById("userSelect").value;
+            if(currentProject && currentEngineer) {
+                document.getElementById("financeCard").classList.remove("hidden");
+                document.getElementById("financeTitle").innerText = `حسابات: ${currentProject}`;
+                
+                // لو الرابط موجود اسحب لايف، لو مش موجود اسحب محلي مؤقتاً
+                if(SCRIPT_URL !== "") {
+                    fetchDataFromSheet();
+                } else {
+                    loadFromLocalStorage();
+                }
+            }
+        }
+
+        function switchTab(t, b) {
+            document.getElementById('incomeTab').style.display = (t === 'incomeTab' ? 'block' : 'none');
+            document.getElementById('expenseTab').style.display = (t === 'expenseTab' ? 'block' : 'none');
+            document.getElementById('incTabBtn').classList.remove('active');
+            document.getElementById('expTabBtn').classList.remove('active');
+            b.classList.add('active');
+        }
+
+        function showLoading(show) { document.getElementById("loadingOverlay").style.display = show ? "flex" : "none"; }
+
+        function fetchDataFromSheet() {
+            showLoading(true);
+            fetch(SCRIPT_URL)
+            .then(res => res.json())
+            .then(data => { allTransactions = data; filterAndUpdateUI(); })
+            .catch(err => { console.error("Error fetching:", err); loadFromLocalStorage(); })
+            .finally(() => showLoading(false));
+        }
+
+        function filterAndUpdateUI() {
+            let filtered = allTransactions.filter(t => t.project === currentProject && t.engineer === currentEngineer);
+            updateUI(filtered);
+        }
+
+        function loadFromLocalStorage() {
+            let key = currentEngineer + "_" + currentProject;
+            let sd = localStorage.getItem(key);
+            updateUI(sd ? JSON.parse(sd) : []);
+        }
+
+        function submitCompanyRevenue() {
+            let amt = parseFloat(document.getElementById("companyAmt").value) || 0;
+            let desc = document.getElementById("companyDesc").value;
+            if(amt <= 0) return;
+            addTransaction('إيراد (+)', 'دفعة شركة', 'companyAmt', 'companyDesc', amt, desc);
+            document.getElementById("revenueCard").classList.add("hidden");
+            document.getElementById("companyAmt").value = "";
+        }
+
+        function addTransaction(type, cat, amtId, descId, manualAmt, manualDesc) {
+            let a = manualAmt || parseFloat(document.getElementById(amtId).value) || 0;
+            let d = manualDesc || document.getElementById(descId).value || "بدون وصف";
+            if(a <= 0) return;
+            
+            let payload = { project: currentProject, engineer: currentEngineer, type: type, category: cat, desc: d, amount: a };
+            
+            // لو مفيش رابط احفظ محلي، لو في رابط ابعت للشيت لايف
+            if(SCRIPT_URL === "") {
+                let key = currentEngineer + "_" + currentProject;
+                let sd = localStorage.getItem(key);
+                let logs = sd ? JSON.parse(sd) : [];
+                logs.unshift(payload);
+                localStorage.setItem(key, JSON.stringify(logs));
+                updateUI(logs);
+                if(!manualAmt) { document.getElementById(amtId).value = ""; document.getElementById(descId).value = ""; }
+                return;
+            }
+
+            showLoading(true);
+            fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) })
+            .then(res => res.json())
+            .then(res => { 
+                if(res.result === "success") { 
+                    allTransactions.unshift(payload); 
+                    filterAndUpdateUI(); 
+                } 
+            })
+            .catch(err => console.error("Error saving to sheet:", err))
+            .finally(() => {
+                showLoading(false);
+                if(!manualAmt) { document.getElementById(amtId).value = ""; document.getElementById(descId).value = ""; }
+            });
+        }
+
+        function updateUI(logs) {
+            let inc = 0, exp = 0, tb = document.getElementById("logBody");
+            tb.innerHTML = "";
+            logs.forEach(i => {
+                let isInc = i.type.includes("إيراد");
+                if(isInc) inc += i.amount; else exp += i.amount;
+                tb.innerHTML += `<tr><td style="color:${isInc?'#28a745':'#dc3545'}; font-weight:bold;">${i.type}</td><td>${i.category}</td><td>${i.desc}</td><td>${i.amount.toFixed(2)} ج.م</td></tr>`;
+            });
+            document.getElementById("totalIncome").innerText = inc.toFixed(2) + " ج.م";
+            document.getElementById("totalExpense").innerText = exp.toFixed(2) + " ج.م";
+            document.getElementById("netBalance").innerText = (inc - exp).toFixed(2) + " ج.م";
+        }
+
+        function addCustomProject() { let np = prompt("اسم المشروع الجديد:"); if (np) { let s = document.getElementById("projectSelect"); let o = document.createElement("option"); o.value = np; o.text = np; s.add(o); } }
+        function addCustomEmployee() { 
+            let ne = prompt("اسم المهندس الجديد:"); 
+            if (ne) { 
+                let s = document.getElementById("userSelect"); 
+                let o = document.createElement("option"); 
+                let slug = ne.trim().toLowerCase();
+                o.value = slug; o.text = "eng : " + ne; s.add(o); 
+                PASSWORDS[slug] = "123"; 
+            } 
+        }
+    </script>
+</body>
+</html>
