@@ -109,9 +109,9 @@
         .balance-item p { margin: 0; font-size: 1.3rem; font-weight: bold; }
 
         .logs-container { margin-top: 20px; max-height: 250px; overflow-y: auto; border-top: 1px solid var(--border-color); padding-top: 15px; }
-        .log-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: right; }
-        .log-table th, .log-table td { padding: 10px 6px; border-bottom: 1px solid #2a2a2a; }
-        .log-table th { color: var(--text-muted); font-size: 0.85rem; }
+        .log-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: right; }
+        .log-table th, .log-table td { padding: 10px 4px; border-bottom: 1px solid #2a2a2a; }
+        .log-table th { color: var(--text-muted); font-size: 0.8rem; }
         
         .btn-delete {
             background: none; border: none; color: var(--danger-color); font-size: 1.1rem; cursor: pointer;
@@ -218,6 +218,7 @@
                         <th>القسم</th>
                         <th>الوصف</th>
                         <th>المبلغ</th>
+                        <th>التاريخ</th>
                         <th style="text-align: center;">إجراء</th>
                     </tr>
                 </thead>
@@ -249,14 +250,30 @@
             "mohamed": "333"
         };
 
+        // 🔐 دالة فحص وتسجيل الدخول الذكي لحفظ الباسوورد
         function onUserChange() {
             let userSelect = document.getElementById("userSelect").value;
             let adminBox = document.getElementById("adminBox");
             let revBtn = document.getElementById("revenueBtn");
 
-            let passwordInput = prompt("برجاء إدخل كلمة المرور الخاصة بك:");
+            // محاولة قراءة الباسوورد المحفوظ مسبقاً لهذا المهندس على نفس الجهاز
+            let savedPassword = localStorage.getItem("pass_" + userSelect);
+            let accessGranted = false;
+
+            if (savedPassword === PASSWORDS[userSelect]) {
+                // إذا وجد الباسوورد محفوظاً وصحيحاً يدخل مباشرة
+                accessGranted = true;
+            } else {
+                // إذا لم يجد باسوورد محفوظ، يطلبه لأول مرة
+                let passwordInput = prompt("برجاء إدخال كلمة المرور الخاصة بك (سيتم حفظها على هذا الجهاز):");
+                if (passwordInput === PASSWORDS[userSelect]) {
+                    // حفظ الباسوورد في ذاكرة الموبايل للرات القادمة
+                    localStorage.setItem("pass_" + userSelect, passwordInput);
+                    accessGranted = true;
+                }
+            }
             
-            if (passwordInput === PASSWORDS[userSelect]) {
+            if (accessGranted) {
                 adminBox.classList.remove("hidden");
                 adminBox.classList.add("fade-in");
                 
@@ -264,14 +281,19 @@
                 else revBtn.classList.add("hidden");
                 
                 document.getElementById("projectSection").classList.remove("hidden");
+                
+                // لو كان فيه مشروع متختار من قبل كدة يعمل تحديث
+                if(document.getElementById("projectSelect").value) {
+                    onProjectChange();
+                }
             } else {
-                alert("❌ كلمة المرور غير صحيحة! تم رفض الدخول.");
+                alert("❌ كلمة المرور غير صحيحة أو تم إلغاء الدخول!");
                 document.getElementById("userSelect").selectedIndex = 0;
                 adminBox.classList.add("hidden");
                 document.getElementById("projectSection").classList.add("hidden");
+                document.getElementById("financeCard").classList.add("hidden");
             }
 
-            document.getElementById("financeCard").classList.add("hidden");
             document.getElementById("revenueCard").classList.add("hidden");
         }
 
@@ -335,6 +357,9 @@
             let d = manualDesc || document.getElementById(descId).value || "بدون وصف";
             if(a <= 0) return;
             
+            let today = new Date();
+            let dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
             let payload = { 
                 project: currentProject, 
                 engineer: currentEngineer, 
@@ -342,6 +367,7 @@
                 category: cat, 
                 desc: d, 
                 amount: a,
+                date: dateString,
                 timestamp: Date.now()
             };
             
@@ -371,12 +397,15 @@
                 let isInc = i.type.includes("إيراد");
                 if(isInc) inc += i.amount; else exp += i.amount;
                 
+                let displayDate = i.date || "-";
+
                 tb.innerHTML += `
                     <tr>
                         <td style="color:${isInc?'var(--success-color)':'var(--danger-color)'}; font-weight:bold;">${i.type}</td>
                         <td>${i.category}</td>
                         <td>${i.desc}</td>
                         <td>${i.amount.toFixed(2)} ج.م</td>
+                        <td style="color:var(--text-muted); font-size:0.8rem; white-space:nowrap;">${displayDate}</td>
                         <td style="text-align: center;">
                             <button class="btn-delete" onclick="deleteTransaction('${i.fbId}')">🗑️</button>
                         </td>
