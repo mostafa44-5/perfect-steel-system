@@ -21,6 +21,7 @@
             --danger: #EF4444;
             --border: rgba(255, 255, 255, 0.08);
             --radius: 16px;
+            --revenue-color: #ffcc00;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -32,10 +33,9 @@
             margin: 0; padding: 0;
             overflow-x: hidden; min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
-            position: relative;
         }
 
-        /* الخلفية السينمائية المتحركة */
+        /* 🎬 الخلفية السينمائية */
         .bg-fixed {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; background-image: linear-gradient(rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 0.85)), 
@@ -47,51 +47,114 @@
             0% { transform: scale(1); } 100% { transform: scale(1.08); }
         }
 
+        /* الهيدر المطور المستقر الحاضن للهوية الذكية */
         header {
-            width: 100%; padding: 20px; text-align: center;
+            width: 100%; padding: 10px 20px;
             backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
-            background: rgba(15, 23, 42, 0.4); z-index: 10;
+            background: rgba(15, 23, 42, 0.4); z-index: 150;
+            display: flex; justify-content: space-between; align-items: center;
+            height: 85px; position: sticky; top: 0;
         }
-        .logo h1 { color: var(--primary); font-size: 24px; margin: 0; font-weight: 900; letter-spacing: 1px; }
+        
+        .logo { position: absolute; left: 50%; transform: translateX(-50%); pointer-events: none; }
+        .logo h1 { color: var(--primary); font-size: 18px; margin: 0; font-weight: 900; letter-spacing: 1px; }
+        
+        /* حاوية التحكم اليمنى (الاسم فوق والشرط تحت) */
+        .header-right-holder {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+            z-index: 120;
+            min-height: 60px;
+            justify-content: center;
+        }
+
+        /* الـ 3 شرطات تحت الاسم */
+        .menu-trigger {
+            background: none; border: none; color: var(--text-main); font-size: 22px; cursor: pointer;
+            padding: 0; opacity: 0; pointer-events: none; transition: 0.3s ease;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .menu-trigger.visible { opacity: 1; pointer-events: auto; }
+
+        /* 📍 زر تغيير الموقع الذكي المضاف في الهيدر أقصى الشمال */
+        .header-project-badge {
+            display: none; background: rgba(255, 107, 0, 0.15); border: 1px solid var(--primary);
+            padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold;
+            cursor: pointer; align-items: center; gap: 6px; color: #fff;
+            transition: 0.2s ease; z-index: 130;
+        }
+        .header-project-badge:active { transform: scale(0.95); background: var(--primary); }
+        .header-project-badge i { color: var(--primary); font-size: 12px; }
+        .header-project-badge.active-live { display: flex; }
+
+        /* 🚪 القائمة الجانبية (Sidebar) */
+        .sidebar {
+            position: fixed; top: 0; right: -280px; width: 280px; height: 100%;
+            background: rgba(15, 23, 42, 0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            z-index: 200; border-left: 1px solid var(--border); padding: 30px 20px;
+            display: flex; flex-direction: column; gap: 25px;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .sidebar.open { right: 0; box-shadow: -15px 0 35px rgba(0,0,0,0.6); }
+
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .sidebar-close { background: none; border: none; color: var(--text-dim); font-size: 22px; cursor: pointer; }
+
+        .sidebar-user-info { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
+        .sidebar-user-info i { color: var(--primary); font-size: 24px; margin-bottom: 8px; display: block; }
+        .sidebar-user-info span { font-weight: bold; font-size: 14px; }
+
+        .btn-logout {
+            margin-top: auto; width: 100%; padding: 14px; background: rgba(239, 68, 68, 0.15);
+            color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px;
+            font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s;
+        }
+        .btn-logout:hover { background: var(--danger); color: white; }
+
+        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 190; display: none; }
 
         /* حاوية الأبلكيشن الرئيسية */
         .app-container {
             width: 100%; max-width: 480px; padding: 20px 15px 40px; z-index: 5;
-            position: relative; display: flex; flex-direction: column; gap: 20px;
+            display: flex; flex-direction: column; gap: 20px;
         }
 
-        /* 🏎️ أنيميشن صندوق تسجيل الدخول السحري */
+        /* صندوق الدخول والتحول الذكي */
         .login-box {
             background: var(--bg-card); border-radius: var(--radius); padding: 22px;
             border: 1px solid var(--border); backdrop-filter: blur(16px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            width: 100%; transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            position: relative; top: 0; transform: none;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); width: 100%;
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* الحركة لما ينجح الدخول: يطير فوق ويمين ويصغر */
+        /* كلاس طيران اسم المهندس فوق الـ 3 شرط بالظبط */
         .login-box.logged-in {
-            position: sticky; top: 10px; z-index: 100;
-            margin-right: auto; margin-left: 0; width: 170px; padding: 10px 15px;
-            border-color: var(--primary); box-shadow: 0 4px 15px rgba(255, 107, 0, 0.2);
+            position: absolute; top: 10px; right: 20px; z-index: 120;
+            width: auto; max-width: 150px; padding: 0;
+            background: transparent; border: none; box-shadow: none; backdrop-filter: none;
         }
 
         .hide-on-login { opacity: 1; transition: 0.3s; }
         .logged-in .hide-on-login { display: none !important; }
         
-        .user-badge { display: none; align-items: center; justify-content: center; gap: 8px; }
+        .user-badge { display: none; align-items: center; gap: 6px; }
         .logged-in .user-badge { display: flex; }
-        .user-badge i { color: var(--primary); font-size: 16px; }
-        .user-badge span { font-size: 12px; font-weight: bold; white-space: nowrap; }
+        .user-badge i { color: var(--primary); font-size: 14px; }
+        .user-badge span { font-size: 11px; font-weight: bold; white-space: nowrap; color: #fff; }
 
-        /* محتوى الحسابات (بيظهر بانسيابية بعد الدخول) */
+        /* كارد اختيار الموقع الأصلي الكبير (المستهدف بالاختفاء) */
+        .project-selector-card { transition: all 0.5s ease; }
+        .project-selector-card.hide-completely { display: none !important; }
+
+        /* محتويات الحسابات */
         .main-content {
             display: none; opacity: 0; transform: translateY(20px);
             transition: all 0.6s ease; width: 100%;
         }
         .main-content.visible { display: flex; flex-direction: column; gap: 20px; opacity: 1; transform: translateY(0); }
 
-        /* التنسيقات العامة للبطاقات والمدخلات */
         .card {
             background: var(--bg-card); border-radius: var(--radius); padding: 22px;
             border: 1px solid var(--border); backdrop-filter: blur(16px);
@@ -107,7 +170,11 @@
         .input-ui:focus { border-color: var(--primary); }
         select.input-ui { cursor: pointer; color: var(--primary); font-weight: bold; }
 
-        /* Dashboard HUD */
+        /* زراير الإدارة الأربعة */
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .btn-outline { padding: 12px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); border-radius: 8px; font-size: 12px; cursor: pointer; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+        /* HUD */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .stat-box { background: var(--bg-card); padding: 18px 12px; border-radius: var(--radius); text-align: center; border: 1px solid var(--border); backdrop-filter: blur(16px); }
         .stat-box.full { grid-column: span 2; border-top: 3px solid var(--primary); }
@@ -123,10 +190,7 @@
             width: 100%; padding: 16px; background-color: var(--primary); color: white; border: none; border-radius: 12px;
             font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: inherit;
         }
-        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .btn-outline { padding: 12px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); border-radius: 8px; font-size: 12px; cursor: pointer; text-decoration: none; text-align: center; }
 
-        /* Logs Feed */
         .log-item {
             background: var(--bg-card); border-radius: 14px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border);
             display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(16px);
@@ -142,7 +206,6 @@
         .btn-del { background: rgba(239, 68, 68, 0.12); color: var(--danger); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-right: 10px; }
 
         .loading-shimmer { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: rgba(11, 15, 25, 0.95); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
-        .hidden { display: none !important; }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -154,11 +217,37 @@
 
     <div class="loading-shimmer" id="loading">
         <i class="fas fa-cog fa-spin" style="font-size: 40px; color: var(--primary);"></i>
-        <p style="margin-top: 15px; font-weight: bold;">جاري التحميل الفوري... ⚡</p>
+        <p style="margin-top: 15px; font-weight: bold;">جاري المزامنة اللحظية... ⚡</p>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
+
+    <div class="sidebar" id="sidebarMenu">
+        <div class="sidebar-header">
+            <span style="font-weight: 900; color: var(--primary);">إدارة النظام</span>
+            <button class="sidebar-close" onclick="toggleSidebar(false)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sidebar-user-info">
+            <i class="fas fa-user-hard-hat"></i>
+            <span id="sidebarUserName">Eng: User</span>
+        </div>
+        <button class="btn-logout" onclick="triggerLogOut()">
+            <i class="fas fa-door-open"></i> تسجيل الخروج وتطهير الكاش
+        </button>
     </div>
 
     <header>
+        <div class="header-right-holder">
+             <div style="height: 20px; width: 120px;"></div>
+             <button class="menu-trigger" id="menuBtn" onclick="toggleSidebar(true)"><i class="fas fa-bars"></i></button>
+        </div>
+        
         <div class="logo"><h1>PERFECT STEEL</h1></div>
+        
+        <div class="header-project-badge" id="headerProjBadge" onclick="resetProjectSelection()">
+             <i class="fas fa-map-marker-alt"></i>
+             <span id="headerProjName">Ismailia</span>
+        </div>
     </header>
 
     <div class="app-container">
@@ -175,7 +264,6 @@
                     </select>
                 </div>
             </div>
-
             <div class="user-badge">
                 <i class="fas fa-user-hard-hat"></i>
                 <span id="badgeName">Eng: User</span>
@@ -184,7 +272,7 @@
 
         <div class="main-content" id="mainContent">
             
-            <div class="card">
+            <div class="card project-selector-card" id="projectSelectorCard">
                 <div class="label-group">
                     <label><i class="fas fa-cubes" style="color: var(--primary);"></i> اختيار موقع العمل الحالي</label>
                     <select class="input-ui" id="projectSelect" onchange="onProjectChange()">
@@ -195,11 +283,8 @@
                         <option value="Ismailia">Ismailia</option>
                     </select>
                 </div>
-                <button class="btn-primary hidden" id="revenueBtn" onclick="toggleRevenueCard()" style="background: #D97706; margin-top: 10px;">
-                    <i class="fas fa-wallet"></i> إدخال دفعة شركة
-                </button>
                 
-                <div class="admin-grid hidden" id="adminBox" style="margin-top: 15px;">
+                <div class="admin-grid" id="adminBox">
                     <button class="btn-outline" onclick="addCustomProject()"><i class="fas fa-plus"></i> مشروع</button>
                     <button class="btn-outline" onclick="addCustomEmployee()"><i class="fas fa-user-plus"></i> مهندس</button>
                     <a class="btn-outline" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank"><i class="fas fa-file-invoice-dollar"></i> المرتبات</a>
@@ -207,9 +292,26 @@
                 </div>
             </div>
 
+            <div class="card hidden" id="revenueCard" style="display: none;">
+                <div style="color: var(--revenue-color); font-weight: bold; font-size: 15px; margin-bottom: 12px; text-align: center;">
+                    <i class="fas fa-hand-holding-dollar"></i> إدخال دفعة من شركة
+                </div>
+                <input type="number" id="companyAmt" class="input-ui" placeholder="المبلغ المستلم">
+                <select id="companyDesc" class="input-ui">
+                    <option value="دفعة مقدمة (Down Payment)">دفعة مقدمة (Down Payment)</option>
+                    <option value="مستخلص جاري (Progress Payment)">مستخلص جاري (Progress Payment)</option>
+                    <option value="دفعة توريد خامات">دفعة توريد خامات</option>
+                    <option value="دفعة ختامية (Final Payment)">دفعة ختامية (Final Payment)</option>
+                </select>
+                <button class="btn-primary" style="background-color: var(--revenue-color); color: #000;" onclick="submitCompanyRevenue()">
+                    تأكيد حفظ الدفعة
+                </button>
+            </div>
+
             <div class="hidden" id="financeContent">
                 <div class="stats-grid">
                     <div class="stat-box full">
+                        <h4 id="currentActiveProjectTitle" style="color:var(--text-dim); margin-bottom:5px; font-weight:bold;">المشروع: لم يتم الاختيار</h4>
                         <h4>الرصيد المتبقي (الصافي)</h4>
                         <div class="val" id="netBalance" style="color: var(--primary);">0.00 ج.م</div>
                     </div>
@@ -276,22 +378,31 @@
         const PASSWORDS = { "mostafa": "1519", "ahmed": "222", "mohamed": "333" };
 
         function checkUserAuth() {
-            let user = document.getElementById("userSelect").value;
+            let selectElement = document.getElementById("userSelect");
+            let user = selectElement.value; 
+
             let saved = localStorage.getItem("pass_" + user);
             
             if (saved === PASSWORDS[user] || prompt("برجاء إدخال كلمة المرور:") === PASSWORDS[user]) {
                 localStorage.setItem("pass_" + user, PASSWORDS[user]);
                 
-                // 🎬 إطلاق أنيميشن الطيران الفوري
                 document.getElementById("badgeName").innerText = "Eng: " + user.toUpperCase();
-                document.getElementById("loginBox").classList.add("logged-in");
+                document.getElementById("sidebarUserName").innerText = "Eng: " + user.toUpperCase();
                 
-                // إظهار باقي السيستم بعد الطيران بـ 300 ملي ثانية
+                document.getElementById("loginBox").classList.add("logged-in");
+                document.getElementById("menuBtn").classList.add("visible");
+                
                 setTimeout(() => {
-                    let content = document.getElementById("mainContent");
-                    content.classList.add("visible");
-                    document.getElementById("adminBox").classList.remove("hidden");
-                    if (user === "ahmed") document.getElementById("revenueBtn").classList.remove("hidden");
+                    document.getElementById("mainContent").classList.add("visible");
+                    
+                    let revenueCard = document.getElementById("revenueCard");
+                    if (user === "ahmed") {
+                        revenueCard.classList.remove("hidden");
+                        revenueCard.style.display = "block";
+                    } else {
+                        revenueCard.classList.add("hidden");
+                        revenueCard.style.display = "none";
+                    }
                 }, 300);
 
             } else {
@@ -300,17 +411,28 @@
             }
         }
 
-        function switchTab(mode) {
-            currentMode = mode;
-            document.getElementById("incBtn").className = "tab-btn " + (mode==='income'?'active':'');
-            document.getElementById("expBtn").className = "tab-btn " + (mode==='expense'?'active':'');
-            document.getElementById("catGroup").style.display = (mode==='expense'?'block':'none');
+        function toggleSidebar(open) {
+            let sidebar = document.getElementById("sidebarMenu");
+            let overlay = document.getElementById("sidebarOverlay");
+            sidebar.classList.toggle("open", open);
+            overlay.style.display = open ? "block" : "none";
         }
 
+        // 🏎️ دالة اختيار الموقع: إخفاء الكارد الكبير وتصدير الاسم للهيدر فوق
         function onProjectChange() {
             let proj = document.getElementById("projectSelect").value;
             let user = document.getElementById("userSelect").value;
+            
+            // 1. تصدير الاسم للهيدر فوق على الشمال وتشغيل الزرار
+            document.getElementById("headerProjName").innerText = proj;
+            document.getElementById("headerProjBadge").classList.add("active-live");
+            
+            // 2. إخفاء المربع الكبير تماماً لتوفير مساحة الموبايل
+            document.getElementById("projectSelectorCard").classList.add("hide-completely");
+            
+            // 3. عرض لوحة الحسابات
             document.getElementById("financeContent").classList.remove("hidden");
+            document.getElementById("currentActiveProjectTitle").innerText = `المشروع الحالي: ${proj}`;
             
             showLoad(true);
             database.ref('transactions').on('value', (snap) => {
@@ -328,6 +450,68 @@
             });
         }
 
+        // 🔄 دالة إعادة فتح الاختيارات (لما المهندس يضغط على اسم الموقع فوق في الهيدر)
+        function resetProjectSelection() {
+            // 1. إعادة إظهار كارد اختيار الموقع الكبير
+            document.getElementById("projectSelectorCard").classList.remove("hide-completely");
+            
+            // 2. إخفاء البادج من الهيدر فوق لحين الاختيار الجديد
+            document.getElementById("headerProjBadge").classList.remove("active-live");
+            
+            // 3. إعادة تصفير القائمة المنسدلة
+            document.getElementById("projectSelect").selectedIndex = 0;
+            
+            // 4. إخفاء لوحة الحسابات لحين اختيار موقع جديد
+            document.getElementById("financeContent").classList.add("hidden");
+        }
+
+        function triggerLogOut() {
+            if(confirm("هل تريد تسجيل الخروج وتطهير كاش المستخدم؟")) {
+                localStorage.clear(); 
+                sessionStorage.clear();
+                toggleSidebar(false);
+                
+                // إعادة تصفير الواجهة كلياً للوضع الأصلي البدائي
+                document.getElementById("headerProjBadge").classList.remove("active-live");
+                document.getElementById("projectSelectorCard").classList.remove("hide-completely");
+                
+                document.getElementById("revenueCard").classList.add("hidden");
+                document.getElementById("revenueCard").style.display = "none";
+                
+                document.getElementById("loginBox").classList.remove("logged-in");
+                document.getElementById("menuBtn").classList.remove("visible");
+                document.getElementById("mainContent").classList.remove("visible");
+                document.getElementById("financeContent").classList.add("hidden");
+                document.getElementById("userSelect").selectedIndex = 0;
+                document.getElementById("projectSelect").selectedIndex = 0;
+            }
+        }
+
+        function switchTab(mode) {
+            currentMode = mode;
+            document.getElementById("incBtn").className = "tab-btn " + (mode==='income'?'active':'');
+            document.getElementById("expBtn").className = "tab-btn " + (mode==='expense'?'active':'');
+            document.getElementById("catGroup").style.display = (mode==='expense'?'block':'none');
+        }
+
+        function submitCompanyRevenue() {
+            let amt = parseFloat(document.getElementById("companyAmt").value) || 0;
+            let desc = document.getElementById("companyDesc").value;
+            if(amt <= 0) return;
+            
+            let today = new Date();
+            let dateString = today.toISOString().split('T')[0];
+            let user = document.getElementById("userSelect").value;
+
+            database.ref('transactions').push({
+                project: document.getElementById("projectSelect").value,
+                engineer: user, type: 'income', category: 'دفعة شركة', amount: amt, desc: desc, date: dateString, ts: Date.now()
+            }).then(() => {
+                document.getElementById("companyAmt").value = "";
+                alert("💰 تم حفظ دفعة الشركة بنجاح!");
+            });
+        }
+
         function handleAdd() {
             let amt = parseFloat(document.getElementById("amount").value);
             let dsc = document.getElementById("desc").value;
@@ -335,16 +519,13 @@
 
             let today = new Date();
             let date = today.toISOString().split('T')[0];
+            let user = document.getElementById("userSelect").value;
 
             database.ref('transactions').push({
                 project: document.getElementById("projectSelect").value,
-                engineer: document.getElementById("userSelect").value,
-                type: currentMode,
+                engineer: user, type: currentMode,
                 category: currentMode==='income'?'عام':document.getElementById("expenseCategory").value,
-                amount: amt,
-                desc: dsc,
-                date: date,
-                ts: Date.now()
+                amount: amt, desc: dsc, date: date, ts: Date.now()
             }).then(() => {
                 document.getElementById("amount").value = "";
                 document.getElementById("desc").value = "";
@@ -382,7 +563,7 @@
         function delItem(id) { if(confirm("هل أنت متأكد من حذف هذه العملية؟")) database.ref('transactions').child(id).remove(); }
         function showLoad(s) { document.getElementById("loading").style.display = s?'flex':'none'; }
         function addCustomProject() { let p = prompt("اسم المشروع الجديد:"); if(p) document.getElementById("projectSelect").add(new Option(p, p)); }
-        function addCustomEmployee() { alert("تم فتح ميزة الإضافة الفورية."); }
+        function addCustomEmployee() { alert("تم التفعيل."); }
     </script>
 </body>
 </html>
