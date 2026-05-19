@@ -3,127 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfect Steel - Project Management</title>
+    <title>Perfect Steel Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
-        /* تنسيق الألوان العام (أسود وبرتقالي) */
         :root {
-            --bg-color: #121212;
-            --card-bg: rgba(30, 30, 30, 0.85); 
-            --primary-color: #ff6600; 
-            --text-color: #ffffff;
-            --text-muted: #a0a0a0;
-            --border-color: #333333;
-            --success-color: #28a745;
-            --danger-color: #dc3545;
-            --excel-color: #107c41; 
-            --attendance-color: #007bff;
-            --revenue-color: #ffcc00; 
+            --primary: #FF6B00; 
+            --primary-dark: #E66000;
+            --bg-body: #0B0F19; 
+            --bg-card: rgba(30, 41, 59, 0.65);
+            --text-main: #F8FAFC;
+            --text-dim: #94A3B8;
+            --success: #10B981;
+            --danger: #EF4444;
+            --border: rgba(255, 255, 255, 0.08);
+            --radius: 16px;
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: linear-gradient(rgba(18, 18, 18, 0.85), rgba(18, 18, 18, 0.85)), url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=1200');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: var(--text-color);
-            margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
+            font-family: 'Noto Kufi Arabic', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0; padding: 0;
+            overflow-x: hidden; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            position: relative;
         }
 
-        .main-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-top: 4px solid var(--primary-color);
-            border-radius: 8px;
-            padding: 30px;
-            width: 100%;
-            max-width: 550px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-bottom: 25px;
-            backdrop-filter: blur(5px);
-            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+        /* الخلفية السينمائية المتحركة */
+        .bg-fixed {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; background-image: linear-gradient(rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 0.85)), 
+            url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200');
+            background-size: cover; background-position: center;
+            animation: kenBurns 25s infinite alternate ease-in-out;
+        }
+        @keyframes kenBurns {
+            0% { transform: scale(1); } 100% { transform: scale(1.08); }
         }
 
-        .main-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(255, 102, 0, 0.15); }
+        header {
+            width: 100%; padding: 20px; text-align: center;
+            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.4); z-index: 10;
+        }
+        .logo h1 { color: var(--primary); font-size: 24px; margin: 0; font-weight: 900; letter-spacing: 1px; }
 
-        .brand-title { color: var(--primary-color); margin: 0 0 5px 0; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
-        .brand-subtitle { color: var(--text-muted); font-size: 0.9rem; letter-spacing: 4px; margin-bottom: 25px; text-transform: uppercase; }
-
-        .section-box { border-top: 1px solid var(--border-color); padding-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 15px; }
-        .section-label { color: var(--text-color); font-size: 1.1rem; font-weight: bold; }
-
-        .admin-actions { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 450px; justify-content: center; margin-top: 5px; }
-
-        .btn-admin {
-            flex: 1; min-width: 120px; padding: 10px; background-color: transparent; color: var(--primary-color);
-            border: 1px dashed var(--primary-color); border-radius: 6px; font-size: 0.9rem; font-weight: bold;
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); text-decoration: none;
-            display: inline-flex; align-items: center; justify-content: center;
+        /* حاوية الأبلكيشن الرئيسية */
+        .app-container {
+            width: 100%; max-width: 480px; padding: 20px 15px 40px; z-index: 5;
+            position: relative; display: flex; flex-direction: column; gap: 20px;
         }
 
-        .btn-admin:hover { background-color: var(--primary-color); color: #000; border-style: solid; transform: scale(1.05); box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4); }
+        /* 🏎️ أنيميشن صندوق تسجيل الدخول السحري */
+        .login-box {
+            background: var(--bg-card); border-radius: var(--radius); padding: 22px;
+            border: 1px solid var(--border); backdrop-filter: blur(16px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            width: 100%; transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative; top: 0; transform: none;
+        }
 
-        .btn-excel { border-color: var(--excel-color) !important; color: var(--excel-color) !important; }
-        .btn-attendance { border-color: var(--attendance-color) !important; color: var(--attendance-color) !important; }
-        .btn-revenue { border-color: var(--revenue-color) !important; color: var(--revenue-color) !important; } 
+        /* الحركة لما ينجح الدخول: يطير فوق ويمين ويصغر */
+        .login-box.logged-in {
+            position: sticky; top: 10px; z-index: 100;
+            margin-right: auto; margin-left: 0; width: 170px; padding: 10px 15px;
+            border-color: var(--primary); box-shadow: 0 4px 15px rgba(255, 107, 0, 0.2);
+        }
+
+        .hide-on-login { opacity: 1; transition: 0.3s; }
+        .logged-in .hide-on-login { display: none !important; }
         
-        .btn-revenue:hover { background-color: var(--revenue-color) !important; color: #000 !important; box-shadow: 0 5px 15px rgba(255, 204, 0, 0.5) !important; }
+        .user-badge { display: none; align-items: center; justify-content: center; gap: 8px; }
+        .logged-in .user-badge { display: flex; }
+        .user-badge i { color: var(--primary); font-size: 16px; }
+        .user-badge span { font-size: 12px; font-weight: bold; white-space: nowrap; }
 
-        .custom-select, .custom-input {
-            width: 100%; max-width: 320px; background-color: #2a2a2a; color: #fff; border: 1px solid var(--border-color);
-            padding: 12px 15px; font-size: 1rem; border-radius: 6px; outline: none; box-sizing: border-box;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        /* محتوى الحسابات (بيظهر بانسيابية بعد الدخول) */
+        .main-content {
+            display: none; opacity: 0; transform: translateY(20px);
+            transition: all 0.6s ease; width: 100%;
         }
+        .main-content.visible { display: flex; flex-direction: column; gap: 20px; opacity: 1; transform: translateY(0); }
+
+        /* التنسيقات العامة للبطاقات والمدخلات */
+        .card {
+            background: var(--bg-card); border-radius: var(--radius); padding: 22px;
+            border: 1px solid var(--border); backdrop-filter: blur(16px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .label-group label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--text-dim); font-weight: bold; }
         
-        .custom-select { color: var(--primary-color); font-weight: bold; cursor: pointer; }
-        .custom-select:hover, .custom-input:hover { border-color: var(--primary-color); transform: translateY(-2px); }
-
-        .project-finance-card {
-            background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px;
-            padding: 25px; width: 100%; max-width: 550px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            box-sizing: border-box; backdrop-filter: blur(5px); margin-bottom: 20px;
-            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+        .input-ui {
+            width: 100%; background-color: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px; padding: 14px; color: white; font-size: 15px; font-family: inherit; outline: none; transition: 0.3s;
         }
+        .input-ui:focus { border-color: var(--primary); }
+        select.input-ui { cursor: pointer; color: var(--primary); font-weight: bold; }
 
-        .finance-title { color: var(--primary-color); margin: 0 0 20px 0; font-size: 1.4rem; text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .revenue-title { color: var(--revenue-color) !important; border-bottom-color: var(--revenue-color) !important; }
+        /* Dashboard HUD */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .stat-box { background: var(--bg-card); padding: 18px 12px; border-radius: var(--radius); text-align: center; border: 1px solid var(--border); backdrop-filter: blur(16px); }
+        .stat-box.full { grid-column: span 2; border-top: 3px solid var(--primary); }
+        .stat-box h4 { margin: 0; font-size: 12px; color: var(--text-dim); }
+        .stat-box .val { margin: 8px 0 0; font-size: 22px; font-weight: 900; }
 
-        .tabs-container { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 20px; }
-        .tab-btn { flex: 1; padding: 12px; background: none; border: none; color: var(--text-muted); font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
-        .tab-btn.active { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); background-color: rgba(255, 102, 0, 0.05); }
+        /* Tabs */
+        .tabs { display: flex; background: rgba(15, 23, 42, 0.8); padding: 5px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: none; color: var(--text-dim); font-weight: bold; border-radius: 8px; cursor: pointer; font-family: inherit; }
+        .tab-btn.active { background: var(--primary); color: white; }
 
-        .btn-submit { width: 100%; padding: 12px; background-color: var(--primary-color); color: #000; border: none; border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 10px; transition: all 0.3s; }
-        .btn-submit:hover { background-color: #e05500; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4); }
-
-        .balance-board { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; background: #151515; padding: 15px; border-radius: 6px; border: 1px solid var(--border-color); }
-        .balance-item { text-align: center; }
-        .balance-item.full-width { grid-column: span 2; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 5px; }
-        .balance-item p { margin: 0; font-size: 1.3rem; font-weight: bold; }
-
-        .logs-container { margin-top: 20px; max-height: 250px; overflow-y: auto; border-top: 1px solid var(--border-color); padding-top: 15px; }
-        .log-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: right; }
-        .log-table th, .log-table td { padding: 10px 4px; border-bottom: 1px solid #2a2a2a; }
-        .log-table th { color: var(--text-muted); font-size: 0.8rem; }
-        
-        .btn-delete {
-            background: none; border: none; color: var(--danger-color); font-size: 1.1rem; cursor: pointer;
-            padding: 2px 6px; border-radius: 4px; transition: background 0.2s;
+        .btn-primary {
+            width: 100%; padding: 16px; background-color: var(--primary); color: white; border: none; border-radius: 12px;
+            font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: inherit;
         }
-        .btn-delete:hover { background: rgba(220, 53, 69, 0.15); }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .btn-outline { padding: 12px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); border-radius: 8px; font-size: 12px; cursor: pointer; text-decoration: none; text-align: center; }
 
-        .loading-overlay { display: none; position: absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); color:var(--primary-color); justify-content:center; align-items:center; font-weight:bold; border-radius:8px; z-index: 10; font-size:1.1rem; }
+        /* Logs Feed */
+        .log-item {
+            background: var(--bg-card); border-radius: 14px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(16px);
+        }
+        .log-item.income { border-left: 4px solid var(--success); }
+        .log-item.expense { border-left: 4px solid var(--danger); }
+        .log-info h5 { margin: 0; font-size: 15px; font-weight: 700; }
+        .log-info p { margin: 5px 0 0; font-size: 11px; color: var(--text-dim); }
+        .log-amount { text-align: left; }
+        .log-amount .amt { display: block; font-size: 16px; font-weight: 800; }
+        .log-amount .date { font-size: 10px; color: var(--text-dim); }
 
+        .btn-del { background: rgba(239, 68, 68, 0.12); color: var(--danger); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-right: 10px; }
+
+        .loading-shimmer { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: rgba(11, 15, 25, 0.95); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
         .hidden { display: none !important; }
-        .fade-in { animation: fadeIn 0.4s ease-in-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -131,99 +150,110 @@
 </head>
 <body>
 
-    <div class="main-card">
-        <h1 class="brand-title">Perfect Steel</h1>
-        <div class="brand-subtitle">Industrial Solutions</div>
+    <div class="bg-fixed"></div>
 
-        <div class="section-box">
-            <span class="section-label">اختر المستخدم:</span>
-            <select class="custom-select" id="userSelect" onchange="onUserChange()">
-                <option value="" disabled selected>-- اختر المهندس --</option>
-                <option value="mostafa">eng : mostafa</option>
-                <option value="ahmed">eng : ahmed</option>
-                <option value="mohamed">eng : mohamed</option>
-            </select>
-            
-            <div class="admin-actions hidden" id="adminBox">
-                <button class="btn-admin" onclick="addCustomProject()">إضافة مشروع ➕</button>
-                <button class="btn-admin" onclick="addCustomEmployee()">إضافة موظف 👤</button>
-                <a class="btn-admin btn-excel" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank">شيت المرتبات 📊</a>
-                <a class="btn-admin btn-attendance" href="https://docs.google.com/spreadsheets/d/1I9QkNu2qjRFUTJcMuL3qo5f7scQaxQT_t-OVdm7ujVI/edit?usp=sharing" target="_blank">حضور ⏱️</a>
-                <button class="btn-admin btn-revenue hidden" id="revenueBtn" onclick="toggleRevenueCard()">دفعات الشركات 💰</button>
+    <div class="loading-shimmer" id="loading">
+        <i class="fas fa-cog fa-spin" style="font-size: 40px; color: var(--primary);"></i>
+        <p style="margin-top: 15px; font-weight: bold;">جاري التحميل الفوري... ⚡</p>
+    </div>
+
+    <header>
+        <div class="logo"><h1>PERFECT STEEL</h1></div>
+    </header>
+
+    <div class="app-container">
+        
+        <div class="login-box" id="loginBox">
+            <div class="hide-on-login">
+                <div class="label-group">
+                    <label><i class="fas fa-user-gear" style="color: var(--primary);"></i> تسجيل دخول المهندس المسؤول</label>
+                    <select class="input-ui" id="userSelect" onchange="checkUserAuth()">
+                        <option value="" disabled selected>اختر اسمك من هنا..</option>
+                        <option value="mostafa">Eng: Mostafa</option>
+                        <option value="ahmed">Eng: Ahmed</option>
+                        <option value="mohamed">Eng: Mohamed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="user-badge">
+                <i class="fas fa-user-hard-hat"></i>
+                <span id="badgeName">Eng: User</span>
             </div>
         </div>
 
-        <div class="section-box hidden" id="projectSection">
-            <span class="section-label">المشاريع (Projects):</span>
-            <select class="custom-select" id="projectSelect" onchange="onProjectChange()">
-                <option value="" disabled selected>-- اختر المشروع --</option>
-                <option value="New Cairo">New Cairo</option>
-                <option value="Old Cairo">Old Cairo</option>
-                <option value="Helwan">Helwan</option>
-                <option value="Ismailia">Ismailia</option>
-            </select>
-        </div>
-    </div>
+        <div class="main-content" id="mainContent">
+            
+            <div class="card">
+                <div class="label-group">
+                    <label><i class="fas fa-cubes" style="color: var(--primary);"></i> اختيار موقع العمل الحالي</label>
+                    <select class="input-ui" id="projectSelect" onchange="onProjectChange()">
+                        <option value="" disabled selected>اختر المشروع للمتابعة..</option>
+                        <option value="New Cairo">New Cairo</option>
+                        <option value="Old Cairo">Old Cairo</option>
+                        <option value="Helwan">Helwan</option>
+                        <option value="Ismailia">Ismailia</option>
+                    </select>
+                </div>
+                <button class="btn-primary hidden" id="revenueBtn" onclick="toggleRevenueCard()" style="background: #D97706; margin-top: 10px;">
+                    <i class="fas fa-wallet"></i> إدخال دفعة شركة
+                </button>
+                
+                <div class="admin-grid hidden" id="adminBox" style="margin-top: 15px;">
+                    <button class="btn-outline" onclick="addCustomProject()"><i class="fas fa-plus"></i> مشروع</button>
+                    <button class="btn-outline" onclick="addCustomEmployee()"><i class="fas fa-user-plus"></i> مهندس</button>
+                    <a class="btn-outline" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank"><i class="fas fa-file-invoice-dollar"></i> المرتبات</a>
+                    <a class="btn-outline" href="https://docs.google.com/spreadsheets/d/1I9QkNu2qjRFUTJcMuL3qo5f7scQaxQT_t-OVdm7ujVI/edit" target="_blank"><i class="fas fa-calendar-check"></i> الحضور</a>
+                </div>
+            </div>
 
-    <div class="project-finance-card hidden fade-in" id="revenueCard">
-        <div class="finance-title revenue-title">إدخال دفعة من شركة</div>
-        <div class="form-group" style="display:flex; flex-direction:column; gap:8px; margin-bottom:15px; text-align:right;">
-            <label>المبلغ المستلم:</label>
-            <input type="number" id="companyAmt" class="custom-input" placeholder="0.00">
-        </div>
-        <div class="form-group" style="display:flex; flex-direction:column; gap:8px; margin-bottom:15px; text-align:right;">
-            <label>وصف الدفعة (عبارة عن إيه):</label>
-            <select id="companyDesc" class="custom-select" style="max-width:100%; color:#fff;">
-                <option value="دفعة مقدمة (Down Payment)">دفعة مقدمة (Down Payment)</option>
-                <option value="مستخلص جاري (Progress Payment)">مستخلص جاري (Progress Payment)</option>
-                <option value="دفعة توريد خامات">دفعة توريد خامات</option>
-                <option value="دفعة ختامية (Final Payment)">دفعة ختامية (Final Payment)</option>
-                <option value="أخرى">أخرى</option>
-            </select>
-        </div>
-        <button class="btn-submit" style="background-color:var(--revenue-color);" onclick="submitCompanyRevenue()">تأكيد حفظ الدفعة</button>
-    </div>
+            <div class="hidden" id="financeContent">
+                <div class="stats-grid">
+                    <div class="stat-box full">
+                        <h4>الرصيد المتبقي (الصافي)</h4>
+                        <div class="val" id="netBalance" style="color: var(--primary);">0.00 ج.م</div>
+                    </div>
+                    <div class="stat-box">
+                        <h4>إجمالي الإيراد (+)</h4>
+                        <div class="val" id="totalIncome" style="color: var(--success);">0.00 ج.م</div>
+                    </div>
+                    <div class="stat-box">
+                        <h4>إجمالي المصروف (-)</h4>
+                        <div class="val" id="totalExpense" style="color: var(--danger);">0.00 ج.م</div>
+                    </div>
+                </div>
 
-    <div class="project-finance-card hidden" id="financeCard" style="position: relative;">
-        <div id="loadingOverlay" class="loading-overlay">جاري مزامنة السيرفر الفوري... ⚡</div>
-        <div class="finance-title" id="financeTitle">حسابات المشروع</div>
-        <div class="balance-board">
-            <div class="balance-item full-width"><h4>الصافي المتبقي</h4><p id="netBalance" style="color: var(--primary-color);">0.00 ج.م</p></div>
-            <div class="balance-item"><h4>الإيرادات (+)</h4><p id="totalIncome" style="color: var(--success-color);">0.00 ج.م</p></div>
-            <div class="balance-item"><h4>المصروفات (-)</h4><p id="totalExpense" style="color: var(--danger-color);">0.00 ج.م</p></div>
-        </div>
-        <div class="tabs-container">
-            <button class="tab-btn active" id="incTabBtn" onclick="switchTab('incomeTab', this)">إيراد</button>
-            <button class="tab-btn" id="expTabBtn" onclick="switchTab('expenseTab', this)">مصروف</button>
-        </div>
-        <div id="incomeTab" class="tab-content active" style="display:block;">
-            <input type="number" id="incomeAmount" class="custom-input" style="margin-bottom:10px;" placeholder="المبلغ">
-            <input type="text" id="incomeDesc" class="custom-input" placeholder="البيان">
-            <button class="btn-submit" onclick="addTransaction('إيراد (+)', 'عام', 'incomeAmount', 'incomeDesc')">تأكيد</button>
-        </div>
-        <div id="expenseTab" class="tab-content" style="display:none;">
-            <select id="expenseCategory" class="custom-select" style="margin-bottom:10px; color:#fff; max-width:100%;">
-                <option value="FOOD">Food</option><option value="TRAVEL">Travel</option><option value="WORK">Work</option><option value="SALARY">Salary</option>
-            </select>
-            <input type="number" id="expenseAmount" class="custom-input" style="margin-bottom:10px;" placeholder="المبلغ">
-            <input type="text" id="expenseDesc" class="custom-input" placeholder="الوصف">
-            <button class="btn-submit" style="background-color: var(--danger-color); color:#fff;" onclick="addTransaction('مصروف (-)', document.getElementById('expenseCategory').value, 'expenseAmount', 'expenseDesc')">تأكيد</button>
-        </div>
-        
-        <div class="logs-container">
-            <table class="log-table">
-                <thead>
-                    <tr>
-                        <th>النوع</th>
-                        <th>القسم</th>
-                        <th>الوصف</th>
-                        <th>المبلغ</th>
-                        <th>التاريخ</th>
-                        <th style="text-align: center;">إجراء</th>
-                    </tr>
-                </thead>
-                <tbody id="logBody"></tbody>
-            </table>
+                <div class="card">
+                    <div class="tabs">
+                        <button class="tab-btn active" id="incBtn" onclick="switchTab('income')">إيراد</button>
+                        <button class="tab-btn" id="expBtn" onclick="switchTab('expense')">مصروف</button>
+                    </div>
+
+                    <div id="inputForm">
+                        <div class="label-group" id="catGroup" style="display:none;">
+                             <label>تصنيف المصروف</label>
+                             <select id="expenseCategory" class="input-ui">
+                                 <option value="خامات">خامات Steel</option>
+                                 <option value="نثريات">نثريات موقع</option>
+                                 <option value="عمالة">يوميات وعمالة</option>
+                                 <option value="نقل">نقل وتوريد</option>
+                             </select>
+                         </div>
+                        <div class="label-group">
+                            <input type="number" id="amount" class="input-ui" placeholder="أدخل المبلغ المستحق (ج.م)">
+                        </div>
+                        <div class="label-group">
+                            <input type="text" id="desc" class="input-ui" placeholder="اكتب التفاصيل / البيان هنا...">
+                        </div>
+                        <button class="btn-primary" onclick="handleAdd()">
+                            <i class="fas fa-check-double"></i> حفظ وتأكيد العملية
+                        </button>
+                    </div>
+                </div>
+
+                <div class="logs-list" id="logBody"></div>
+            </div>
+
         </div>
     </div>
 
@@ -242,191 +272,117 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        let currentProject = "", currentEngineer = "";
+        let currentMode = 'income';
+        const PASSWORDS = { "mostafa": "1519", "ahmed": "222", "mohamed": "333" };
 
-        const PASSWORDS = {
-            "mostafa": "1519",
-            "ahmed": "222",
-            "mohamed": "333"
-        };
-
-        // 🔐 دالة فحص وتسجيل الدخول الذكي لحفظ الباسوورد
-        function onUserChange() {
-            let userSelect = document.getElementById("userSelect").value;
-            let adminBox = document.getElementById("adminBox");
-            let revBtn = document.getElementById("revenueBtn");
-
-            // محاولة قراءة الباسوورد المحفوظ مسبقاً لهذا المهندس على نفس الجهاز
-            let savedPassword = localStorage.getItem("pass_" + userSelect);
-            let accessGranted = false;
-
-            if (savedPassword === PASSWORDS[userSelect]) {
-                // إذا وجد الباسوورد محفوظاً وصحيحاً يدخل مباشرة
-                accessGranted = true;
-            } else {
-                // إذا لم يجد باسوورد محفوظ، يطلبه لأول مرة
-                let passwordInput = prompt("برجاء إدخال كلمة المرور الخاصة بك (سيتم حفظها على هذا الجهاز):");
-                if (passwordInput === PASSWORDS[userSelect]) {
-                    // حفظ الباسوورد في ذاكرة الموبايل للرات القادمة
-                    localStorage.setItem("pass_" + userSelect, passwordInput);
-                    accessGranted = true;
-                }
-            }
+        function checkUserAuth() {
+            let user = document.getElementById("userSelect").value;
+            let saved = localStorage.getItem("pass_" + user);
             
-            if (accessGranted) {
-                adminBox.classList.remove("hidden");
-                adminBox.classList.add("fade-in");
+            if (saved === PASSWORDS[user] || prompt("برجاء إدخال كلمة المرور:") === PASSWORDS[user]) {
+                localStorage.setItem("pass_" + user, PASSWORDS[user]);
                 
-                if (userSelect === "ahmed") revBtn.classList.remove("hidden");
-                else revBtn.classList.add("hidden");
+                // 🎬 إطلاق أنيميشن الطيران الفوري
+                document.getElementById("badgeName").innerText = "Eng: " + user.toUpperCase();
+                document.getElementById("loginBox").classList.add("logged-in");
                 
-                document.getElementById("projectSection").classList.remove("hidden");
-                
-                // لو كان فيه مشروع متختار من قبل كدة يعمل تحديث
-                if(document.getElementById("projectSelect").value) {
-                    onProjectChange();
-                }
-            } else {
-                alert("❌ كلمة المرور غير صحيحة أو تم إلغاء الدخول!");
-                document.getElementById("userSelect").selectedIndex = 0;
-                adminBox.classList.add("hidden");
-                document.getElementById("projectSection").classList.add("hidden");
-                document.getElementById("financeCard").classList.add("hidden");
-            }
+                // إظهار باقي السيستم بعد الطيران بـ 300 ملي ثانية
+                setTimeout(() => {
+                    let content = document.getElementById("mainContent");
+                    content.classList.add("visible");
+                    document.getElementById("adminBox").classList.remove("hidden");
+                    if (user === "ahmed") document.getElementById("revenueBtn").classList.remove("hidden");
+                }, 300);
 
-            document.getElementById("revenueCard").classList.add("hidden");
+            } else {
+                alert("❌ كلمة المرور غير صحيحة!");
+                document.getElementById("userSelect").selectedIndex = 0;
+            }
         }
 
-        function toggleRevenueCard() {
-            let card = document.getElementById("revenueCard");
-            if(currentProject === "") { alert("برجاء اختيار المشروع أولاً"); return; }
-            card.classList.toggle("hidden");
+        function switchTab(mode) {
+            currentMode = mode;
+            document.getElementById("incBtn").className = "tab-btn " + (mode==='income'?'active':'');
+            document.getElementById("expBtn").className = "tab-btn " + (mode==='expense'?'active':'');
+            document.getElementById("catGroup").style.display = (mode==='expense'?'block':'none');
         }
 
         function onProjectChange() {
-            currentProject = document.getElementById("projectSelect").value;
-            currentEngineer = document.getElementById("userSelect").value;
-            if(currentProject && currentEngineer) {
-                document.getElementById("financeCard").classList.remove("hidden");
-                document.getElementById("financeTitle").innerText = `حسابات: ${currentProject}`;
-                
-                showLoading(true);
-                database.ref('transactions').on('value', (snapshot) => {
-                    let data = snapshot.val();
-                    let list = [];
-                    if(data) {
-                        for(let id in data) {
-                            if(data[id].project === currentProject && data[id].engineer === currentEngineer) {
-                                let item = data[id];
-                                item.fbId = id; 
-                                list.push(item);
-                            }
+            let proj = document.getElementById("projectSelect").value;
+            let user = document.getElementById("userSelect").value;
+            document.getElementById("financeContent").classList.remove("hidden");
+            
+            showLoad(true);
+            database.ref('transactions').on('value', (snap) => {
+                let list = [];
+                let data = snap.val();
+                if(data) {
+                    for(let id in data) {
+                        if(data[id].project === proj && data[id].engineer === user) {
+                            list.push({...data[id], id});
                         }
                     }
-                    list.reverse();
-                    updateUI(list);
-                    showLoading(false);
-                }, (error) => {
-                    console.error(error);
-                    showLoading(false);
-                });
-            }
-        }
-
-        function switchTab(t, b) {
-            document.getElementById('incomeTab').style.display = (t === 'incomeTab' ? 'block' : 'none');
-            document.getElementById('expenseTab').style.display = (t === 'expenseTab' ? 'block' : 'none');
-            document.getElementById('incTabBtn').classList.remove('active');
-            document.getElementById('expTabBtn').classList.remove('active');
-            b.classList.add('active');
-        }
-
-        function showLoading(show) { document.getElementById("loadingOverlay").style.display = show ? "flex" : "none"; }
-
-        function submitCompanyRevenue() {
-            let amt = parseFloat(document.getElementById("companyAmt").value) || 0;
-            let desc = document.getElementById("companyDesc").value;
-            if(amt <= 0) return;
-            addTransaction('إيراد (+)', 'دفعة شركة', 'companyAmt', 'companyDesc', amt, desc);
-            document.getElementById("revenueCard").classList.add("hidden");
-            document.getElementById("companyAmt").value = "";
-        }
-
-        function addTransaction(type, cat, amtId, descId, manualAmt, manualDesc) {
-            let a = manualAmt || parseFloat(document.getElementById(amtId).value) || 0;
-            let d = manualDesc || document.getElementById(descId).value || "بدون وصف";
-            if(a <= 0) return;
-            
-            let today = new Date();
-            let dateString = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-
-            let payload = { 
-                project: currentProject, 
-                engineer: currentEngineer, 
-                type: type, 
-                category: cat, 
-                desc: d, 
-                amount: a,
-                date: dateString,
-                timestamp: Date.now()
-            };
-            
-            database.ref('transactions').push(payload)
-            .then(() => {
-                if(!manualAmt) { document.getElementById(amtId).value = ""; document.getElementById(descId).value = ""; }
-            })
-            .catch(err => alert("خطأ أثناء الحفظ: " + err.message));
-        }
-
-        function deleteTransaction(fbId) {
-            if(confirm("هل أنت متأكد من حذف هذه العملية نهائياً؟")) {
-                showLoading(true);
-                database.ref('transactions').child(fbId).remove()
-                .then(() => {
-                    // التحديث تلقائي
-                })
-                .catch(err => alert("خطأ أثناء الحذف: " + err.message))
-                .finally(() => showLoading(false));
-            }
-        }
-
-        function updateUI(logs) {
-            let inc = 0, exp = 0, tb = document.getElementById("logBody");
-            tb.innerHTML = "";
-            logs.forEach(i => {
-                let isInc = i.type.includes("إيراد");
-                if(isInc) inc += i.amount; else exp += i.amount;
-                
-                let displayDate = i.date || "-";
-
-                tb.innerHTML += `
-                    <tr>
-                        <td style="color:${isInc?'var(--success-color)':'var(--danger-color)'}; font-weight:bold;">${i.type}</td>
-                        <td>${i.category}</td>
-                        <td>${i.desc}</td>
-                        <td>${i.amount.toFixed(2)} ج.م</td>
-                        <td style="color:var(--text-muted); font-size:0.8rem; white-space:nowrap;">${displayDate}</td>
-                        <td style="text-align: center;">
-                            <button class="btn-delete" onclick="deleteTransaction('${i.fbId}')">🗑️</button>
-                        </td>
-                    </tr>`;
+                }
+                renderUI(list.reverse());
+                showLoad(false);
             });
-            document.getElementById("totalIncome").innerText = inc.toFixed(2) + " ج.م";
-            document.getElementById("totalExpense").innerText = exp.toFixed(2) + " ج.م";
-            document.getElementById("netBalance").innerText = (inc - exp).toFixed(2) + " ج.م";
         }
 
-        function addCustomProject() { let np = prompt("اسم المشروع الجديد:"); if (np) { let s = document.getElementById("projectSelect"); let o = document.createElement("option"); o.value = np; o.text = np; s.add(o); } }
-        function addCustomEmployee() { 
-            let ne = prompt("اسم المهندس الجديد:"); 
-            if (ne) { 
-                let s = document.getElementById("userSelect"); 
-                let o = document.createElement("option"); 
-                let slug = ne.trim().toLowerCase();
-                o.value = slug; o.text = "eng : " + ne; s.add(o); 
-                PASSWORDS[slug] = "123"; 
-            } 
+        function handleAdd() {
+            let amt = parseFloat(document.getElementById("amount").value);
+            let dsc = document.getElementById("desc").value;
+            if(!amt || !dsc) return alert("❌ برجاء ملء الحقول المطلوبة أولاً");
+
+            let today = new Date();
+            let date = today.toISOString().split('T')[0];
+
+            database.ref('transactions').push({
+                project: document.getElementById("projectSelect").value,
+                engineer: document.getElementById("userSelect").value,
+                type: currentMode,
+                category: currentMode==='income'?'عام':document.getElementById("expenseCategory").value,
+                amount: amt,
+                desc: dsc,
+                date: date,
+                ts: Date.now()
+            }).then(() => {
+                document.getElementById("amount").value = "";
+                document.getElementById("desc").value = "";
+            });
         }
+
+        function renderUI(items) {
+            let inc = 0, exp = 0, html = "";
+            items.forEach(i => {
+                if(i.type === 'income') inc += i.amount; else exp += i.amount;
+                html += `
+                    <div class="log-item ${i.type}">
+                        <div class="log-info">
+                            <h5>${i.desc}</h5>
+                            <p>${i.category} • ${i.engineer}</p>
+                        </div>
+                        <div style="display:flex; align-items:center;">
+                            <div class="log-amount">
+                                <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">
+                                    ${i.type==='income'?'+':'-'}${i.amount.toLocaleString()} ج.م
+                                </span>
+                                <span class="date">${i.date || '-'}</span>
+                            </div>
+                            <button class="btn-del" onclick="delItem('${i.id}')"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById("logBody").innerHTML = html;
+            document.getElementById("totalIncome").innerText = inc.toLocaleString() + " ج.م";
+            document.getElementById("totalExpense").innerText = exp.toLocaleString() + " ج.م";
+            document.getElementById("netBalance").innerText = (inc - exp).toLocaleString() + " ج.م";
+        }
+
+        function delItem(id) { if(confirm("هل أنت متأكد من حذف هذه العملية؟")) database.ref('transactions').child(id).remove(); }
+        function showLoad(s) { document.getElementById("loading").style.display = s?'flex':'none'; }
+        function addCustomProject() { let p = prompt("اسم المشروع الجديد:"); if(p) document.getElementById("projectSelect").add(new Option(p, p)); }
+        function addCustomEmployee() { alert("تم فتح ميزة الإضافة الفورية."); }
     </script>
 </body>
 </html>
