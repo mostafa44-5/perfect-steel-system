@@ -105,7 +105,6 @@
         .user-site-column { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 130px; }
         .header-greet { font-size: 9px; color: var(--text-dim); font-weight: bold; margin-bottom: -2px; }
 
-        /* 🧪 بادج الموظف والموقع بستايل الـ Liquid Glass المصغر */
         .header-user-badge {
             display: none; align-items: center; gap: 5px; font-size: 11px; font-weight: bold; color: var(--text-main); 
             background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
@@ -127,7 +126,7 @@
 
         .hidden-element { display: none !important; }
 
-        /* 🚪 القائمة الجانبية المتقدمة */
+        /* 🚪 القائمة الجانبية */
         .sidebar {
             position: fixed; top: 0; right: -280px; width: 260px; height: 100%;
             background: var(--bg-body); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
@@ -152,13 +151,12 @@
         }
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 190; display: none; }
 
-        /* حاوية الأبلكيشن السينمائية الممتدة */
+        /* حاوية الأبلكيشن السينمائية */
         .app-container {
             width: 100%; max-width: 480px; padding: 15px 12px 100px; z-index: 5;
             display: flex; flex-direction: column; gap: 15px;
         }
 
-        /* 🌌 كارد الـ Glassmorphism الأساسي المطور المشرق */
         .card {
             background: var(--bg-card); border-radius: var(--radius); padding: 18px; 
             border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
@@ -181,34 +179,26 @@
         .input-ui:focus { border-color: var(--primary); }
         select.input-ui { color: var(--primary); font-weight: bold; }
 
-        /* 🧪 🧪 الماستر ستايل: أزرار وكبسولات الـ Liquid Glass الفخمة والمطاطية */
+        /* أزرار الـ Liquid Glass المطاطية */
         .btn-liquid-glass {
             padding: 14px 10px; border-radius: 16px; font-size: 13px; font-weight: bold; color: white; cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 8px;
             border: 1px solid rgba(255, 255, 255, 0.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        /* الألوان والـ Gradients المائية السائلة */
         .btn-liquid-orange {
             background: linear-gradient(135deg, rgba(255, 107, 0, 0.38) 0%, rgba(255, 60, 0, 0.12) 100%);
             box-shadow: 0 8px 20px rgba(255, 107, 0, 0.12), inset 0 4px 8px rgba(255, 255, 255, 0.25), inset 0 -4px 8px rgba(0,0,0,0.2);
         }
-        .btn-liquid-orange:active {
-            transform: scale(0.93) cubic-bezier(0.175, 0.885, 0.32, 1.5);
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.55) 0%, rgba(255, 60, 0, 0.25) 100%);
-        }
+        .btn-liquid-orange:active { transform: scale(0.93) cubic-bezier(0.175, 0.885, 0.32, 1.5); background: linear-gradient(135deg, rgba(255, 107, 0, 0.55) 0%, rgba(255, 60, 0, 0.25) 100%); }
 
         .btn-liquid-blue {
             background: linear-gradient(135deg, rgba(14, 165, 233, 0.38) 0%, rgba(2, 132, 199, 0.12) 100%);
             box-shadow: 0 8px 20px rgba(14, 165, 233, 0.12), inset 0 4px 8px rgba(255, 255, 255, 0.25), inset 0 -4px 8px rgba(0,0,0,0.2);
         }
-        .btn-liquid-blue:active {
-            transform: scale(0.93) cubic-bezier(0.175, 0.885, 0.32, 1.5);
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.55) 0%, rgba(2, 132, 199, 0.25) 100%);
-        }
+        .btn-liquid-blue:active { transform: scale(0.93) cubic-bezier(0.175, 0.885, 0.32, 1.5); background: linear-gradient(135deg, rgba(14, 165, 233, 0.55) 0%, rgba(2, 132, 199, 0.25) 100%); }
 
-        /* 💵 كبسولات المبالغ النقدية السريعة السائلة (Liquid Chips) */
+        /* كبسولات المبالغ النقدية السريعة السائلة */
         .quick-chips-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
         .cash-chip { 
             background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%); 
@@ -219,7 +209,7 @@
         }
         .cash-chip:active { transform: scale(0.9) rotate(1deg); background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* 🏎️ لوحة الـ HUD الزجاجية السائلة المدمجة ثلاثية الأبعاد */
+        /* HUD لوحة الـ HUD الزجاجية السائلة */
         .stats-hud-row { display: grid; grid-template-columns: 1.2fr 0.9fr 0.9fr; gap: 6px; width: 100%; }
         .hud-box { 
             background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
@@ -235,11 +225,10 @@
         .hud-box h4 { margin: 0; font-size: 10px; color: var(--text-dim); font-weight: bold; }
         .hud-box .val { margin: 4px 0 0; font-size: 13px; font-weight: 900; white-space: nowrap; transition: all 0.3s ease; }
 
-        /* شريط مؤشر الأداء */
         .hud-progress-wrapper { width: 100%; background: rgba(255,255,255,0.04); height: 5px; border-radius: 10px; overflow: hidden; margin-top: -5px; border: 1px solid var(--border); }
         .hud-progress-bar { width: 0%; height: 100%; background: var(--primary); transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
 
-        /* 🔍 حبوب الفلترة الفورية الزجاجية السائلة (Liquid Pills) */
+        /* حبوب الفلترة الزجاجية السائلة */
         .filter-pills-container { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 8px; width: 100%; -webkit-overflow-scrolling: touch; }
         .filter-pills-container::-webkit-scrollbar { display: none; }
         .pill-btn { 
@@ -255,13 +244,9 @@
             transform: translateY(-1px);
         }
 
-        /* تبويبات الإدخال (إيراد / مصروف) السائلة */
         .tabs { display: flex; background: rgba(15, 23, 42, 0.05); padding: 4px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px; }
         [data-theme="dark"] .tabs { background: rgba(15, 23, 42, 0.6); }
-        .tab-btn { 
-            flex: 1; padding: 11px; border: none; background: none; color: var(--text-dim); font-weight: bold; font-size: 13px; border-radius: 9px; cursor: pointer; font-family: inherit;
-            transition: all 0.2s;
-        }
+        .tab-btn { flex: 1; padding: 11px; border: none; background: none; color: var(--text-dim); font-weight: bold; font-size: 13px; border-radius: 9px; cursor: pointer; font-family: inherit; transition: all 0.2s; }
         .tab-btn.active { 
             background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%);
             color: var(--primary); border: 1px solid rgba(255,255,255,0.15);
@@ -276,7 +261,7 @@
         }
         .btn-primary:active { transform: scale(0.96); box-shadow: 0 2px 8px var(--glow); }
 
-        /* 📋 كشوفات العمليات الزجاجية الشفافة المنسابة (Liquid Logs) */
+        /* كشوفات العمليات الزجاجية الشفافة */
         .logs-list { max-height: 380px; overflow-y: auto; -webkit-overflow-scrolling: touch; will-change: transform; padding: 2px; }
         .log-item { 
             background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
@@ -304,7 +289,7 @@
         .btn-modal-confirm { padding: 12px; background: var(--danger); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-family: inherit; }
         .btn-modal-cancel { padding: 12px; background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border); border-radius: 10px; font-weight: bold; cursor: pointer; font-family: inherit; }
 
-        /* 📱 شريط السفلي العائم الزجاجي السائل (Liquid Dock) */
+        /* 📱 شريط السفلي العائم */
         .bottom-nav-dock {
             position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 440px; height: 64px; 
             background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
@@ -319,6 +304,39 @@
         .dock-item:active { transform: scale(0.88); color: var(--primary); }
         .dock-item.active-item { color: var(--primary); text-shadow: 0 0 10px var(--glow); }
 
+        /* 🧮 🧮 ستايل الآلة الحاسبة العائمة الزجاجية المضافة حديثاً (Liquid Calc Panel) */
+        .calc-trigger-btn {
+            position: fixed; bottom: 95px; right: 20px; width: 45px; height: 45px;
+            background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%);
+            border: 1px solid rgba(255,255,255,0.25); border-radius: 50%;
+            color: white; font-size: 18px; display: none; align-items: center; justify-content: center;
+            box-shadow: 0 6px 20px var(--glow), inset 0 2px 4px rgba(255,255,255,0.3);
+            z-index: 175; cursor: pointer; transition: all 0.2s;
+        }
+        .calc-trigger-btn.visible { display: flex; }
+        .calc-trigger-btn:active { transform: scale(0.9); }
+
+        .calc-panel {
+            position: fixed; bottom: 155px; right: 20px; width: 240px;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.12); border-radius: 18px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4); z-index: 176; display: none; flex-direction: column; padding: 10px;
+            animation: modalBounce 0.3s ease-out;
+        }
+        .calc-screen {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+            padding: 10px; border-radius: 10px; text-align: left; font-size: 16px; font-weight: bold;
+            color: var(--text-main); min-height: 42px; word-break: break-all; margin-bottom: 8px;
+        }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+        .calc-btn {
+            padding: 10px 5px; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+            color: var(--text-main); font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 13px; text-align: center;
+        }
+        .calc-btn:active { background: var(--primary); color: white; }
+        .calc-btn.op { background: rgba(255, 107, 0, 0.15); color: var(--primary); }
+        .calc-btn.action { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+
         .loading-shimmer { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: var(--bg-body); opacity: 0.95; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
     </style>
 
@@ -332,6 +350,36 @@
     <div class="loading-shimmer" id="loading">
         <i class="fas fa-cog fa-spin" style="font-size: 35px; color: var(--primary);"></i>
         <p style="margin-top: 12px; font-weight: bold; font-size: 13px;">مزامنة التدفق المالي... ⚡</p>
+    </div>
+
+    <button class="calc-trigger-btn" id="calcTrigger" onclick="toggleCalc()"><i class="fas fa-calculator"></i></button>
+    <div class="calc-panel" id="calcPanel">
+         <div class="calc-screen" id="calcScreen">0</div>
+         <div class="calc-grid">
+              <button class="calc-btn action" onclick="pressCalc('C')">C</button>
+              <button class="calc-btn op" onclick="pressCalc('/')">/</button>
+              <button class="calc-btn op" onclick="pressCalc('*')">×</button>
+              <button class="calc-btn action" onclick="pressCalc('del')">←</button>
+              
+              <button class="calc-btn" onclick="pressCalc('7')">7</button>
+              <button class="calc-btn" onclick="pressCalc('8')">8</button>
+              <button class="calc-btn" onclick="pressCalc('9')">9</button>
+              <button class="calc-btn op" onclick="pressCalc('-')">-</button>
+              
+              <button class="calc-btn" onclick="pressCalc('4')">4</button>
+              <button class="calc-btn" onclick="pressCalc('5')">5</button>
+              <button class="calc-btn" onclick="pressCalc('6')">6</button>
+              <button class="calc-btn op" onclick="pressCalc('+')">+</button>
+              
+              <button class="calc-btn" onclick="pressCalc('1')">1</button>
+              <button class="calc-btn" onclick="pressCalc('2')">2</button>
+              <button class="calc-btn" onclick="pressCalc('3')">3</button>
+              <button class="calc-btn op" onclick="pressCalc('=')">=</button>
+              
+              <button class="calc-btn" style="grid-column: span 2;" onclick="pressCalc('0')">0</button>
+              <button class="calc-btn" onclick="pressCalc('.')">.</button>
+              <button class="calc-btn op" style="font-size:10px; padding:10px 2px;" onclick="pushCalcToInput()">تنزيل</button>
+         </div>
     </div>
 
     <div class="custom-modal-overlay" id="deleteModal">
@@ -534,6 +582,10 @@
                     </div>
                 </div>
 
+                <div style="width:100%; position:relative;">
+                     <input type="text" id="liveSearchInput" class="input-ui" placeholder="🔍 ابحث فوراً عن أي بيان أو خامة أو عمالة..." oninput="handleLiveSearch()" style="border-radius:14px; padding-right:38px; font-size:12px;">
+                </div>
+
                 <div class="logs-list" id="logBody"></div>
             </div>
 
@@ -559,6 +611,7 @@
         let globalTransactions = []; 
         let activeFilter = 'all';
         let itemToDeleteId = null; 
+        let calcExpression = ""; // لتخزين الحسبة الرياضية
         const PASSWORDS = { "mostafa": "1519", "ahmed": "222", "mohamed": "333" };
 
         (function initTheme() {
@@ -622,6 +675,39 @@
             input.value = current + val;
         }
 
+        // 🧮 🧮 دوال تشغيل وبرمجة الآلة الحاسبة العائمة جوه الأبلكيشن
+        function toggleCalc() {
+            let panel = document.getElementById("calcPanel");
+            panel.style.display = (panel.style.display === "flex") ? "none" : "flex";
+        }
+
+        function pressCalc(key) {
+            let screen = document.getElementById("calcScreen");
+            if (key === 'C') { calcExpression = ""; screen.innerText = "0"; }
+            else if (key === 'del') { calcExpression = calcExpression.slice(0, -1); screen.innerText = calcExpression || "0"; }
+            else if (key === '=') {
+                try {
+                    let result = eval(calcExpression);
+                    screen.innerText = Number(result.toFixed(2)).toLocaleString();
+                    calcExpression = result.toString();
+                } catch(e) { screen.innerText = "خطأ رياضي"; calcExpression = ""; }
+            } else {
+                if(screen.innerText === "0" || screen.innerText === "خطأ رياضي") calcExpression = "";
+                calcExpression += key;
+                screen.innerText = calcExpression;
+            }
+        }
+
+        function pushCalcToInput() {
+            let screen = document.getElementById("calcScreen").innerText.replace(/,/g, '');
+            let val = parseFloat(screen);
+            if (!isNaN(val) && val > 0) {
+                document.getElementById("amount").value = val;
+                localStorage.setItem("draft_amt", val);
+                toggleCalc(); // قفل الحاسبة بعد التنزيل الموفق
+            }
+        }
+
         function checkUserAuth() {
             let user = document.getElementById("userSelect").value;
             let saved = localStorage.getItem("pass_" + user);
@@ -637,6 +723,7 @@
                 document.getElementById("menuBtn").classList.add("visible");
                 document.getElementById("mainContent").classList.add("visible");
                 document.getElementById("bottomDock").classList.add("visible");
+                document.getElementById("calcTrigger").classList.add("visible"); // إظهار زرار الحاسبة
                 
                 let revenueCard = document.getElementById("revenueCard");
                 if (user === "ahmed") {
@@ -703,6 +790,11 @@
             renderUI(globalTransactions);
         }
 
+        // 🔍 دالة معالجة واستقبال نصوص البحث اللحظي الفوري
+        function handleLiveSearch() {
+            renderUI(globalTransactions);
+        }
+
         function resetProjectSelection() {
             document.getElementById("projectSelectorCard").classList.remove("hide-completely");
             document.getElementById("headerProjBadge").style.display = "none";
@@ -711,6 +803,7 @@
             let financeContent = document.getElementById("financeContent");
             financeContent.classList.add("hidden-element");
             financeContent.style.display = "none";
+            document.getElementById("liveSearchInput").value = ""; // تصفير البحث
             filterLogs('all');
         }
 
@@ -725,6 +818,8 @@
                 document.getElementById("headerProjBadge").style.display = "none";
                 document.getElementById("projectSelectorCard").classList.remove("hide-completely");
                 document.getElementById("bottomDock").classList.remove("visible");
+                document.getElementById("calcTrigger").classList.remove("visible");
+                document.getElementById("calcPanel").style.display = "none";
                 
                 let revenueCard = document.getElementById("revenueCard");
                 revenueCard.classList.add("hidden-element");
@@ -740,6 +835,7 @@
                 
                 document.getElementById("userSelect").selectedIndex = 0;
                 document.getElementById("projectSelect").selectedIndex = 0;
+                document.getElementById("liveSearchInput").value = "";
                 filterLogs('all');
             }
         }
@@ -786,8 +882,27 @@
         }
 
         function renderUI(items) {
+            // 🔍 استقبال نصوص الفلترة من الـ Pills ومن الـ Live Search معاً
+            let query = document.getElementById("liveSearchInput").value.trim().toLowerCase();
+            
+            let filteredItems = items;
+            
+            // 1. الفلترة حسب الـ Pills أولاً
+            if(activeFilter !== 'all') { 
+                filteredItems = filteredItems.filter(i => i.category === activeFilter); 
+            }
+            
+            // 2. الفلترة حسب كلمة البحث الذكي اللحظي ثانياً
+            if(query !== "") {
+                filteredItems = filteredItems.filter(i => 
+                    i.desc.toLowerCase().includes(query) || 
+                    i.category.toLowerCase().includes(query)
+                );
+            }
+
+            // حساب الإجماليات الحية لحظة بلحظة بناءً على المصفى والظاهر قدام عيون المهندس فقط!
             let inc = 0, exp = 0, html = "";
-            items.forEach(i => { if(i.type === 'income') inc += i.amount; else exp += i.amount; });
+            filteredItems.forEach(i => { if(i.type === 'income') inc += i.amount; else exp += i.amount; });
 
             let oldNet = parseFloat(document.getElementById("netBalance").innerText.replace(/,/g, '')) || 0;
             let oldInc = parseFloat(document.getElementById("totalIncome").innerText.replace(/,/g, '')) || 0;
@@ -803,9 +918,6 @@
             if(bar) { bar.style.width = pct + "%"; bar.style.backgroundColor = pct > 85 ? "var(--danger)" : "var(--primary)"; }
 
             document.getElementById("sideTotalCount").innerText = items.length + " عمليات";
-
-            let filteredItems = items;
-            if(activeFilter !== 'all') { filteredItems = items.filter(i => i.category === activeFilter); }
 
             filteredItems.forEach(i => {
                 html += `
@@ -826,7 +938,7 @@
                     </div>
                 `;
             });
-            document.getElementById("logBody").innerHTML = html || `<div style="text-align:center; color:var(--text-dim); font-size:12px; padding:20px;">لا توجد عمليات تحت هذا البند...</div>`;
+            document.getElementById("logBody").innerHTML = html || `<div style="text-align:center; color:var(--text-dim); font-size:12px; padding:20px;">لا توجد عمليات تطابق البحث الحالي...</div>`;
         }
 
         function askDelItem(id, desc) {
