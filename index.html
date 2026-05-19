@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Perfect Steel Pro</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,9 +22,23 @@
             --border: rgba(255, 255, 255, 0.08);
             --radius: 16px;
             --revenue-color: #ffcc00;
+            --overlay-bg: rgba(11, 15, 25, 0.75);
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        [data-theme="light"] {
+            --bg-body: #F1F5F9;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --text-main: #0F172A;
+            --text-dim: #64748B;
+            --border: rgba(0, 0, 0, 0.08);
+            --overlay-bg: rgba(241, 245, 249, 0.75);
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            touch-action: manipulation; 
+        }
 
         body {
             font-family: 'Noto Kufi Arabic', sans-serif;
@@ -33,180 +47,186 @@
             margin: 0; padding: 0;
             overflow-x: hidden; min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
+            -webkit-font-smoothing: antialiased;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* 🎬 الخلفية السينمائية */
         .bg-fixed {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; background-image: linear-gradient(rgba(11, 15, 25, 0.75), rgba(11, 15, 25, 0.85)), 
+            z-index: -1; 
+            background-image: linear-gradient(var(--overlay-bg), var(--overlay-bg)), 
             url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200');
             background-size: cover; background-position: center;
             animation: kenBurns 25s infinite alternate ease-in-out;
+            will-change: transform;
+            transition: background-image 0.3s ease;
         }
         @keyframes kenBurns {
-            0% { transform: scale(1); } 100% { transform: scale(1.08); }
+            0% { transform: scale(1); } 100% { transform: scale(1.06); }
         }
 
-        /* الهيدر المطور المستقر الحاضن للهوية الذكية */
+        /* الهيدر المستقر */
         header {
-            width: 100%; padding: 10px 20px;
-            backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+            width: 100%; padding: 5px 15px;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
             background: rgba(15, 23, 42, 0.4); z-index: 150;
             display: flex; justify-content: space-between; align-items: center;
-            height: 85px; position: sticky; top: 0;
+            height: 90px; position: sticky; top: 0;
         }
         
         .logo { position: absolute; left: 50%; transform: translateX(-50%); pointer-events: none; }
         .logo h1 { color: var(--primary); font-size: 18px; margin: 0; font-weight: 900; letter-spacing: 1px; }
         
-        /* حاوية التحكم اليمنى (الاسم فوق والشرط تحت) */
         .header-right-holder {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 5px;
-            z-index: 120;
-            min-height: 60px;
-            justify-content: center;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 5px; z-index: 120; min-height: 60px; justify-content: center;
         }
 
-        /* الـ 3 شرطات تحت الاسم */
         .menu-trigger {
-            background: none; border: none; color: var(--text-main); font-size: 22px; cursor: pointer;
-            padding: 0; opacity: 0; pointer-events: none; transition: 0.3s ease;
-            display: flex; align-items: center; justify-content: center;
+            background: none; border: none; color: var(--text-main); font-size: 22px; cursor: pointer; padding: 0; opacity: 0; pointer-events: none; transition: 0.2s;
         }
         .menu-trigger.visible { opacity: 1; pointer-events: auto; }
 
-        /* 📍 زر الموقع الذكي المضاف في الهيدر أقصى الشمال */
-        .header-project-badge {
-            display: none; background: rgba(255, 107, 0, 0.15); border: 1px solid var(--primary);
-            padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold;
-            cursor: pointer; align-items: center; gap: 6px; color: #fff;
-            transition: 0.2s ease; z-index: 130;
+        .header-left-holder {
+            display: flex; align-items: center; gap: 12px; z-index: 130;
         }
-        .header-project-badge:active { transform: scale(0.95); background: var(--primary); }
-        .header-project-badge i { color: var(--primary); font-size: 12px; }
+
+        .theme-toggle-btn {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); color: var(--text-main);
+            width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.2s ease;
+        }
+
+        /* عمود التحكم والبيانات الذكي أقصى اليسار جوة الهيدر */
+        .user-site-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+            min-width: 120px;
+        }
+
+        /* 👑 بادج اسم المهندس الأصيل جوة الهيدر (مستحيل يختفي) */
+        .header-user-badge {
+            display: none;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+        .header-user-badge.active-live { display: flex; }
+        .header-user-badge i { color: var(--primary); font-size: 12px; }
+
+        /* بادج الموقع */
+        .header-project-badge {
+            display: none; background: rgba(255, 107, 0, 0.12); border: 1px solid rgba(255,107,0,0.4);
+            padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;
+            cursor: pointer; align-items: center; gap: 5px; color: var(--text-main);
+            transition: all 0.2s;
+        }
         .header-project-badge.active-live { display: flex; }
 
-        /* 🚪 القائمة الجانبية (Burger Menu) */
+        /* 🚪 القائمة الجانبية */
         .sidebar {
-            position: fixed; top: 0; right: -280px; width: 280px; height: 100%;
-            background: rgba(15, 23, 42, 0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            z-index: 200; border-left: 1px solid var(--border); padding: 30px 20px;
-            display: flex; flex-direction: column; gap: 25px;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            position: fixed; top: 0; right: -280px; width: 260px; height: 100%;
+            background: var(--bg-body); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            z-index: 200; border-left: 1px solid var(--border); padding: 25px 20px;
+            display: flex; flex-direction: column; gap: 20px;
+            transition: right 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        .sidebar.open { right: 0; box-shadow: -15px 0 35px rgba(0,0,0,0.6); }
+        .sidebar.open { right: 0; box-shadow: -15px 0 35px rgba(0,0,0,0.4); }
 
-        .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        .sidebar-close { background: none; border: none; color: var(--text-dim); font-size: 22px; cursor: pointer; }
-
-        .sidebar-user-info { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
-        .sidebar-user-info i { color: var(--primary); font-size: 24px; margin-bottom: 8px; display: block; }
-        .sidebar-user-info span { font-weight: bold; font-size: 14px; }
-
-        /* 📝 تم تعديل زر الخروج هنا في التنسيق والمظهر */
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        .sidebar-close { background: none; border: none; color: var(--text-dim); font-size: 20px; cursor: pointer; }
+        .sidebar-user-info { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
+        .sidebar-user-info i { color: var(--primary); font-size: 20px; margin-bottom: 5px; display: block; }
+        
         .btn-logout {
-            margin-top: auto; width: 100%; padding: 14px; background: rgba(239, 68, 68, 0.15);
-            color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px;
-            font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s;
+            margin-top: auto; width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.12);
+            color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-logout:hover { background: var(--danger); color: white; }
 
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 190; display: none; }
 
-        /* حاوية الأبلكيشن الرئيسية */
+        /* حاوية الأبلكيشن */
         .app-container {
-            width: 100%; max-width: 480px; padding: 20px 15px 40px; z-index: 5;
-            display: flex; flex-direction: column; gap: 20px;
+            width: 100%; max-width: 480px; padding: 15px 12px 30px; z-index: 5;
+            display: flex; flex-direction: column; gap: 15px;
         }
 
-        /* صندوق الدخول والتحول الذكي */
+        /* صندوق الدخول الأصلي */
         .login-box {
-            background: var(--bg-card); border-radius: var(--radius); padding: 22px;
-            border: 1px solid var(--border); backdrop-filter: blur(16px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4); width: 100%;
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            background: var(--bg-card); border-radius: var(--radius); padding: 20px;
+            border: 1px solid var(--border); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3); width: 100%;
+            transition: all 0.3s ease;
         }
+        /* بيختفي تماماً بعد الدخول النظير لتوليد المكونات فوق */
+        .login-box.logged-in { display: none !important; }
 
-        /* كلاس طيران اسم المهندس فوق الـ 3 شرط بالظبط */
-        .login-box.logged-in {
-            position: absolute; top: 10px; right: 20px; z-index: 120;
-            width: auto; max-width: 150px; padding: 0;
-            background: transparent; border: none; box-shadow: none; backdrop-filter: none;
-        }
-
-        .hide-on-login { opacity: 1; transition: 0.3s; }
-        .logged-in .hide-on-login { display: none !important; }
-        
-        .user-badge { display: none; align-items: center; gap: 6px; }
-        .logged-in .user-badge { display: flex; }
-        .user-badge i { color: var(--primary); font-size: 14px; }
-        .user-badge span { font-size: 11px; font-weight: bold; white-space: nowrap; color: #fff; }
-
-        /* كارد اختيار الموقع والزراير الأربعة */
-        .project-selector-card { transition: all 0.5s ease; }
+        .project-selector-card { transition: opacity 0.3s; }
         .project-selector-card.hide-completely { display: none !important; }
 
-        /* محتويات الحسابات */
-        .main-content {
-            display: none; opacity: 0; transform: translateY(20px);
-            transition: all 0.6s ease; width: 100%;
-        }
-        .main-content.visible { display: flex; flex-direction: column; gap: 20px; opacity: 1; transform: translateY(0); }
+        .main-content { display: none; opacity: 0; transform: translateY(15px); transition: all 0.5s ease; width: 100%; }
+        .main-content.visible { display: flex; flex-direction: column; gap: 15px; opacity: 1; transform: translateY(0); }
 
         .card {
-            background: var(--bg-card); border-radius: var(--radius); padding: 22px;
-            border: 1px solid var(--border); backdrop-filter: blur(16px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            background: var(--bg-card); border-radius: var(--radius); padding: 18px;
+            border: 1px solid var(--border); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: background-color 0.3s, border-color 0.3s;
         }
 
-        .label-group label { display: block; margin-bottom: 8px; font-size: 13px; color: var(--text-dim); font-weight: bold; }
+        .label-group label { display: block; margin-bottom: 6px; font-size: 12px; color: var(--text-dim); font-weight: bold; }
         
         .input-ui {
-            width: 100%; background-color: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px; padding: 14px; color: white; font-size: 15px; font-family: inherit; outline: none; transition: 0.3s;
+            width: 100%; background-color: rgba(15, 23, 42, 0.05); border: 1px solid var(--border);
+            border-radius: 12px; padding: 12px; color: var(--text-main); font-size: 14px; font-family: inherit; outline: none; transition: 0.2s;
         }
+        [data-theme="dark"] .input-ui { background-color: rgba(15, 23, 42, 0.6); }
         .input-ui:focus { border-color: var(--primary); }
-        select.input-ui { cursor: pointer; color: var(--primary); font-weight: bold; }
+        select.input-ui { color: var(--primary); font-weight: bold; }
 
-        /* زراير الإدارة الأربعة */
-        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .btn-outline { padding: 12px; background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.1); color: var(--text-main); border-radius: 8px; font-size: 12px; cursor: pointer; text-decoration: none; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+        .btn-outline { padding: 10px; background: rgba(15, 23, 42, 0.03); border: 1px solid var(--border); color: var(--text-main); border-radius: 8px; font-size: 11px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        [data-theme="dark"] .btn-outline { background: rgba(15, 23, 42, 0.4); }
 
         /* HUD */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .stat-box { background: var(--bg-card); padding: 18px 12px; border-radius: var(--radius); text-align: center; border: 1px solid var(--border); backdrop-filter: blur(16px); }
-        .stat-box.full { grid-column: span 2; border-top: 3px solid var(--primary); }
-        .stat-box h4 { margin: 0; font-size: 12px; color: var(--text-dim); }
-        .stat-box .val { margin: 8px 0 0; font-size: 22px; font-weight: 900; }
+        .stats-hud-row { display: grid; grid-template-columns: 1.2fr 0.9fr 0.9fr; gap: 6px; width: 100%; }
+        .hud-box { background: var(--bg-card); border: 1px solid var(--border); padding: 10px 6px; border-radius: 12px; text-align: center; transition: background-color 0.3s; }
+        .hud-box.prime { border-top: 2px solid var(--primary); background: rgba(255, 107, 0, 0.04); }
+        .hud-box h4 { margin: 0; font-size: 10px; color: var(--text-dim); font-weight: bold; }
+        .hud-box .val { margin: 4px 0 0; font-size: 13px; font-weight: 900; white-space: nowrap; }
 
-        /* Tabs */
-        .tabs { display: flex; background: rgba(15, 23, 42, 0.8); padding: 5px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px; }
-        .tab-btn { flex: 1; padding: 12px; border: none; background: none; color: var(--text-dim); font-weight: bold; border-radius: 8px; cursor: pointer; font-family: inherit; }
+        .tabs { display: flex; background: rgba(15, 23, 42, 0.05); padding: 4px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px; }
+        [data-theme="dark"] .tabs { background: rgba(15, 23, 42, 0.8); }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: none; color: var(--text-dim); font-weight: bold; font-size: 13px; border-radius: 7px; cursor: pointer; font-family: inherit; }
         .tab-btn.active { background: var(--primary); color: white; }
 
         .btn-primary {
-            width: 100%; padding: 16px; background-color: var(--primary); color: white; border: none; border-radius: 12px;
-            font-size: 16px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: inherit;
+            width: 100%; padding: 14px; background-color: var(--primary); color: white; border: none; border-radius: 12px;
+            font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit;
         }
 
-        .log-item {
-            background: var(--bg-card); border-radius: 14px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(16px);
-        }
-        .log-item.income { border-left: 4px solid var(--success); }
-        .log-item.expense { border-left: 4px solid var(--danger); }
-        .log-info h5 { margin: 0; font-size: 15px; font-weight: 700; }
-        .log-info p { margin: 5px 0 0; font-size: 11px; color: var(--text-dim); }
+        /* الـ Logs */
+        .logs-list { max-height: 380px; overflow-y: auto; -webkit-overflow-scrolling: touch; will-change: transform; }
+        .log-item { background: var(--bg-card); border-radius: 12px; padding: 12px; margin-bottom: 8px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: background-color 0.3s; }
+        .log-item.income { border-left: 3px solid var(--success); }
+        .log-item.expense { border-left: 3px solid var(--danger); }
+        .log-info h5 { margin: 0; font-size: 13px; font-weight: 700; color: var(--text-main); }
+        .log-info p { margin: 3px 0 0; font-size: 10px; color: var(--text-dim); }
         .log-amount { text-align: left; }
-        .log-amount .amt { display: block; font-size: 16px; font-weight: 800; }
-        .log-amount .date { font-size: 10px; color: var(--text-dim); }
+        .log-amount .amt { display: block; font-size: 14px; font-weight: 800; }
+        .log-amount .date { font-size: 9px; color: var(--text-dim); }
 
-        .btn-del { background: rgba(239, 68, 68, 0.12); color: var(--danger); border: none; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-right: 10px; }
+        .btn-del { background: rgba(239, 68, 68, 0.08); color: var(--danger); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-right: 8px; }
 
-        .loading-shimmer { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: rgba(11, 15, 25, 0.95); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
+        .loading-shimmer { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: var(--bg-body); opacity: 0.95; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -217,22 +237,21 @@
     <div class="bg-fixed"></div>
 
     <div class="loading-shimmer" id="loading">
-        <i class="fas fa-cog fa-spin" style="font-size: 40px; color: var(--primary);"></i>
-        <p style="margin-top: 15px; font-weight: bold;">جاري المزامنة اللحظية... ⚡</p>
+        <i class="fas fa-cog fa-spin" style="font-size: 35px; color: var(--primary);"></i>
+        <p style="margin-top: 12px; font-weight: bold; font-size: 13px;">مزامنة السيرفر الفوري... ⚡</p>
     </div>
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
     <div class="sidebar" id="sidebarMenu">
         <div class="sidebar-header">
-            <span style="font-weight: 900; color: var(--primary);">إدارة النظام</span>
+            <span style="font-weight: 900; color: var(--primary); font-size: 14px;">إدارة النظام</span>
             <button class="sidebar-close" onclick="toggleSidebar(false)"><i class="fas fa-times"></i></button>
         </div>
         <div class="sidebar-user-info">
             <i class="fas fa-user-hard-hat"></i>
             <span id="sidebarUserName">Eng: User</span>
         </div>
-        
         <button class="btn-logout" onclick="triggerLogOut()">
             <i class="fas fa-door-open"></i> تسجيل الخروج
         </button>
@@ -240,22 +259,34 @@
 
     <header>
         <div class="header-right-holder">
-             <div style="height: 20px; width: 120px;"></div>
              <button class="menu-trigger" id="menuBtn" onclick="toggleSidebar(true)"><i class="fas fa-bars"></i></button>
         </div>
-        
         <div class="logo"><h1>PERFECT STEEL</h1></div>
         
-        <div class="header-project-badge" id="headerProjBadge" onclick="resetProjectSelection()">
-             <i class="fas fa-map-marker-alt"></i>
-             <span id="headerProjName">Ismailia</span>
+        <div class="header-left-holder">
+             <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="تغيير الوضع">
+                 <i class="fas fa-moon" id="themeIcon"></i>
+             </button>
+             
+             <div class="user-site-column">
+                  
+                  <div class="header-user-badge" id="headerUserBadge">
+                       <i class="fas fa-user-hard-hat"></i>
+                       <span id="headerUserNameSpan">Eng: USER</span>
+                  </div>
+                  
+                  <div class="header-project-badge" id="headerProjBadge" onclick="resetProjectSelection()">
+                       <i class="fas fa-map-marker-alt"></i>
+                       <span id="headerProjName">الموقع</span>
+                  </div>
+             </div>
         </div>
     </header>
 
     <div class="app-container">
         
         <div class="login-box" id="loginBox">
-            <div class="hide-on-login">
+            <div>
                 <div class="label-group">
                     <label><i class="fas fa-user-gear" style="color: var(--primary);"></i> تسجيل دخول المهندس المسؤول</label>
                     <select class="input-ui" id="userSelect" onchange="checkUserAuth()">
@@ -265,10 +296,6 @@
                         <option value="mohamed">Eng: Mohamed</option>
                     </select>
                 </div>
-            </div>
-            <div class="user-badge">
-                <i class="fas fa-user-hard-hat"></i>
-                <span id="badgeName">Eng: User</span>
             </div>
         </div>
 
@@ -285,7 +312,6 @@
                         <option value="Ismailia">Ismailia</option>
                     </select>
                 </div>
-                
                 <div class="admin-grid" id="adminBox">
                     <button class="btn-outline" onclick="addCustomProject()"><i class="fas fa-plus"></i> مشروع</button>
                     <button class="btn-outline" onclick="addCustomEmployee()"><i class="fas fa-user-plus"></i> مهندس</button>
@@ -295,35 +321,34 @@
             </div>
 
             <div class="card hidden" id="revenueCard" style="display: none;">
-                <div style="color: var(--revenue-color); font-weight: bold; font-size: 15px; margin-bottom: 12px; text-align: center;">
+                <div style="color: var(--revenue-color); font-weight: bold; font-size: 14px; margin-bottom: 10px; text-align: center;">
                     <i class="fas fa-hand-holding-dollar"></i> إدخال دفعة من شركة
                 </div>
-                <input type="number" id="companyAmt" class="input-ui" placeholder="المبلغ المستلم">
+                <input type="number" inputmode="numeric" id="companyAmt" class="input-ui" placeholder="المبلغ المستلم" style="margin-bottom: 10px;">
                 <select id="companyDesc" class="input-ui">
                     <option value="دفعة مقدمة (Down Payment)">دفعة مقدمة (Down Payment)</option>
                     <option value="مستخلص جاري (Progress Payment)">مستخلص جاري (Progress Payment)</option>
                     <option value="دفعة توريد خامات">دفعة توريد خامات</option>
                     <option value="دفعة ختامية (Final Payment)">دفعة ختامية (Final Payment)</option>
                 </select>
-                <button class="btn-primary" style="background-color: var(--revenue-color); color: #000;" onclick="submitCompanyRevenue()">
+                <button class="btn-primary" style="background-color: var(--revenue-color); color: #000; margin-top: 10px;" onclick="submitCompanyRevenue()">
                     تأكيد حفظ الدفعة
                 </button>
             </div>
 
-            <div class="hidden" id="financeContent">
-                <div class="stats-grid">
-                    <div class="stat-box full">
-                        <h4 id="currentActiveProjectTitle" style="color:var(--text-dim); margin-bottom:5px; font-weight:bold;">المشروع: لم يتم الاختيار</h4>
-                        <h4>الرصيد المتبقي (الصافي)</h4>
-                        <div class="val" id="netBalance" style="color: var(--primary);">0.00 ج.م</div>
+            <div class="hidden" id="financeContent" style="display: flex; flex-direction: column; gap: 15px;">
+                <div class="stats-grid stats-hud-row">
+                    <div class="hud-box prime">
+                        <h4 id="currentActiveProjectTitle">الصافي المتبقي</h4>
+                        <div class="val" id="netBalance" style="color: var(--primary);">0</div>
                     </div>
-                    <div class="stat-box">
-                        <h4>إجمالي الإيراد (+)</h4>
-                        <div class="val" id="totalIncome" style="color: var(--success);">0.00 ج.م</div>
+                    <div class="hud-box">
+                        <h4>الإيرادات (+)</h4>
+                        <div class="val" id="totalIncome" style="color: var(--success);">0</div>
                     </div>
-                    <div class="stat-box">
-                        <h4>إجمالي المصروف (-)</h4>
-                        <div class="val" id="totalExpense" style="color: var(--danger);">0.00 ج.م</div>
+                    <div class="hud-box">
+                        <h4>المصروفات (-)</h4>
+                        <div class="val" id="totalExpense" style="color: var(--danger);">0</div>
                     </div>
                 </div>
 
@@ -344,13 +369,13 @@
                              </select>
                          </div>
                         <div class="label-group">
-                            <input type="number" id="amount" class="input-ui" placeholder="أدخل المبلغ المستحق (ج.م)">
+                            <input type="number" inputmode="numeric" id="amount" class="input-ui" placeholder="أدخل المبلغ (ج.م)">
                         </div>
                         <div class="label-group">
-                            <input type="text" id="desc" class="input-ui" placeholder="اكتب التفاصيل / البيان هنا...">
+                            <input type="text" id="desc" class="input-ui" placeholder="اكتب البيان / التفاصيل...">
                         </div>
-                        <button class="btn-primary" onclick="handleAdd()">
-                            <i class="fas fa-check-double"></i> حفظ وتأكيد العملية
+                        <button class="btn-primary" onclick="handleAdd()" style="margin-top: 5px;">
+                            <i class="fas fa-check-double"></i> حفظ العملية اللحظية
                         </button>
                     </div>
                 </div>
@@ -379,16 +404,33 @@
         let currentMode = 'income';
         const PASSWORDS = { "mostafa": "1519", "ahmed": "222", "mohamed": "333" };
 
-        function checkUserAuth() {
-            let selectElement = document.getElementById("userSelect");
-            let user = selectElement.value; 
+        (function initTheme() {
+            const savedTheme = localStorage.getItem("theme") || "dark";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+            window.addEventListener('DOMContentLoaded', () => {
+                const icon = document.getElementById("themeIcon");
+                if (icon) icon.className = savedTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+            });
+        })();
 
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            document.getElementById("themeIcon").className = newTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+        }
+
+        function checkUserAuth() {
+            let user = document.getElementById("userSelect").value;
             let saved = localStorage.getItem("pass_" + user);
             
-            if (saved === PASSWORDS[user] || prompt("برجاء إدخال كلمة المرور:") === PASSWORDS[user]) {
+            if (saved === PASSWORDS[user] || prompt("برجاء إدخال الرقم السري:") === PASSWORDS[user]) {
                 localStorage.setItem("pass_" + user, PASSWORDS[user]);
                 
-                document.getElementById("badgeName").innerText = "Eng: " + user.toUpperCase();
+                // 👑 تشغيل المكون الأصلي للاسم جوة الهيدر فوراً وبثبات مطلق
+                document.getElementById("headerUserNameSpan").innerText = "Eng: " + user.toUpperCase();
+                document.getElementById("headerUserBadge").classList.add("active-live");
                 document.getElementById("sidebarUserName").innerText = "Eng: " + user.toUpperCase();
                 
                 document.getElementById("loginBox").classList.add("logged-in");
@@ -396,7 +438,6 @@
                 
                 setTimeout(() => {
                     document.getElementById("mainContent").classList.add("visible");
-                    
                     let revenueCard = document.getElementById("revenueCard");
                     if (user === "ahmed") {
                         revenueCard.classList.remove("hidden");
@@ -405,10 +446,9 @@
                         revenueCard.classList.add("hidden");
                         revenueCard.style.display = "none";
                     }
-                }, 300);
-
+                }, 200);
             } else {
-                alert("❌ كلمة المرور غير صحيحة!");
+                alert("❌ الرقم السري خطأ!");
                 document.getElementById("userSelect").selectedIndex = 0;
             }
         }
@@ -429,7 +469,7 @@
             document.getElementById("projectSelectorCard").classList.add("hide-completely");
             
             document.getElementById("financeContent").classList.remove("hidden");
-            document.getElementById("currentActiveProjectTitle").innerText = `المشروع الحالي: ${proj}`;
+            document.getElementById("currentActiveProjectTitle").innerText = proj;
             
             showLoad(true);
             database.ref('transactions').on('value', (snap) => {
@@ -454,27 +494,27 @@
             document.getElementById("financeContent").classList.add("hidden");
         }
 
-        /* 📝 دالة الخروج الذكية اللي تم تنظيف التنبيهات النصية بداخلها */
         function triggerLogOut() {
             if(confirm("هل تريد تسجيل الخروج؟")) {
-                localStorage.clear(); 
-                sessionStorage.clear();
+                const currentTheme = localStorage.getItem("theme");
+                localStorage.clear(); sessionStorage.clear();
+                if (currentTheme) localStorage.setItem("theme", currentTheme);
+                
                 toggleSidebar(false);
                 
+                // إخفاء مكونات الهيدر عند الخروج
+                document.getElementById("headerUserBadge").classList.remove("active-live");
                 document.getElementById("headerProjBadge").classList.remove("active-live");
-                document.getElementById("projectSelectorCard").classList.remove("hide-completely");
                 
+                document.getElementById("projectSelectorCard").classList.remove("hide-completely");
                 document.getElementById("revenueCard").classList.add("hidden");
                 document.getElementById("revenueCard").style.display = "none";
-                
                 document.getElementById("loginBox").classList.remove("logged-in");
                 document.getElementById("menuBtn").classList.remove("visible");
                 document.getElementById("mainContent").classList.remove("visible");
                 document.getElementById("financeContent").classList.add("hidden");
                 document.getElementById("userSelect").selectedIndex = 0;
                 document.getElementById("projectSelect").selectedIndex = 0;
-                
-                alert("🚪 تم تسجيل الخروج بنجاح.");
             }
         }
 
@@ -489,38 +529,22 @@
             let amt = parseFloat(document.getElementById("companyAmt").value) || 0;
             let desc = document.getElementById("companyDesc").value;
             if(amt <= 0) return;
-            
-            let today = new Date();
-            let dateString = today.toISOString().split('T')[0];
-            let user = document.getElementById("userSelect").value;
-
             database.ref('transactions').push({
                 project: document.getElementById("projectSelect").value,
-                engineer: user, type: 'income', category: 'دفعة شركة', amount: amt, desc: desc, date: dateString, ts: Date.now()
-            }).then(() => {
-                document.getElementById("companyAmt").value = "";
-                alert("💰 تم حفظ دفعة الشركة بنجاح!");
-            });
+                engineer: document.getElementById("userSelect").value, type: 'income', category: 'دفعة شركة', amount: amt, desc: desc, date: new Date().toISOString().split('T')[0], ts: Date.now()
+            }).then(() => { document.getElementById("companyAmt").value = ""; alert("💰 تم حفظ دفعة الشركة!"); });
         }
 
         function handleAdd() {
             let amt = parseFloat(document.getElementById("amount").value);
             let dsc = document.getElementById("desc").value;
-            if(!amt || !dsc) return alert("❌ برجاء ملء الحقول المطلوبة أولاً");
-
-            let today = new Date();
-            let date = today.toISOString().split('T')[0];
-            let user = document.getElementById("userSelect").value;
-
+            if(!amt || !dsc) return alert("❌ برجاء ملء البيانات أولاً");
             database.ref('transactions').push({
                 project: document.getElementById("projectSelect").value,
-                engineer: user, type: currentMode,
+                engineer: document.getElementById("userSelect").value, type: currentMode,
                 category: currentMode==='income'?'عام':document.getElementById("expenseCategory").value,
-                amount: amt, desc: dsc, date: date, ts: Date.now()
-            }).then(() => {
-                document.getElementById("amount").value = "";
-                document.getElementById("desc").value = "";
-            });
+                amount: amt, desc: dsc, date: new Date().toISOString().split('T')[0], ts: Date.now()
+            }).then(() => { document.getElementById("amount").value = ""; document.getElementById("desc").value = ""; });
         }
 
         function renderUI(items) {
@@ -536,7 +560,7 @@
                         <div style="display:flex; align-items:center;">
                             <div class="log-amount">
                                 <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">
-                                    ${i.type==='income'?'+':'-'}${i.amount.toLocaleString()} ج.م
+                                    ${i.type==='income'?'+':'-'}${i.amount.toLocaleString()}
                                 </span>
                                 <span class="date">${i.date || '-'}</span>
                             </div>
@@ -546,12 +570,12 @@
                 `;
             });
             document.getElementById("logBody").innerHTML = html;
-            document.getElementById("totalIncome").innerText = inc.toLocaleString() + " ج.م";
-            document.getElementById("totalExpense").innerText = exp.toLocaleString() + " ج.م";
+            document.getElementById("totalIncome").innerText = inc.toLocaleString();
+            document.getElementById("totalExpense").innerText = exp.toLocaleString();
             document.getElementById("netBalance").innerText = (inc - exp).toLocaleString() + " ج.م";
         }
 
-        function delItem(id) { if(confirm("هل أنت متأكد من حذف هذه العملية؟")) database.ref('transactions').child(id).remove(); }
+        function delItem(id) { if(confirm("هل أنت متأكد من الحذف؟")) database.ref('transactions').child(id).remove(); }
         function showLoad(s) { document.getElementById("loading").style.display = s?'flex':'none'; }
         function addCustomProject() { let p = prompt("اسم المشروع الجديد:"); if(p) document.getElementById("projectSelect").add(new Option(p, p)); }
         function addCustomEmployee() { alert("تم التفعيل."); }
