@@ -78,7 +78,7 @@
         }
         .menu-trigger.visible { opacity: 1; pointer-events: auto; }
 
-        /* 📍 زر تغيير الموقع الذكي المضاف في الهيدر أقصى الشمال */
+        /* 📍 زر الموقع الذكي المضاف في الهيدر أقصى الشمال */
         .header-project-badge {
             display: none; background: rgba(255, 107, 0, 0.15); border: 1px solid var(--primary);
             padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold;
@@ -89,7 +89,7 @@
         .header-project-badge i { color: var(--primary); font-size: 12px; }
         .header-project-badge.active-live { display: flex; }
 
-        /* 🚪 القائمة الجانبية (Sidebar) */
+        /* 🚪 القائمة الجانبية (Burger Menu) */
         .sidebar {
             position: fixed; top: 0; right: -280px; width: 280px; height: 100%;
             background: rgba(15, 23, 42, 0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -106,6 +106,7 @@
         .sidebar-user-info i { color: var(--primary); font-size: 24px; margin-bottom: 8px; display: block; }
         .sidebar-user-info span { font-weight: bold; font-size: 14px; }
 
+        /* 📝 تم تعديل زر الخروج هنا في التنسيق والمظهر */
         .btn-logout {
             margin-top: auto; width: 100%; padding: 14px; background: rgba(239, 68, 68, 0.15);
             color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px;
@@ -144,7 +145,7 @@
         .user-badge i { color: var(--primary); font-size: 14px; }
         .user-badge span { font-size: 11px; font-weight: bold; white-space: nowrap; color: #fff; }
 
-        /* كارد اختيار الموقع الأصلي الكبير (المستهدف بالاختفاء) */
+        /* كارد اختيار الموقع والزراير الأربعة */
         .project-selector-card { transition: all 0.5s ease; }
         .project-selector-card.hide-completely { display: none !important; }
 
@@ -231,8 +232,9 @@
             <i class="fas fa-user-hard-hat"></i>
             <span id="sidebarUserName">Eng: User</span>
         </div>
+        
         <button class="btn-logout" onclick="triggerLogOut()">
-            <i class="fas fa-door-open"></i> تسجيل الخروج وتطهير الكاش
+            <i class="fas fa-door-open"></i> تسجيل الخروج
         </button>
     </div>
 
@@ -418,19 +420,14 @@
             overlay.style.display = open ? "block" : "none";
         }
 
-        // 🏎️ دالة اختيار الموقع: إخفاء الكارد الكبير وتصدير الاسم للهيدر فوق
         function onProjectChange() {
             let proj = document.getElementById("projectSelect").value;
             let user = document.getElementById("userSelect").value;
             
-            // 1. تصدير الاسم للهيدر فوق على الشمال وتشغيل الزرار
             document.getElementById("headerProjName").innerText = proj;
             document.getElementById("headerProjBadge").classList.add("active-live");
-            
-            // 2. إخفاء المربع الكبير تماماً لتوفير مساحة الموبايل
             document.getElementById("projectSelectorCard").classList.add("hide-completely");
             
-            // 3. عرض لوحة الحسابات
             document.getElementById("financeContent").classList.remove("hidden");
             document.getElementById("currentActiveProjectTitle").innerText = `المشروع الحالي: ${proj}`;
             
@@ -450,28 +447,20 @@
             });
         }
 
-        // 🔄 دالة إعادة فتح الاختيارات (لما المهندس يضغط على اسم الموقع فوق في الهيدر)
         function resetProjectSelection() {
-            // 1. إعادة إظهار كارد اختيار الموقع الكبير
             document.getElementById("projectSelectorCard").classList.remove("hide-completely");
-            
-            // 2. إخفاء البادج من الهيدر فوق لحين الاختيار الجديد
             document.getElementById("headerProjBadge").classList.remove("active-live");
-            
-            // 3. إعادة تصفير القائمة المنسدلة
             document.getElementById("projectSelect").selectedIndex = 0;
-            
-            // 4. إخفاء لوحة الحسابات لحين اختيار موقع جديد
             document.getElementById("financeContent").classList.add("hidden");
         }
 
+        /* 📝 دالة الخروج الذكية اللي تم تنظيف التنبيهات النصية بداخلها */
         function triggerLogOut() {
-            if(confirm("هل تريد تسجيل الخروج وتطهير كاش المستخدم؟")) {
+            if(confirm("هل تريد تسجيل الخروج؟")) {
                 localStorage.clear(); 
                 sessionStorage.clear();
                 toggleSidebar(false);
                 
-                // إعادة تصفير الواجهة كلياً للوضع الأصلي البدائي
                 document.getElementById("headerProjBadge").classList.remove("active-live");
                 document.getElementById("projectSelectorCard").classList.remove("hide-completely");
                 
@@ -484,6 +473,8 @@
                 document.getElementById("financeContent").classList.add("hidden");
                 document.getElementById("userSelect").selectedIndex = 0;
                 document.getElementById("projectSelect").selectedIndex = 0;
+                
+                alert("🚪 تم تسجيل الخروج بنجاح.");
             }
         }
 
