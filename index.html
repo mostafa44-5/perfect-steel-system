@@ -149,7 +149,7 @@
         .info-row-item span { color: var(--text-dim); }
         .info-row-item b { color: var(--text-main); text-align: left; }
 
-        /* 📝 مفكرة ملاحظات الموقع */
+        /* مفكرة ملاحظات الموقع */
         .engineer-notes-block {
             background: linear-gradient(135deg, rgba(255, 107, 0, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
             border: 1px solid rgba(255, 107, 0, 0.2); padding: 14px 12px; border-radius: 16px;
@@ -294,12 +294,28 @@
 
         .btn-del { background: rgba(239, 68, 68, 0.06); color: var(--danger); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-right: 8px; }
 
-        /* الـ Modals */
+        /* Modals */
         .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .custom-modal { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 22px; border-radius: var(--radius); width: 100%; max-width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); animation: modalBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
         .btn-modal-confirm { padding: 12px; background: var(--danger); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-family: inherit; }
         .btn-modal-cancel { padding: 12px; background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border); border-radius: 10px; font-weight: bold; cursor: pointer; font-family: inherit; }
+
+        /* 📊 شاشة العرض المدمجة لشيتات جوجل (In-App Sheet Frame Studio) */
+        .inapp-sheet-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-body); z-index: 500; display: none; flex-direction: column;
+            transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+            padding-top: env(safe-area-inset-top);
+        }
+        .inapp-sheet-overlay.slide-up { display: flex; transform: translateY(0); }
+        .sheet-frame-header {
+            width: 100%; height: 60px; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; padding: 0 15px;
+        }
+        .btn-close-sheet { padding: 8px 16px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--danger); font-weight: bold; border-radius: 10px; font-size: 11px; cursor: pointer; font-family: inherit; }
+        .sheet-iframe-container { flex: 1; width: 100%; background: #fff; border: none; -webkit-overflow-scrolling: touch; }
+        .sheet-iframe-container iframe { width: 100%; height: 100%; border: none; }
 
         /* شريط السفلي العائم */
         .bottom-nav-dock {
@@ -354,6 +370,16 @@
     <div class="loading-shimmer" id="loading">
         <i class="fas fa-cog fa-spin" style="font-size: 35px; color: var(--primary);"></i>
         <p style="margin-top: 12px; font-weight: bold; font-size: 13px;">مزامنة التدفق المالي... ⚡</p>
+    </div>
+
+    <div class="inapp-sheet-overlay" id="inappSheetOverlay">
+         <div class="sheet-frame-header">
+              <span id="sheetTitleLabel" style="font-weight: 900; font-size: 13px; color: var(--primary);"><i class="fas fa-file-excel"></i> جاري تحميل الشيت...</span>
+              <button class="btn-close-sheet" onclick="closeInAppGoogleSheet()"><i class="fas fa-arrow-left"></i> إغلاق والعودة</button>
+         </div>
+         <div class="sheet-iframe-container">
+              <iframe id="sheetIframe" src="" allow="autoplay"></iframe>
+         </div>
     </div>
 
     <div class="calc-trigger-btn" id="calcTrigger" onclick="toggleCalc()"><i class="fas fa-calculator"></i></div>
@@ -491,9 +517,9 @@
     </div>
 
     <div class="bottom-nav-dock" id="bottomDock">
-         <div class="dock-item active-item" onclick="switchDockTab('home')"><i class="fas fa-th-large"></i><span>الرئيسية</span></div>
-         <a class="dock-item" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank"><i class="fas fa-money-bill-wave"></i><span>المرتبات</span></a>
-         <a class="dock-item" href="https://docs.google.com/spreadsheets/d/1I9QkNu2qjRFUTJcMuL3qo5f7scQaxQT_t-OVdm7ujVI/edit" target="_blank"><i class="fas fa-calendar-alt"></i><span>الحضور</span></a>
+         <div class="dock-item active-item" id="dock-home" onclick="switchDockTab('home')"><i class="fas fa-th-large"></i><span>الرئيسية</span></div>
+         <div class="dock-item" id="dock-salaries" onclick="openInAppGoogleSheet('salaries')"><i class="fas fa-money-bill-wave"></i><span>المرتبات</span></div>
+         <div class="dock-item" id="dock-attendance" onclick="openInAppGoogleSheet('attendance')"><i class="fas fa-calendar-alt"></i><span>الحضور</span></div>
          <div class="dock-item" onclick="toggleSidebar(true)"><i class="fas fa-bars"></i><span>المزيد</span></div>
     </div>
 
@@ -686,12 +712,17 @@
         let calcExpression = ""; 
         let currentUser = null; 
 
-        // 🔐 تحديث مصفوفة الصلاحيات لضبط حساب م/ مصطفى كـ أدمن إداري تنفيذي مع حجب داتا الغير مالياً
         const ACCOUNTS = {
-            "ahmed": { pass: "222", role: "admin", canSeeAllRevenue: true, canSeeAllFinancials: true, label: "أحمد" }, // 💰 سوبر أدمن مالي كامل
-            "mostafa": { pass: "1519", role: "admin", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "مصطفى" }, // 👑 أدمن إداري تنفيذي (يشوف عُهدته ومصروفاته هو بس)
+            "ahmed": { pass: "222", role: "admin", canSeeAllRevenue: true, canSeeAllFinancials: true, label: "أحمد" }, 
+            "mostafa": { pass: "1519", role: "admin", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "مصطفى" }, 
             "mohamed": { pass: "333", role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "محمد" },
             "tawfik": { pass: "444", role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "توفيق" }
+        };
+
+        // وروابط شيتات جوجل الإكسيل الخاصة بكم
+        const GOOGLE_SHEETS_URLS = {
+            "salaries": "https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit?usp=sharing",
+            "attendance": "https://docs.google.com/spreadsheets/d/1I9QkNu2qjRFUTJcMuL3qo5f7scQaxQT_t-OVdm7ujVI/edit?usp=sharing"
         };
 
         (function initTheme() {
@@ -846,6 +877,42 @@
             document.getElementById("loginPassword").value = "";
         }
 
+        // 📊 دالة فتح شيتات جوجل المدمجة داخل التطبيق بانسيابية تامة
+        function openInAppGoogleSheet(type) {
+            if(!currentUser) return alert("❌ برجاء تسجيل الدخول أولاً");
+            
+            let url = GOOGLE_SHEETS_URLS[type];
+            let label = (type === 'salaries') ? "كشف المرتبات والأجور" : "دفتر حضور غياب العمال";
+            
+            document.getElementById("sheetTitleLabel").innerHTML = `<i class="fas fa-file-excel"></i> ${label}`;
+            
+            let overlay = document.getElementById("inappSheetOverlay");
+            overlay.style.display = "flex";
+            
+            // تفعيل الأنيميشن الصاعد بعد الفرش في الميموري
+            setTimeout(() => { overlay.classList.add("slide-up"); }, 50);
+            
+            document.getElementById("sheetIframe").src = url;
+
+            // تحديث حالة الأزرار النشطة في الدوك السفلي
+            document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active-item'));
+            if(type === 'salaries') document.getElementById('dock-salaries').classList.add('active-item');
+            if(type === 'attendance') document.getElementById('dock-attendance').classList.add('active-item');
+        }
+
+        // 🚪 دالة إغلاق الشيت المدمج والرجوع للشاشة الرئيسية
+        function closeInAppGoogleSheet() {
+            let overlay = document.getElementById("inappSheetOverlay");
+            overlay.classList.remove("slide-up");
+            setTimeout(() => { 
+                overlay.style.display = "none"; 
+                document.getElementById("sheetIframe").src = ""; // تصفير الـ Src لتوفير الرام والبطارية
+            }, 400);
+
+            document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active-item'));
+            document.getElementById('dock-home').classList.add('active-item');
+        }
+
         function toggleSidebar(open) {
             let sidebar = document.getElementById("sidebarMenu");
             let overlay = document.getElementById("sidebarOverlay");
@@ -853,7 +920,12 @@
             overlay.style.display = open ? "block" : "none";
         }
 
-        function switchDockTab(tab) { if(tab === 'home') { resetProjectSelection(); } }
+        function switchDockTab(tab) { 
+            if(tab === 'home') { 
+                closeInAppGoogleSheet();
+                resetProjectSelection(); 
+            } 
+        }
 
         function onProjectChange() {
             let proj = document.getElementById("projectSelect").value;
@@ -880,14 +952,9 @@
                 if(data) {
                     for(let id in data) {
                         if(data[id].project === proj) {
-                            
-                            // 🔒 حجب الدفعات تماماً لو الحساب لا يملك صلاحية رؤيتها
                             if(data[id].category === 'دفعة شركة' && !account.canSeeAllRevenue) {
                                 continue; 
                             }
-
-                            // 🔑 التعديل المالي الجوهري: لو الحساب يملك صلاحية رؤية كل الحسابات (أحمد) يسحب كلو،
-                            // لو الحساب مصلحته عُهدة شخصية بس (مصطفى، محمد، توفيق) يسحب داتا نفسه بس!
                             if(account.canSeeAllFinancials || data[id].engineer === currentUser) {
                                 globalTransactions.push({...data[id], id});
                             }
@@ -956,7 +1023,7 @@
                 viewZone.style.display = "none";
                 inputZone.style.display = "flex";
                 
-                database.ref('project_notes').child(projectName).once('value', (snap) => {
+                database.ref('project_notes').child(projectName).on('value', (snap) => {
                     let noteData = snap.val();
                     if(noteData && noteData.writer === currentUser) {
                         document.getElementById("txtEngNote").value = noteData.text || "";
@@ -1039,6 +1106,7 @@
                 localStorage.clear(); sessionStorage.clear();
                 if (currentTheme) localStorage.setItem("theme", currentTheme);
                 
+                closeInAppGoogleSheet();
                 toggleSidebar(false);
                 document.getElementById("headerUserBadge").style.display = "none";
                 document.getElementById("headerProjBadge").style.display = "none";
