@@ -98,13 +98,8 @@
         .logo { position: absolute; left: 50%; transform: translateX(-50%); pointer-events: none; }
         .logo h1 { color: var(--primary); font-size: 16px; margin: 0; font-weight: 900; letter-spacing: 1px; transition: color 0.3s; }
         
-        .header-right-holder {
-            display: flex; flex-direction: column; align-items: flex-start; gap: 5px; z-index: 120; min-height: 60px; justify-content: center;
-        }
-
-        .menu-trigger {
-            background: none; border: none; color: var(--text-main); font-size: 22px; cursor: pointer; padding: 0; opacity: 0; pointer-events: none; transition: 0.2s;
-        }
+        .header-right-holder { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; z-index: 120; min-height: 60px; justify-content: center; }
+        .menu-trigger { background: none; border: none; color: var(--text-main); font-size: 22px; cursor: pointer; padding: 0; opacity: 0; pointer-events: none; transition: 0.2s; }
         .menu-trigger.visible { opacity: 1; pointer-events: auto; }
 
         .header-left-holder { display: flex; align-items: center; gap: 12px; z-index: 130; }
@@ -123,9 +118,7 @@
         .header-project-badge {
             display: none; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; align-items: center; gap: 5px; color: var(--text-main); 
             background: linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0.05) 100%);
-            border: 1px solid var(--primary);
-            box-shadow: inset 0 2px 6px rgba(255,255,255,0.15);
-            transition: all 0.2s;
+            border: 1px solid var(--primary); box-shadow: inset 0 2px 6px rgba(255,255,255,0.15); transition: all 0.2s;
         }
         .header-project-badge.active-live { display: flex !important; }
 
@@ -133,17 +126,37 @@
 
         /* 🚪 القائمة الجانبية */
         .sidebar {
-            position: fixed; top: 0; right: -280px; width: 260px; height: 100%;
-            background: var(--bg-body); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            z-index: 200; border-left: 1px solid var(--border); padding: 25px 20px;
-            display: flex; flex-direction: column; gap: 15px;
+            position: fixed; top: 0; right: -300px; width: 290px; height: 100%;
+            background: var(--bg-body); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px);
+            z-index: 200; border-left: 1px solid var(--border); padding: 25px 15px;
+            display: flex; flex-direction: column; gap: 12px; overflow-y: auto;
             transition: right 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
-        .sidebar.open { right: 0; box-shadow: -15px 0 35px rgba(0,0,0,0.4); }
+        .sidebar.open { right: 0; box-shadow: -15px 0 35px rgba(0,0,0,0.5); }
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
         .sidebar-close { background: none; border: none; color: var(--text-dim); font-size: 20px; cursor: pointer; }
         .sidebar-user-info { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
         .sidebar-user-info i { color: var(--primary); font-size: 20px; margin-bottom: 5px; display: block; }
+
+        /* معلومات المشروع الزجاجية */
+        .proj-info-sidebar-block {
+            background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.08); padding: 14px 12px; border-radius: 16px;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05); display: none; flex-direction: column; gap: 8px;
+        }
+        .proj-info-sidebar-block.visible { display: flex; }
+        .info-row-item { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 5px; }
+        .info-row-item span { color: var(--text-dim); }
+        .info-row-item b { color: var(--text-main); text-align: left; }
+
+        /* 📝 مفكرة ملاحظات الموقع */
+        .engineer-notes-block {
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid rgba(255, 107, 0, 0.2); padding: 14px 12px; border-radius: 16px;
+            display: none; flex-direction: column; gap: 8px;
+        }
+        .engineer-notes-block.visible { display: flex; }
+        .notes-view-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 11px; color: var(--text-main); min-height: 45px; word-break: break-word; }
 
         .sidebar-stats-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 11px; display: flex; flex-direction: column; gap: 6px; }
         .sidebar-stats-card span { display: flex; justify-content: space-between; color: var(--text-dim); }
@@ -151,16 +164,11 @@
 
         .theme-select-box { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); padding: 10px; border-radius: 12px; }
         
-        .btn-logout {
-            margin-top: auto; width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 60px;
-        }
+        .btn-logout { margin-top: auto; width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; }
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 190; display: none; }
 
         /* حاوية الأبلكيشن */
-        .app-container {
-            width: 100%; max-width: 480px; padding: 15px 12px 100px; z-index: 5;
-            display: flex; flex-direction: column; gap: 15px;
-        }
+        .app-container { width: 100%; max-width: 480px; padding: 15px 12px 100px; z-index: 5; display: flex; flex-direction: column; gap: 15px; }
 
         .card {
             background: var(--bg-card); border-radius: var(--radius); padding: 18px; 
@@ -170,9 +178,7 @@
         }
         .card:focus-within { border-color: var(--primary); box-shadow: 0 0 25px var(--glow); }
 
-        /* 🔐 شاشة تسجيل الدخول */
         .login-box { background: var(--bg-card); border-radius: var(--radius); padding: 25px 20px; border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-shadow: var(--neon-shadow); width: 100%; }
-
         .project-selector-card.hide-completely { display: none !important; }
         
         .main-content { display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; width: 100%; }
@@ -288,9 +294,9 @@
 
         .btn-del { background: rgba(239, 68, 68, 0.06); color: var(--danger); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-right: 8px; }
 
-        /* نافذة الحذف */
+        /* الـ Modals */
         .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .custom-modal { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 22px; border-radius: var(--radius); width: 100%; max-width: 340px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); animation: modalBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .custom-modal { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 22px; border-radius: var(--radius); width: 100%; max-width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); animation: modalBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
         .btn-modal-confirm { padding: 12px; background: var(--danger); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-family: inherit; }
         .btn-modal-cancel { padding: 12px; background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border); border-radius: 10px; font-weight: bold; cursor: pointer; font-family: inherit; }
@@ -328,16 +334,9 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.4); z-index: 176; display: none; flex-direction: column; padding: 10px;
             animation: modalBounce 0.3s ease-out;
         }
-        .calc-screen {
-            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
-            padding: 10px; border-radius: 10px; text-align: left; font-size: 16px; font-weight: bold;
-            color: var(--text-main); min-height: 42px; word-break: break-all; margin-bottom: 8px;
-        }
+        .calc-screen { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 10px; border-radius: 10px; text-align: left; font-size: 16px; font-weight: bold; color: var(--text-main); min-height: 42px; word-break: break-all; margin-bottom: 8px; }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-        .calc-btn {
-            padding: 10px 5px; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
-            color: var(--text-main); font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 13px; text-align: center;
-        }
+        .calc-btn { padding: 10px 5px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-main); font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 13px; text-align: center; }
         .calc-btn:active { background: var(--primary); color: white; }
         .calc-btn.op { background: rgba(255, 107, 0, 0.15); color: var(--primary); }
         .calc-btn.action { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
@@ -383,6 +382,42 @@
          </div>
     </div>
 
+    <div class="custom-modal-overlay" id="projectInfoModal">
+         <div class="custom-modal" style="text-align: right;">
+              <h4 style="margin: 0 0 12px; font-weight: 900; color: var(--primary); text-align: center;"><i class="fas fa-edit"></i> تعديل بيانات المشروع</h4>
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                   <div class="label-group">
+                        <label>المهندس المسؤول</label>
+                        <input type="text" id="infEng" class="input-ui" placeholder="مثال: م/ مصطفى">
+                   </div>
+                   <div class="label-group">
+                        <label>صاحب المشروع (العميل)</label>
+                        <input type="text" id="infOwner" class="input-ui" placeholder="اسم العميل أو الشركة">
+                   </div>
+                   <div class="label-group">
+                        <label>عدد العمال الحالي بالموقع</label>
+                        <input type="number" id="infLabor" class="input-ui" placeholder="0">
+                   </div>
+                   <div class="label-group">
+                        <label>نسبة تقدم المشروع (%)</label>
+                        <input type="number" id="infProgress" class="input-ui" placeholder="مثال: 45">
+                   </div>
+                   <div class="label-group">
+                        <label>تاريخ بدء العمل بالموقع</label>
+                        <input type="date" id="infStart" class="input-ui">
+                   </div>
+                   <div class="label-group">
+                        <label>تاريخ الانتهاء المتوقع</label>
+                        <input type="date" id="infEnd" class="input-ui">
+                   </div>
+              </div>
+              <div class="modal-btns">
+                   <button class="btn-modal-confirm" onclick="saveProjectInfoData()" style="background: var(--success);">حفظ التغييرات</button>
+                   <button class="btn-modal-cancel" onclick="closeProjectInfoModal()">إلغاء</button>
+              </div>
+         </div>
+    </div>
+
     <div class="custom-modal-overlay" id="deleteModal">
          <div class="custom-modal">
               <i class="fas fa-exclamation-triangle" style="color: var(--danger); font-size: 26px; margin-bottom: 8px;"></i>
@@ -405,6 +440,35 @@
         <div class="sidebar-user-info">
             <i class="fas fa-user-hard-hat"></i>
             <span id="sidebarUserName">Eng: User</span>
+        </div>
+
+        <div class="proj-info-sidebar-block" id="sidebarProjInfoBlock">
+             <div style="font-size: 12px; font-weight: 900; color: var(--primary); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 4px;">
+                  <span><i class="fas fa-circle-info"></i> معلومات عن المشروع</span>
+                  <button id="adminEditProjBtn" onclick="openProjectInfoModal()" style="background: none; border: none; color: var(--revenue-color); cursor: pointer; font-size: 11px; display: none;"><i class="fas fa-pen-to-square"></i> تعديل</button>
+             </div>
+             <div class="info-row-item"><span>المهندس المسؤول:</span><b id="lblInfEng">-</b></div>
+             <div class="info-row-item"><span>صاحب المشروع:</span><b id="lblInfOwner">-</b></div>
+             <div class="info-row-item"><span>عدد العمال الحالي:</span><b id="lblInfLabor">- عمال</b></div>
+             <div class="info-row-item"><span>نسبة التقدم:</span><b id="lblInfProgress">-</b></div>
+             <div class="info-row-item"><span>تاريخ البدء بالموقع:</span><b id="lblInfStart">-</b></div>
+             <div class="info-row-item"><span>الانتهاء المتوقع:</span><b id="lblInfEnd">-</b></div>
+        </div>
+
+        <div class="engineer-notes-block" id="sidebarNotesBlock">
+             <div style="font-size: 12px; font-weight: 900; color: var(--primary); border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 6px; margin-bottom: 6px;">
+                  <i class="fas fa-clipboard-list"></i> ملاحظات المهندس المسؤول
+             </div>
+             <div id="adminNotesViewZone" style="display: none; flex-direction: column; gap: 4px;">
+                  <div style="font-size: 9px; color: var(--revenue-color); font-weight: bold;" id="notesMetaLabel">بواسطة: -</div>
+                  <div class="notes-view-box" id="adminNotesContentText">لا توجد ملاحظات مسجلة اليوم...</div>
+             </div>
+             <div id="engineerNotesInputZone" style="display: none; flex-direction: column; gap: 6px;">
+                  <textarea id="txtEngNote" class="input-ui" style="font-size: 11px; min-height: 60px; resize: none; padding: 8px;" placeholder="اكتب ملاحظاتك اللحظية عن حالة الموقع اليوم..."></textarea>
+                  <button class="btn-primary" style="padding: 8px; font-size: 11px; border-radius: 8px;" onclick="saveEngineerDailyNote()">
+                       <i class="fas fa-floppy-disk"></i> حفظ الملاحظة اليومية
+                  </button>
+             </div>
         </div>
 
         <div class="sidebar-stats-card">
@@ -503,7 +567,7 @@
 
             <div class="card hidden-element" id="revenueCard" style="display: none;">
                 <div style="color: var(--revenue-color); font-weight: bold; font-size: 14px; margin-bottom: 10px; text-align: center;">
-                    <i class="fas fa-hand-holding-dollar"></i> إدخال دفعة من شركة (صلاحية الإدارة)
+                    <i class="fas fa-hand-holding-dollar"></i> إدخال دفعة من شركة (صلاحية الإدارة المالية)
                 </div>
                 <input type="number" inputmode="numeric" id="companyAmt" class="input-ui" placeholder="المبلغ المستلم">
                 
@@ -546,7 +610,7 @@
                      <div class="hud-progress-bar" id="hudProgressBar"></div>
                 </div>
 
-                <div class="filter-pills-container">
+                <div class="filter-pills-container" id="filterPillsWrapper">
                      <button class="pill-btn active" id="pill-all" onclick="filterLogs('all')">الكل</button>
                      <button class="pill-btn" id="pill-materials" onclick="filterLogs('خامات')">خامات Steel</button>
                      <button class="pill-btn" id="pill-labor" onclick="filterLogs('عمالة')">يوميات وعمالة</button>
@@ -622,12 +686,12 @@
         let calcExpression = ""; 
         let currentUser = null; 
 
-        // 🔐 قاعدة بيانات الحسابات المحدثة (تمت إضافة المهندس توفيق)
+        // 🔐 تحديث مصفوفة الصلاحيات لضبط حساب م/ مصطفى كـ أدمن إداري تنفيذي مع حجب داتا الغير مالياً
         const ACCOUNTS = {
-            "ahmed": { pass: "222", role: "admin", label: "مصطفى" }, // الـ Admin يظهر للناس باسم الباشمهندس الكبير
-            "mostafa": { pass: "1519", role: "engineer", label: "مصطفى" },
-            "mohamed": { pass: "333", role: "engineer", label: "محمد" },
-            "tawfik": { pass: "444", role: "engineer", label: "توفيق" } // 🆕 حساب توفيق الجديد
+            "ahmed": { pass: "222", role: "admin", canSeeAllRevenue: true, canSeeAllFinancials: true, label: "أحمد" }, // 💰 سوبر أدمن مالي كامل
+            "mostafa": { pass: "1519", role: "admin", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "مصطفى" }, // 👑 أدمن إداري تنفيذي (يشوف عُهدته ومصروفاته هو بس)
+            "mohamed": { pass: "333", role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "محمد" },
+            "tawfik": { pass: "444", role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "توفيق" }
         };
 
         (function initTheme() {
@@ -657,7 +721,6 @@
             }
         }
 
-        // ☕ تحديث دالة الترحيب الموحدة بالاسم الصريح المباشر للمهندس
         function setDynamicGreeting(userLabel) {
             document.getElementById("dynamicGreeting").innerText = `صباح الخير يا بشمهندس ${userLabel} ☕`;
         }
@@ -744,14 +807,13 @@
             currentUser = user;
             let account = ACCOUNTS[user];
 
-            // تخصيص الاسم في بادج الهيدر والقائمة الجانبية
             let displayLabel = (user === "ahmed") ? "أحمد (الإدارة)" : account.label;
             
             document.getElementById("headerUserNameSpan").innerText = "Eng: " + displayLabel;
             document.getElementById("headerUserBadge").style.display = "flex";
             document.getElementById("sidebarUserName").innerText = "Eng: " + displayLabel;
             
-            setDynamicGreeting(account.label); // تشغيل الترحيب الموحد باسمه
+            setDynamicGreeting(account.label); 
 
             document.getElementById("loginBox").style.display = "none";
             document.getElementById("menuBtn").classList.add("visible");
@@ -761,15 +823,23 @@
 
             let revenueCard = document.getElementById("revenueCard");
             let adminActions = document.getElementById("adminProjectActions");
+            let editProjBtn = document.getElementById("adminEditProjBtn");
+            let pillCompanies = document.getElementById("pill-companies");
 
             if(account.role === "admin") {
-                revenueCard.classList.remove("hidden-element");
-                revenueCard.style.display = "block";
                 adminActions.style.display = "flex"; 
+                editProjBtn.style.display = "block"; 
             } else {
-                revenueCard.classList.add("hidden-element");
-                revenueCard.style.display = "none";
                 adminActions.style.display = "none"; 
+                editProjBtn.style.display = "none";
+            }
+
+            if(account.canSeeAllRevenue) {
+                revenueCard.style.display = "block";
+                if(pillCompanies) pillCompanies.style.display = "inline-block";
+            } else {
+                revenueCard.style.display = "none";
+                if(pillCompanies) pillCompanies.style.display = "none"; 
             }
             
             document.getElementById("loginUsername").value = "";
@@ -797,6 +867,12 @@
             financeContent.classList.remove("hidden-element");
             financeContent.style.display = "flex";
             
+            document.getElementById("sidebarProjInfoBlock").classList.add("visible");
+            document.getElementById("sidebarNotesBlock").classList.add("visible"); 
+            
+            listenToProjectInfo(proj);
+            setupSidebarNotesInterface(proj); 
+
             showLoad(true);
             database.ref('transactions').on('value', (snap) => {
                 globalTransactions = [];
@@ -804,7 +880,15 @@
                 if(data) {
                     for(let id in data) {
                         if(data[id].project === proj) {
-                            if(account.role === "admin" || data[id].engineer === currentUser) {
+                            
+                            // 🔒 حجب الدفعات تماماً لو الحساب لا يملك صلاحية رؤيتها
+                            if(data[id].category === 'دفعة شركة' && !account.canSeeAllRevenue) {
+                                continue; 
+                            }
+
+                            // 🔑 التعديل المالي الجوهري: لو الحساب يملك صلاحية رؤية كل الحسابات (أحمد) يسحب كلو،
+                            // لو الحساب مصلحته عُهدة شخصية بس (مصطفى، محمد، توفيق) يسحب داتا نفسه بس!
+                            if(account.canSeeAllFinancials || data[id].engineer === currentUser) {
                                 globalTransactions.push({...data[id], id});
                             }
                         }
@@ -814,6 +898,103 @@
                 renderUI(globalTransactions);
                 showLoad(false);
             });
+        }
+
+        function listenToProjectInfo(projectName) {
+            database.ref('project_info').child(projectName).on('value', (snap) => {
+                let info = snap.val();
+                if(info) {
+                    document.getElementById("lblInfEng").innerText = info.engineer || "-";
+                    document.getElementById("lblInfOwner").innerText = info.owner || "-";
+                    document.getElementById("lblInfLabor").innerText = (info.labor || "0") + " عمال";
+                    document.getElementById("lblInfProgress").innerText = (info.progress || "0") + " %";
+                    document.getElementById("lblInfStart").innerText = info.startDate || "-";
+                    document.getElementById("lblInfEnd").innerText = info.endDate || "-";
+
+                    document.getElementById("infEng").value = info.engineer || "";
+                    document.getElementById("infOwner").value = info.owner || "";
+                    document.getElementById("infLabor").value = info.labor || "";
+                    document.getElementById("infProgress").value = info.progress || "";
+                    document.getElementById("infStart").value = info.startDate || "";
+                    document.getElementById("infEnd").value = info.endDate || "";
+                } else {
+                    resetInfoLabels();
+                }
+            });
+        }
+
+        function resetInfoLabels() {
+            document.getElementById("lblInfEng").innerText = "-";
+            document.getElementById("lblInfOwner").innerText = "-";
+            document.getElementById("lblInfLabor").innerText = "- عمال";
+            document.getElementById("lblInfProgress").innerText = "-";
+            document.getElementById("lblInfStart").innerText = "-";
+            document.getElementById("lblInfEnd").innerText = "-";
+        }
+
+        function setupSidebarNotesInterface(projectName) {
+            let account = ACCOUNTS[currentUser];
+            let viewZone = document.getElementById("adminNotesViewZone");
+            let inputZone = document.getElementById("engineerNotesInputZone");
+
+            if(account.role === "admin") {
+                viewZone.style.display = "flex";
+                inputZone.style.display = "none";
+                
+                database.ref('project_notes').child(projectName).on('value', (snap) => {
+                    let noteData = snap.val();
+                    if(noteData) {
+                        let writerName = ACCOUNTS[noteData.writer] ? ACCOUNTS[noteData.writer].label : noteData.writer;
+                        document.getElementById("notesMetaLabel").innerText = `بواسطة: م/ ${writerName} • ${noteData.time || ''}`;
+                        document.getElementById("adminNotesContentText").innerText = noteData.text || "لا توجد ملاحظات مسجلة اليوم...";
+                    } else {
+                        document.getElementById("notesMetaLabel").innerText = "بواسطة: -";
+                        document.getElementById("adminNotesContentText").innerText = "لا توجد ملاحظات مسجلة اليوم...";
+                    }
+                });
+            } else {
+                viewZone.style.display = "none";
+                inputZone.style.display = "flex";
+                
+                database.ref('project_notes').child(projectName).once('value', (snap) => {
+                    let noteData = snap.val();
+                    if(noteData && noteData.writer === currentUser) {
+                        document.getElementById("txtEngNote").value = noteData.text || "";
+                    } else {
+                        document.getElementById("txtEngNote").value = "";
+                    }
+                });
+            }
+        }
+
+        function saveEngineerDailyNote() {
+            let proj = document.getElementById("projectSelect").value;
+            let noteText = document.getElementById("txtEngNote").value.trim();
+            if(!proj) return;
+            if(!noteText) return alert("❌ برجاء كتابة الملاحظة أولاً قبل الحفظ");
+
+            database.ref('project_notes').child(proj).set({
+                writer: currentUser,
+                text: noteText,
+                time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })
+            }).then(() => { alert("📝 تم حفظ ملاحظتك اليومية بنجاح ووصلت للإدارة!"); });
+        }
+
+        function openProjectInfoModal() { document.getElementById("projectInfoModal").style.display = "flex"; }
+        function closeProjectInfoModal() { document.getElementById("projectInfoModal").style.display = "none"; }
+
+        function saveProjectInfoData() {
+            let proj = document.getElementById("projectSelect").value;
+            if(!proj) return;
+
+            database.ref('project_info').child(proj).set({
+                engineer: document.getElementById("infEng").value,
+                owner: document.getElementById("infOwner").value,
+                labor: document.getElementById("infLabor").value,
+                progress: document.getElementById("infProgress").value,
+                startDate: document.getElementById("infStart").value,
+                endDate: document.getElementById("infEnd").value
+            }).then(() => { closeProjectInfoModal(); alert("✨ تم تحديث معلومات المشروع بنجاح!"); });
         }
 
         function filterLogs(category) {
@@ -831,6 +1012,12 @@
 
         function handleLiveSearch() { renderUI(globalTransactions); }
 
+        document.addEventListener('keydown', function(event) {
+             if (event.key === 'Enter' && event.target.id === 'loginPassword') {
+                  handleSecureLogin();
+             }
+        });
+
         function resetProjectSelection() {
             document.getElementById("projectSelectorCard").classList.remove("hide-completely");
             document.getElementById("headerProjBadge").style.display = "none";
@@ -840,6 +1027,9 @@
             financeContent.classList.add("hidden-element");
             financeContent.style.display = "none";
             document.getElementById("liveSearchInput").value = ""; 
+            
+            document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); 
+            document.getElementById("sidebarNotesBlock").classList.remove("visible"); 
             filterLogs('all');
         }
 
@@ -856,6 +1046,8 @@
                 document.getElementById("bottomDock").classList.remove("visible");
                 document.getElementById("calcTrigger").classList.remove("visible");
                 document.getElementById("calcPanel").style.display = "none";
+                document.getElementById("sidebarProjInfoBlock").classList.remove("visible");
+                document.getElementById("sidebarNotesBlock").classList.remove("visible");
                 
                 let revenueCard = document.getElementById("revenueCard");
                 revenueCard.classList.add("hidden-element");
