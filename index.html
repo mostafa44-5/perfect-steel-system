@@ -140,7 +140,7 @@
         .sidebar.open { right: 0; box-shadow: -15px 0 35px rgba(0,0,0,0.5); }
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
         .sidebar-close { background: none; border: none; color: var(--text-dim); font-size: 20px; cursor: pointer; }
-        .sidebar-user-info { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; border: 1px solid var(--border); text-align: center; }
+        .sidebar-user-info { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; border: 1px solid var(--border); text-align: center; font-weight: bold; }
         .sidebar-user-info i { color: var(--primary); font-size: 20px; margin-bottom: 5px; display: block; }
 
         .proj-info-sidebar-block {
@@ -256,7 +256,7 @@
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.2) 100%);
             padding: 12px; border: 1px solid rgba(255,255,255,0.06); width: 100%; position: relative; z-index: 2;
             display: flex; justify-content: space-between; align-items: center; background-color: #0d1527;
-            will-change: transform; transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+            will-change: transform; transition: transform 0.2s ease-out;
         }
         [data-theme="light"] .log-item { background: #f1f5f9; }
         
@@ -273,6 +273,7 @@
         .quick-item-trash-btn { color: var(--text-dim); cursor: pointer; font-size: 13px; padding: 6px; transition: color 0.2s; }
         .quick-item-trash-btn:hover { color: var(--danger); }
 
+        /* Modals */
         .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .custom-modal { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 22px; border-radius: var(--radius); width: 100%; max-width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
@@ -397,7 +398,7 @@
             <span style="font-weight: 900; color: var(--primary); font-size: 14px;">إدارة النظام</span>
             <button class="sidebar-close" onclick="toggleSidebar(false)"><i class="fas fa-times"></i></button>
         </div>
-        <div class="sidebar-user-info"><i class="fas fa-user-hard-hat"></i><span id="sidebarUserName">Eng: User</span></div>
+        <div class="sidebar-user-info"><i class="fas fa-user-hard-hat"></i><span id="sidebarUserName">م / اسم المهندس</span></div>
 
         <div class="proj-info-sidebar-block" id="sidebarProjInfoBlock">
              <div style="font-size: 12px; font-weight: 900; color: var(--primary); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 4px;">
@@ -416,7 +417,7 @@
              <div style="font-size: 12px; font-weight: 900; color: var(--primary); border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 6px; margin-bottom: 6px;">
                   <i class="fas fa-clipboard-list"></i> ملاحظات المهندس المسؤول
              </div>
-             <div id="adminNotesViewZone" style="display: none; flex-direction: column; gap: 4px;">
+             <div id="adminNotesViewZone" style="display: none; flex-direction: column; gap: 4px; margin-bottom: 6px;">
                   <div style="font-size: 9px; color: var(--revenue-color); font-weight: bold;" id="notesMetaLabel">بواسطة: -</div>
                   <div class="notes-view-box" id="adminNotesContentText">لا توجد ملاحظات مسجلة اليوم...</div>
              </div>
@@ -425,6 +426,10 @@
                   <button class="btn-primary" style="padding: 8px; font-size: 11px; border-radius: 8px;" onclick="saveEngineerDailyNote()">حفظ الملاحظة اليومية</button>
              </div>
         </div>
+
+        <button class="btn-primary" id="sidebarAddProjectBtn" style="display:none; padding: 11px; font-size: 12px; margin-top: 5px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);" onclick="triggerAddCustomProjectModal()"><i class="fas fa-folder-plus"></i> إضافة موقع / مشروع جديد</button>
+
+        <button class="btn-primary" id="sidebarAddEmployeeBtn" style="display:none; padding: 11px; font-size: 12px; background: linear-gradient(135deg, var(--info) 0%, #0369a1 100%);" onclick="addCustomEmployee()"><i class="fas fa-user-plus"></i> إضافة مهندس جديد للنظام</button>
 
         <div class="sidebar-stats-card">
              <span>عملياتك المسجلة: <b id="sideTotalCount">0 عمليات</b></span>
@@ -456,7 +461,7 @@
         <div class="header-left-holder">
              <div class="user-site-column">
                   <span class="header-greet" id="dynamicGreeting"></span>
-                  <div class="header-user-badge" id="headerUserBadge"><i class="fas fa-user-hard-hat"></i><span id="headerUserNameSpan">USER</span></div>
+                  <div class="header-user-badge" id="headerUserBadge"><i class="fas fa-user-hard-hat"></i><span id="headerUserNameSpan">م / اسم المهندس</span></div>
                   <div class="header-project-badge" id="headerProjBadge" onclick="resetProjectSelection()"><i class="fas fa-map-marker-alt"></i><span id="headerProjName">الموقع</span></div>
              </div>
         </div>
@@ -488,10 +493,6 @@
                          </div>
                          <div class="dropdown-options-list" id="dropdownOptionsList"></div>
                     </div>
-                </div>
-                <div style="display:flex; gap:10px; margin-top:15px;" id="adminProjectActions">
-                     <button class="btn-liquid-glass btn-liquid-orange" style="flex:1;" onclick="triggerAddCustomProjectModal()"><i class="fas fa-plus"></i> إضافة مشروع</button>
-                     <button class="btn-liquid-glass btn-liquid-blue" style="flex:1;" onclick="addCustomEmployee()"><i class="fas fa-user-plus"></i> إضافة مهندس</button>
                 </div>
             </div>
 
@@ -584,15 +585,8 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        let currentMode = 'income';
-        let globalTransactions = []; 
-        let activeFilter = 'all';
-        let calcExpression = ""; 
-        let currentUser = null; 
-        let lastDeletedItemData = null; 
-
-        let PROJECT_LIST = ["New Cairo", "Old Cairo", "Helwan", "Ismailia"];
-        let SELECTED_PROJECT = "";
+        let currentMode = 'income'; let globalTransactions = []; let activeFilter = 'all'; let calcExpression = ""; let currentUser = null; let lastDeletedItemData = null; 
+        let PROJECT_LIST = ["New Cairo", "Old Cairo", "Helwan", "Ismailia"]; let SELECTED_PROJECT = "";
 
         const ACCOUNTS = {
             "ahmed": { pass: "222", role: "admin", canSeeAllRevenue: true, canSeeAllFinancials: true, label: "أحمد" }, 
@@ -603,22 +597,13 @@
 
         window.addEventListener('DOMContentLoaded', () => { 
             const savedTheme = localStorage.getItem("theme") || "dark";
-            document.documentElement.setAttribute("data-theme", savedTheme);
-            document.getElementById("themeSelector").value = savedTheme;
-            loadDraftInputs();
-            autoLoginSession(); 
-            renderCustomDropdownOptions();
-            setupDropdownOutsideClickListener();
-            initPullToRefreshEngine(); 
-            setupGlobalScreenCloseListeners(); 
+            document.documentElement.setAttribute("data-theme", savedTheme); document.getElementById("themeSelector").value = savedTheme;
+            loadDraftInputs(); autoLoginSession(); renderCustomDropdownOptions(); setupDropdownOutsideClickListener(); initPullToRefreshEngine(); setupGlobalScreenCloseListeners(); 
         });
 
         function changeThemeMode(val) { document.documentElement.setAttribute("data-theme", val); localStorage.setItem("theme", val); }
-
         function setDynamicGreeting(userLabel) {
-            let currentHour = new Date().getHours(); 
-            let greetingWord = "صباح الخير"; 
-            if (currentHour >= 12 && currentHour < 24) greetingWord = "مساء الخير";
+            let currentHour = new Date().getHours(); let greetingWord = "صباح الخير"; if (currentHour >= 12 && currentHour < 24) greetingWord = "مساء الخير";
             document.getElementById("dynamicGreeting").innerText = `${greetingWord} يا بشمهندس ${userLabel} ☕`;
         }
 
@@ -632,10 +617,8 @@
         function setupDropdownOutsideClickListener() { document.addEventListener("click", (e) => { let dropdown = document.getElementById("customProjectDropdown"); if (dropdown && !dropdown.contains(e.target)) dropdown.classList.remove("open"); }); }
 
         function showGlobalAppModal(config) {
-            document.getElementById("globalModalIcon").className = config.icon || "fas fa-info-circle";
-            document.getElementById("globalModalIcon").style.color = config.iconColor || "var(--primary)";
-            document.getElementById("globalModalTitle").innerText = config.title || "تنبيه النظام";
-            document.getElementById("globalModalBody").innerText = config.body || "";
+            document.getElementById("globalModalIcon").className = config.icon || "fas fa-info-circle"; document.getElementById("globalModalIcon").style.color = config.iconColor || "var(--primary)";
+            document.getElementById("globalModalTitle").innerText = config.title || "تنبيه النظام"; document.getElementById("globalModalBody").innerText = config.body || "";
             let inputContainer = document.getElementById("globalModalInputContainer"); let inputField = document.getElementById("globalModalInputField");
             if(config.showInput) { inputContainer.style.display = "block"; inputField.value = config.inputValue || ""; } else { inputContainer.style.display = "none"; }
             let confirmBtn = document.getElementById("globalModalConfirmBtn"); confirmBtn.style.background = config.confirmColor || "var(--primary)"; confirmBtn.innerText = config.confirmText || "تأكيد";
@@ -646,63 +629,35 @@
 
         function startVoiceRecognition(targetId) {
             window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!window.SpeechRecognition) {
-                return showGlobalAppModal({ title: "ميزة غير مدعومة", body: "متصفحك لا يدعم الإدخال الصوتي، يرجى استخدام تطبيق جوجل كروم الأصلي الرسمي.", icon: "fas fa-microphone-slash" });
-            }
-            
+            if (!window.SpeechRecognition) { return showGlobalAppModal({ title: "ميزة غير مدعومة", body: "متصفحك لا يدعم الإدخال الصوتي، يرجى استخدام تطبيق جوجل كروم الأصلي الرسمي.", icon: "fas fa-microphone-slash" }); }
             try {
-                let recognition = new window.SpeechRecognition();
-                recognition.lang = 'ar-EG';
-                recognition.interimResults = false;
-                recognition.maxAlternatives = 1;
-
-                let micBtn = (targetId === 'desc') ? document.getElementById("micBtn-desc") : document.getElementById("micBtn-search");
-                if (micBtn) micBtn.classList.add("listening");
-
+                let recognition = new window.SpeechRecognition(); recognition.lang = 'ar-EG'; recognition.interimResults = false; recognition.maxAlternatives = 1;
+                let micBtn = (targetId === 'desc') ? document.getElementById("micBtn-desc") : document.getElementById("micBtn-search"); if (micBtn) micBtn.classList.add("listening");
                 recognition.onresult = function(event) {
                     if (event.results && event.results[0] && event.results[0][0]) {
-                        let text = event.results[0][0].transcript;
-                        document.getElementById(targetId).value = text;
-                        if (targetId === 'liveSearchInput') handleLiveSearch();
-                        else localStorage.setItem("draft_desc", text);
+                        let text = event.results[0][0].transcript; document.getElementById(targetId).value = text;
+                        if (targetId === 'liveSearchInput') handleLiveSearch(); else localStorage.setItem("draft_desc", text);
                     }
                 };
-
-                recognition.onerror = function(e) {
-                    if (micBtn) micBtn.classList.remove("listening");
-                };
-
-                recognition.onend = function() {
-                    if (micBtn) micBtn.classList.remove("listening");
-                };
-
+                recognition.onerror = function(e) { if (micBtn) micBtn.classList.remove("listening"); };
+                recognition.onend = function() { if (micBtn) micBtn.classList.remove("listening"); };
                 recognition.start();
-            } catch(e) {
-                console.log("Speech fatal crash avoided: ", e);
-            }
+            } catch(e) {}
         }
 
         function initPullToRefreshEngine() {
-            let container = document.getElementById("ptrTouchContainer");
-            let ptr = document.getElementById("ptrIndicator");
-            let startY = 0, currentY = 0;
-
+            let container = document.getElementById("ptrTouchContainer"); let ptr = document.getElementById("ptrIndicator"); let startY = 0, currentY = 0;
             container.addEventListener("touchstart", (e) => { if(window.scrollY === 0) startY = e.touches[0].pageY; }, {passive: true});
             container.addEventListener("touchmove", (e) => {
-                if(startY === 0) return;
-                currentY = e.touches[0].pageY;
-                let diff = currentY - startY;
+                if(startY === 0) return; currentY = e.touches[0].pageY; let diff = currentY - startY;
                 if(diff > 0 && diff < 80) { ptr.style.transform = `translateX(-50%) translateY(${diff}px)`; }
             }, {passive: true});
-
             container.addEventListener("touchend", () => {
                 let diff = currentY - startY;
                 if(diff >= 65) {
-                    document.getElementById("ptrIcon").style.display = "inline-block";
-                    document.getElementById("ptrText").innerText = "جاري مزامنة قاعدة البيانات... ⚡";
+                    document.getElementById("ptrIcon").style.display = "inline-block"; document.getElementById("ptrText").innerText = "جاري مزامنة قاعدة البيانات... ⚡";
                     setTimeout(() => {
-                        document.getElementById("ptrIcon").style.display = "none";
-                        document.getElementById("ptrText").innerText = "تمت المزامنة فوراً بنجاح! ✓";
+                        document.getElementById("ptrIcon").style.display = "none"; document.getElementById("ptrText").innerText = "تمت المزامنة فوراً بنجاح! ✓";
                         setTimeout(() => { ptr.style.transform = `translateX(-50%) translateY(0)`; }, 600);
                     }, 1200);
                 } else { ptr.style.transform = `translateX(-50%) translateY(0)`; }
@@ -711,95 +666,43 @@
         }
 
         function triggerUndoToastSystem(itemData) {
-            lastDeletedItemData = itemData;
-            document.getElementById("undoToastText").innerText = `تم حذف: (${itemData.desc})`;
-            let toast = document.getElementById("undoToast");
-            toast.classList.add("show");
-            setTimeout(() => { toast.classList.remove("show"); }, 5000); 
+            lastDeletedItemData = itemData; document.getElementById("undoToastText").innerText = `تم حذف: (${itemData.desc})`;
+            let toast = document.getElementById("undoToast"); toast.classList.add("show"); setTimeout(() => { toast.classList.remove("show"); }, 5000); 
         }
-
-        function executeUndoItemAction() {
-            if(lastDeletedItemData) {
-                database.ref('transactions').push(lastDeletedItemData);
-                document.getElementById("undoToast").classList.remove("show");
-                lastDeletedItemData = null;
-            }
-        }
+        function executeUndoItemAction() { if(lastDeletedItemData) { database.ref('transactions').push(lastDeletedItemData); document.getElementById("undoToast").classList.remove("show"); lastDeletedItemData = null; } }
 
         function bindSwipeGesturesToElements() {
             try {
-                let cards = document.querySelectorAll(".log-item");
-                cards.forEach(card => {
-                    let touchStartX = 0;
-                    card.addEventListener("touchstart", (e) => { 
-                        touchStartX = e.touches[0].clientX; 
-                    }, {passive: true});
-
+                document.querySelectorAll(".log-item").forEach(card => {
+                    let touchStartX = 0; let touchStartY = 0; let isScrollDetected = false; 
+                    card.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; isScrollDetected = false; }, {passive: true});
                     card.addEventListener("touchmove", (e) => {
-                        let moveX = e.touches[0].clientX;
-                        let diff = touchStartX - moveX; 
-                        
-                        if(diff > 20 && diff < 100) { 
-                            card.style.transform = `translateX(-${diff}px)`; 
-                        } 
-                        else if(diff < -20 && diff > -100) { 
-                            card.style.transform = `translateX(${Math.abs(diff)}px)`; 
-                        }
+                        if (isScrollDetected) return; 
+                        let moveX = e.touches[0].clientX; let moveY = e.touches[0].clientY;
+                        let diffX = touchStartX - moveX; let diffY = touchStartY - moveY;
+                        if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 10) { isScrollDetected = true; card.style.transform = "translateX(0)"; return; }
+                        if(diffX > 20 && diffX < 100) { card.style.transform = `translateX(-${diffX}px)`; } 
+                        else if(diffX < -20 && diffX > -100) { card.style.transform = `translateX(${Math.abs(diffX)}px)`; }
                     }, {passive: true});
-
                     card.addEventListener("touchend", (e) => {
-                        let endX = e.changedTouches[0].clientX;
-                        let diff = touchStartX - endX;
-                        
-                        if(diff >= 65) { 
-                            card.style.transform = `translateX(-75px)`; 
-                        } else if(diff <= -65) { 
-                            card.style.transform = `translateX(75px)`;  
-                        } else { 
-                            card.style.transform = `translateX(0)`; 
-                        }
+                        if (isScrollDetected) return; let endX = e.changedTouches[0].clientX; let diffX = touchStartX - endX;
+                        if(diffX >= 60) { card.style.transform = `translateX(-75px)`; } else if(diffX <= -60) { card.style.transform = `translateX(75px)`;  } else { card.style.transform = `translateX(0)`; }
                     });
                 });
-            } catch(err) { console.log("Swipe track layout bypassed."); }
+            } catch(err) {}
         }
 
-        function resetAllSwipeCards() {
-            try {
-                let cards = document.querySelectorAll(".log-item");
-                cards.forEach(card => {
-                    card.style.transform = "translateX(0)";
-                });
-            } catch(e) { console.log("Reset animation bypass."); }
-        }
-
-        function setupGlobalScreenCloseListeners() {
-            document.body.addEventListener("click", (e) => {
-                if(!e.target.closest('.log-item') && !e.target.closest('.swipe-action-zone') && !e.target.closest('.quick-item-trash-btn')) {
-                    resetAllSwipeCards();
-                }
-            });
-        }
-
-        function triggerAutoSwipeToDelete(id, desc, elementBtn) {
-            resetAllSwipeCards(); 
-            let logItemCard = elementBtn.closest('.log-item');
-            if(logItemCard) {
-                logItemCard.style.transform = `translateX(-75px)`;
-                setTimeout(() => { askDelItem(id, desc); }, 180);
-            }
-        }
+        function resetAllSwipeCards() { try { document.querySelectorAll(".log-item").forEach(card => { card.style.transform = "translateX(0)"; }); } catch(e) {} }
+        function setupGlobalScreenCloseListeners() { document.body.addEventListener("click", (e) => { if(!e.target.closest('.log-item') && !e.target.closest('.swipe-action-zone') && !e.target.closest('.quick-item-trash-btn')) { resetAllSwipeCards(); } }); }
+        function triggerAutoSwipeToDelete(id, desc, elementBtn) { resetAllSwipeCards(); let logItemCard = elementBtn.closest('.log-item'); if(logItemCard) { logItemCard.style.transform = `translateX(-75px)`; setTimeout(() => { askDelItem(id, desc); }, 180); } }
 
         function triggerInlineEditItem(id, currentDesc, currentAmount) {
             showGlobalAppModal({
                 title: "تعديل بيانات البند", body: `برجاء كتابة التعديل الجديد للبيان والمبلغ:`, icon: "fas fa-edit", showInput: true, inputValue: `${currentDesc} | ${currentAmount}`, confirmText: "حفظ التعديل", confirmColor: "var(--info)",
                 onConfirm: function(val) {
                     if(val && val.includes('|')) {
-                        let parts = val.split('|');
-                        let newDesc = parts[0].trim();
-                        let newAmt = parseFloat(parts[1].trim());
-                        if(newDesc !== "" && !isNaN(newAmt)) {
-                            database.ref('transactions').child(id).update({ desc: newDesc, amount: newAmt });
-                        }
+                        let parts = val.split('|'); let newDesc = parts[0].trim(); let newAmt = parseFloat(parts[1].trim());
+                        if(newDesc !== "" && !isNaN(newAmt)) { database.ref('transactions').child(id).update({ desc: newDesc, amount: newAmt }); }
                     }
                 }
             });
@@ -808,43 +711,31 @@
         function triggerAddCustomProjectModal() {
             showGlobalAppModal({
                 title: "إضافة مشروع جديد", body: "برجاء كتابة اسم موقع العمل الجديد لإضافته للسيستم:", icon: "fas fa-folder-plus", showInput: true, confirmText: "حفظ الموقع",
-                onConfirm: function(val) {
-                    if(val && val.trim() !== "") { PROJECT_LIST.push(val.trim()); renderCustomDropdownOptions(); }
-                }
+                onConfirm: function(val) { if(val && val.trim() !== "") { PROJECT_LIST.push(val.trim()); renderCustomDropdownOptions(); toggleSidebar(false); } }
             });
         }
 
         function handleSecureLogin() {
-            let user = document.getElementById("loginUsername").value.trim().toLowerCase();
-            let pass = document.getElementById("loginPassword").value.trim();
-            let btn = document.getElementById("loginSubmitBtn");
+            let user = document.getElementById("loginUsername").value.trim().toLowerCase(); let pass = document.getElementById("loginPassword").value.trim(); let btn = document.getElementById("loginSubmitBtn");
             if(!user || !pass) return showGlobalAppModal({ title: "بيانات ناقصة", body: "❌ برجاء كتابة اسم المستخدم وكلمة المرور أولاً", icon: "fas fa-exclamation-triangle" });
-            
             btn.disabled = true; 
-            if(ACCOUNTS[user] && ACCOUNTS[user].pass === pass) {
-                localStorage.setItem("active_session_user", user); activateUserInterface(user);
-            } else {
-                showGlobalAppModal({ title: "خطأ في الدخول", body: "❌ اسم المستخدم أو كلمة المرور غير صحيحة!", icon: "fas fa-times-circle", iconColor: "var(--danger)" });
-            }
+            if(ACCOUNTS[user] && ACCOUNTS[user].pass === pass) { localStorage.setItem("active_session_user", user); activateUserInterface(user); } 
+            else { showGlobalAppModal({ title: "خطأ في الدخول", body: "❌ اسم المستخدم أو كلمة المرور غير صحيحة!", icon: "fas fa-times-circle", iconColor: "var(--danger)" }); }
             btn.disabled = false;
         }
 
         function autoLoginSession() { let savedUser = localStorage.getItem("active_session_user"); if(savedUser && ACCOUNTS[savedUser]) activateUserInterface(savedUser); else document.getElementById("dynamicGreeting").innerText = ""; }
         
         function activateUserInterface(user) {
-            currentUser = user; let account = ACCOUNTS[user];
-            let displayLabel = (user === "ahmed") ? "أحمد (الإدارة)" : account.label;
-            document.getElementById("headerUserNameSpan").innerText = "Eng: " + displayLabel;
-            document.getElementById("headerUserBadge").style.display = "flex";
-            document.getElementById("sidebarUserName").innerText = "Eng: " + displayLabel;
-            setDynamicGreeting(account.label); 
-            document.getElementById("loginBox").style.display = "none";
-            document.getElementById("menuBtn").classList.add("visible");
-            document.getElementById("mainContent").classList.add("visible");
-            document.getElementById("bottomDock").classList.add("visible");
-            document.getElementById("calcTrigger").classList.add("visible");
-            if(account.canSeeAllRevenue) document.getElementById("revenueCard").style.display = "block";
-            else document.getElementById("revenueCard").style.display = "none";
+            currentUser = user; let account = ACCOUNTS[user]; let displayLabel = (user === "ahmed") ? "أحمد (الإدارة)" : account.label;
+            document.getElementById("headerUserNameSpan").innerText = "م / " + displayLabel; document.getElementById("headerUserBadge").style.display = "flex"; document.getElementById("sidebarUserName").innerText = "م / " + displayLabel;
+            
+            if(user === "mostafa") { document.getElementById("sidebarAddEmployeeBtn").style.display = "block"; } else { document.getElementById("sidebarAddEmployeeBtn").style.display = "none"; }
+            if(user === "mostafa" || user === "ahmed") { document.getElementById("sidebarAddProjectBtn").style.display = "block"; } else { document.getElementById("sidebarAddProjectBtn").style.display = "none"; }
+
+            setDynamicGreeting(account.label); document.getElementById("loginBox").style.display = "none"; document.getElementById("menuBtn").classList.add("visible");
+            document.getElementById("mainContent").classList.add("visible"); document.getElementById("bottomDock").classList.add("visible"); document.getElementById("calcTrigger").classList.add("visible");
+            if(account.canSeeAllRevenue) document.getElementById("revenueCard").style.display = "block"; else document.getElementById("revenueCard").style.display = "none";
         }
 
         function triggerLogOut() {
@@ -869,21 +760,15 @@
                 title: "تأكيد حذف البند", body: `هل تريد مسح كارت العملية: (${desc}) بشكل نهائي؟`, icon: "fas fa-trash-alt", confirmText: "حذف نهائي", confirmColor: "var(--danger)",
                 onConfirm: function() {
                     database.ref('transactions').child(id).once('value', (snap) => {
-                        let data = snap.val();
-                        if(data) {
-                            triggerUndoToastSystem(data); 
-                            database.ref('transactions').child(id).remove();
-                        }
+                        let data = snap.val(); if(data) { triggerUndoToastSystem(data); database.ref('transactions').child(id).remove(); }
                     });
                 }
             });
         }
 
         function handleAdd() {
-            let amt = parseFloat(document.getElementById("amount").value); let dsc = document.getElementById("desc").value;
-            let btn = document.getElementById("transactionSubmitBtn");
+            let amt = parseFloat(document.getElementById("amount").value); let dsc = document.getElementById("desc").value; let btn = document.getElementById("transactionSubmitBtn");
             if(!amt || !dsc) return showGlobalAppModal({ title: "بيانات ناقصة", body: "❌ برجاء إدخال المبلغ والبيان أولاً", icon: "fas fa-exclamation-circle" });
-            
             btn.disabled = true; 
             database.ref('transactions').push({
                 project: SELECTED_PROJECT, engineer: currentUser, type: currentMode,
@@ -893,42 +778,32 @@
         }
 
         function submitCompanyRevenue() {
-            let amt = parseFloat(document.getElementById("companyAmt").value) || 0; let desc = document.getElementById("companyDesc").value;
-            let btn = document.getElementById("companySubmitBtn");
-            if(amt <= 0) return;
+            let amt = parseFloat(document.getElementById("companyAmt").value) || 0; let desc = document.getElementById("companyDesc").value; let btn = document.getElementById("companySubmitBtn"); if(amt <= 0) return;
             btn.disabled = true;
             database.ref('transactions').push({ project: SELECTED_PROJECT, engineer: currentUser, type: 'income', category: 'دفعة شركة', amount: amt, desc: desc, date: new Date().toISOString().split('T')[0], ts: Date.now() })
             .then(() => { document.getElementById("companyAmt").value = ""; btn.disabled = false; });
         }
 
         function saveEngineerDailyNote() {
-            let proj = SELECTED_PROJECT; let noteText = document.getElementById("txtEngNote").value.trim();
-            if(!proj || !noteText) return;
+            let proj = SELECTED_PROJECT; let noteText = document.getElementById("txtEngNote").value.trim(); if(!proj || !noteText) return;
             database.ref('project_notes').child(proj).set({ writer: currentUser, text: noteText, time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) })
             .then(() => { showGlobalAppModal({ title: "تم الحفظ", body: "📝 تم تسجيل ملحوظة الموقع بنجاح!", icon: "fas fa-clipboard-check", iconColor: "var(--success)" }); });
         }
 
         function onProjectChange(proj) {
             let account = ACCOUNTS[currentUser];
-            document.getElementById("headerProjName").innerText = proj; 
-            document.getElementById("headerProjBadge").style.display = "flex";
+            document.getElementById("headerProjName").innerText = proj; document.getElementById("headerProjBadge").style.display = "flex";
             document.getElementById("projectSelectorCard").classList.add("hide-completely");
             
-            let financeContent = document.getElementById("financeContent");
-            financeContent.style.display = "flex";
-            financeContent.classList.remove("hidden-element");
-            
-            document.getElementById("sidebarProjInfoBlock").classList.add("visible"); 
-            document.getElementById("sidebarNotesBlock").classList.add("visible"); 
+            let financeContent = document.getElementById("financeContent"); financeContent.style.display = "flex"; financeContent.classList.remove("hidden-element");
+            document.getElementById("sidebarProjInfoBlock").classList.add("visible"); document.getElementById("sidebarNotesBlock").classList.add("visible"); 
 
-            try { listenToProjectInfo(proj); } catch(e) { console.log("Info route bypassed."); }
-            try { setupSidebarNotesInterface(proj); } catch(e) { console.log("Notes route bypassed."); }
-
+            try { listenToProjectInfo(proj); } catch(e) {}
+            try { setupSidebarNotesInterface(proj); } catch(e) {}
             showLoad(true);
             
             database.ref('transactions').on('value', (snap) => {
-                globalTransactions = []; 
-                let data = snap.val();
+                globalTransactions = []; let data = snap.val();
                 if(data) {
                     for(let id in data) {
                         try {
@@ -936,15 +811,11 @@
                                 if(data[id].category === 'دفعة شركة' && !account.canSeeAllRevenue) continue; 
                                 if(account.canSeeAllFinancials || data[id].engineer === currentUser) globalTransactions.push({...data[id], id});
                             }
-                        } catch(e) { console.log("Skipped error row."); }
+                        } catch(e) {}
                     }
                 }
-                globalTransactions.reverse(); 
-                renderUI(globalTransactions); 
-                showLoad(false);
-            }, (error) => {
-                showLoad(false);
-            });
+                globalTransactions.reverse(); renderUI(globalTransactions); showLoad(false);
+            }, (error) => { showLoad(false); });
         }
 
         function listenToProjectInfo(projectName) {
@@ -964,13 +835,20 @@
         function setupSidebarNotesInterface(projectName) {
             let account = ACCOUNTS[currentUser];
             if(account.role === "admin") {
-                document.getElementById("adminNotesViewZone").style.display = "flex"; document.getElementById("engineerNotesInputZone").style.display = "none";
+                document.getElementById("adminNotesViewZone").style.display = "flex";
+                if(currentUser === "mostafa") { document.getElementById("engineerNotesInputZone").style.display = "flex"; } 
+                else { document.getElementById("engineerNotesInputZone").style.display = "none"; }
+                
                 database.ref('project_notes').child(projectName).once('value', (snap) => {
                     let noteData = snap.val();
                     if(noteData) {
                         let writerName = ACCOUNTS[noteData.writer] ? ACCOUNTS[noteData.writer].label : noteData.writer;
                         document.getElementById("notesMetaLabel").innerText = `بواسطة: م/ ${writerName} • ${noteData.time || ''}`;
                         document.getElementById("adminNotesContentText").innerText = noteData.text || "لا توجد ملاحظات مسجلة اليوم...";
+                        if(currentUser === "mostafa" && noteData.writer === currentUser) { document.getElementById("txtEngNote").value = noteData.text || ""; }
+                    } else {
+                        document.getElementById("adminNotesContentText").innerText = "لا توجد ملاحظات مسجلة اليوم...";
+                        if(currentUser === "mostafa") document.getElementById("txtEngNote").value = "";
                     }
                 });
             } else {
@@ -1006,54 +884,37 @@
         function resetProjectSelection() { document.getElementById("projectSelectorCard").classList.remove("hide-completely"); document.getElementById("headerProjBadge").style.display = "none"; SELECTED_PROJECT = ""; document.getElementById("dropdownSelectedLabel").innerText = "اختر المشروع للمتابعة.."; document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("sidebarNotesBlock").classList.remove("visible"); filterLogs('all'); }
         function showLoad(s) { document.getElementById("loading").style.display = s?'flex':'none'; }
         function animateValue(obj, start, end, duration) { if (start === end) { obj.innerText = end.toLocaleString(); return; } let range = end - start; let current = start; let increment = end > start ? Math.ceil(range / 15) : Math.floor(range / 15); let timer = setInterval(() => { current += increment; if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) { clearInterval(timer); current = end; } obj.innerText = current.toLocaleString(); }, 20); }
-        function addCustomEmployee() { alert("تم التفعيل."); }
+        function addCustomEmployee() { alert("تم فتح لوحة إضافة مهندس جديد للنظام."); }
         function switchTab(mode) { currentMode = mode; document.getElementById("incBtn").className = "tab-btn " + (mode==='income'?'active':''); document.getElementById("expBtn").className = "tab-btn " + (mode==='expense'?'active':''); let catGroup = document.getElementById("catGroup"); if (catGroup) { catGroup.style.display = (mode==='expense'?'block':'none'); } }
 
         function renderUI(items) {
-            let query = document.getElementById("liveSearchInput").value.trim().toLowerCase();
-            let filteredItems = items.filter(i => i && typeof i.desc === 'string' && typeof i.category === 'string');
-
+            let query = document.getElementById("liveSearchInput").value.trim().toLowerCase(); let filteredItems = items.filter(i => i && typeof i.desc === 'string' && typeof i.category === 'string');
             if(activeFilter !== 'all') filteredItems = filteredItems.filter(i => i.category === activeFilter);
             if(query !== "") filteredItems = filteredItems.filter(i => i.desc.toLowerCase().includes(query) || i.category.toLowerCase().includes(query));
-
             let inc = 0, exp = 0, html = "";
-            filteredItems.forEach(i => { 
-                if(i.amount && !isNaN(i.amount)) {
-                    if(i.type === 'income') inc += parseFloat(i.amount); else exp += parseFloat(i.amount); 
-                }
-            });
+            filteredItems.forEach(i => { if(i.amount && !isNaN(i.amount)) { if(i.type === 'income') inc += parseFloat(i.amount); else exp += parseFloat(i.amount); } });
 
             animateValue(document.getElementById("netBalance"), parseFloat(document.getElementById("netBalance").innerText.replace(/,/g, ''))||0, (inc - exp), 300);
             animateValue(document.getElementById("totalIncome"), parseFloat(document.getElementById("totalIncome").innerText.replace(/,/g, ''))||0, inc, 300);
             animateValue(document.getElementById("totalExpense"), parseFloat(document.getElementById("totalExpense").innerText.replace(/,/g, ''))||0, exp, 300);
-
             let pct = inc > 0 ? (exp / inc) * 100 : 0; if(pct > 100) pct = 100;
             let bar = document.getElementById("hudProgressBar"); if(bar) { bar.style.width = pct + "%"; bar.style.backgroundColor = pct > 85 ? "var(--danger)" : "var(--primary)"; }
             document.getElementById("sideTotalCount").innerText = items.length + " عمليات";
 
             filteredItems.forEach(i => {
-                let engLabel = ACCOUNTS[i.engineer] ? ACCOUNTS[i.engineer].label : (i.engineer || "عام");
-                let amtVal = i.amount ? i.amount.toLocaleString() : "0";
-                
+                let engLabel = ACCOUNTS[i.engineer] ? ACCOUNTS[i.engineer].label : (i.engineer || "عام"); let amtVal = i.amount ? i.amount.toLocaleString() : "0";
                 html += `
                     <div class="swipe-item-wrapper">
-                        <div class="swipe-action-zone swipe-action-delete" onclick="askDelItem('${i.id}', '${i.desc}')">
-                            <i class="fas fa-trash-alt"></i>
-                        </div>
-                        <div class="swipe-action-zone swipe-action-edit" onclick="triggerInlineEditItem('${i.id}', '${i.desc}', ${i.amount})">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        
+                        <div class="swipe-action-zone swipe-action-delete" onclick="askDelItem('${i.id}', '${i.desc}')"><i class="fas fa-trash-alt"></i></div>
+                        <div class="swipe-action-zone swipe-action-edit" onclick="triggerInlineEditItem('${i.id}', '${i.desc}', ${i.amount})"><i class="fas fa-edit"></i></div>
                         <div class="log-item ${i.type || 'expense'}">
                             <div class="log-info">
                                 <h5>${i.desc || 'بدون بيان'}</h5>
-                                <p>${i.category || 'عام'} • م/ ${engLabel}</p>
+                                <p>${i.category || 'عام'} • م / ${engLabel}</p>
                             </div>
                             <div class="log-amount-holder">
                                 <div class="log-amount-data">
-                                    <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">
-                                        ${i.type==='income'?'+':'-'}${amtVal}
-                                    </span>
+                                    <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">${i.type==='income'?'+':'-'}${amtVal}</span>
                                     <span class="date">${i.date || '-'}</span>
                                 </div>
                                 <i class="fas fa-trash-can quick-item-trash-btn" onclick="triggerAutoSwipeToDelete('${i.id}', '${i.desc}', this)"></i>
@@ -1063,7 +924,6 @@
                 `;
             });
             document.getElementById("logBody").innerHTML = html || `<div style="text-align:center; color:var(--text-dim); font-size:12px; padding:20px;">لا توجد عمليات...</div>`;
-            
             bindSwipeGesturesToElements();
         }
     </script>
