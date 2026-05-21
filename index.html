@@ -245,7 +245,6 @@
         .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; box-shadow: 0 6px 20px var(--glow); transition: all 0.2s; }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* لستة الكروت */
         .logs-list { max-height: 380px; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px; }
         .swipe-item-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 14px; margin-bottom: 9px; background: #0c1524; touch-action: pan-y; }
         
@@ -274,7 +273,6 @@
         .quick-item-trash-btn { color: var(--text-dim); cursor: pointer; font-size: 13px; padding: 6px; transition: color 0.2s; }
         .quick-item-trash-btn:hover { color: var(--danger); }
 
-        /* Modals */
         .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .custom-modal { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 22px; border-radius: var(--radius); width: 100%; max-width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
@@ -546,8 +544,10 @@
                         <div class="label-group">
                             <input type="number" inputmode="numeric" id="amount" class="input-ui" placeholder="أدخل المبلغ (ج.م)">
                             <div class="quick-chips-row">
+                                 <div class="cash-chip" onclick="quickCash(50)">+50</div>
                                  <div class="cash-chip" onclick="quickCash(100)">+100</div>
                                  <div class="cash-chip" onclick="quickCash(500)">+500</div>
+                                 <div class="cash-chip" onclick="quickCash(1000)">+1,000</div>
                             </div>
                         </div>
                         <div class="label-group" style="margin-top: 10px;">
@@ -610,7 +610,7 @@
             renderCustomDropdownOptions();
             setupDropdownOutsideClickListener();
             initPullToRefreshEngine(); 
-            setupGlobalScreenCloseListeners(); // تفعيل محرك غلق الكروت المفتوحة عند الضغط الخارجي
+            setupGlobalScreenCloseListeners(); 
         });
 
         function changeThemeMode(val) { document.documentElement.setAttribute("data-theme", val); localStorage.setItem("theme", val); }
@@ -726,7 +726,6 @@
             }
         }
 
-        /* 📱 محرك الـ Swipe المزدوج المطور */
         function bindSwipeGesturesToElements() {
             try {
                 let cards = document.querySelectorAll(".log-item");
@@ -764,7 +763,6 @@
             } catch(err) { console.log("Swipe track layout bypassed."); }
         }
 
-        /* 🔒 إعادة إغلاق جميع كروت الـ Swipe المفتوحة وإرجاعها للوضع الطبيعي فورا */
         function resetAllSwipeCards() {
             try {
                 let cards = document.querySelectorAll(".log-item");
@@ -774,10 +772,8 @@
             } catch(e) { console.log("Reset animation bypass."); }
         }
 
-        /* 🖥️ مستمع ذكي: لو ضغطت في أي مكان فاضي في الأبلكيشن، الكروت هتقفل فوراً */
         function setupGlobalScreenCloseListeners() {
             document.body.addEventListener("click", (e) => {
-                // التأكد إن الضغطة مش جوة كرت عملية أو زرار الحذف/التعديل عشان الكروت متقفلش وقت الاستخدام
                 if(!e.target.closest('.log-item') && !e.target.closest('.swipe-action-zone') && !e.target.closest('.quick-item-trash-btn')) {
                     resetAllSwipeCards();
                 }
@@ -785,7 +781,7 @@
         }
 
         function triggerAutoSwipeToDelete(id, desc, elementBtn) {
-            resetAllSwipeCards(); // قفل أي كارت تاني مفتوح الأول
+            resetAllSwipeCards(); 
             let logItemCard = elementBtn.closest('.log-item');
             if(logItemCard) {
                 logItemCard.style.transform = `translateX(-75px)`;
