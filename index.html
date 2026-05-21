@@ -159,7 +159,10 @@
             display: none; flex-direction: column; gap: 8px;
         }
         .engineer-notes-block.visible { display: flex; }
-        .notes-view-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 11px; color: var(--text-main); min-height: 45px; word-break: break-word; }
+        
+        .notes-view-box { position: relative; background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 11px; color: var(--text-main); min-height: 45px; word-break: break-word; }
+        .note-delete-icon-btn { width: 100%; margin-top: 5px; padding: 8px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; display: none; align-items: center; justify-content: center; gap: 5px; transition: 0.2s; }
+        .note-delete-icon-btn:hover { background: var(--danger); color: white; }
 
         .sidebar-stats-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 11px; display: flex; flex-direction: column; gap: 6px; }
         .sidebar-stats-card span { display: flex; justify-content: space-between; color: var(--text-dim); }
@@ -216,10 +219,6 @@
         .dropdown-option-item { padding: 11px 14px; font-size: 13px; font-weight: bold; color: var(--text-main); cursor: pointer; border-radius: 8px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
         .dropdown-option-item:hover { background: rgba(255, 107, 0, 0.12); color: var(--primary); }
 
-        .btn-liquid-glass { padding: 14px 10px; border-radius: 16px; font-size: 13px; font-weight: bold; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid rgba(255, 255, 255, 0.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: all 0.3s; }
-        .btn-liquid-orange { background: linear-gradient(135deg, rgba(255, 107, 0, 0.38) 0%, rgba(255, 60, 0, 0.12) 100%); box-shadow: 0 8px 20px rgba(255, 107, 0, 0.12); }
-        .btn-liquid-blue { background: linear-gradient(135deg, rgba(14, 165, 233, 0.38) 0%, rgba(2, 132, 199, 0.12) 100%); box-shadow: 0 8px 20px rgba(14, 165, 233, 0.12); }
-
         .quick-chips-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
         .cash-chip { background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255, 255, 255, 0.12); padding: 7px 14px; border-radius: 10px; font-size: 11px; color: var(--text-main); font-weight: bold; cursor: pointer; transition: all 0.2s; }
         .cash-chip:active { transform: scale(0.9); background: var(--primary); color: white; }
@@ -242,7 +241,7 @@
         .tab-btn { flex: 1; padding: 11px; border: none; background: none; color: var(--text-dim); font-weight: bold; font-size: 13px; border-radius: 9px; cursor: pointer; transition: all 0.2s; }
         .tab-btn.active { background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%); color: var(--primary); border: 1px solid rgba(255,255,255,0.15); }
 
-        .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; box-shadow: 0 6px 20px var(--glow); transition: all 0.2s; }
+        .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 14px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; box-shadow: 0 6px 20px var(--glow); transition: all 0.2s; }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .logs-list { max-height: 380px; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px; }
@@ -273,7 +272,6 @@
         .quick-item-trash-btn { color: var(--text-dim); cursor: pointer; font-size: 13px; padding: 6px; transition: color 0.2s; }
         .quick-item-trash-btn:hover { color: var(--danger); }
 
-        /* Modals */
         .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .custom-modal { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 22px; border-radius: var(--radius); width: 100%; max-width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
         .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
@@ -420,6 +418,7 @@
              <div id="adminNotesViewZone" style="display: none; flex-direction: column; gap: 4px; margin-bottom: 6px;">
                   <div style="font-size: 9px; color: var(--revenue-color); font-weight: bold;" id="notesMetaLabel">بواسطة: -</div>
                   <div class="notes-view-box" id="adminNotesContentText">لا توجد ملاحظات مسجلة اليوم...</div>
+                  <button class="note-delete-icon-btn" id="btnDeleteNote" onclick="triggerClearDailyNote()"><i class="fas fa-trash-can"></i> مسح الملاحظة الحالية</button>
              </div>
              <div id="engineerNotesInputZone" style="display: none; flex-direction: column; gap: 6px;">
                   <textarea id="txtEngNote" class="input-ui" style="font-size: 11px; min-height: 60px; resize: none; padding: 8px;" placeholder="اكتب ملاحظات الموقع اليوم..."></textarea>
@@ -453,7 +452,7 @@
          <a class="dock-item" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank"><i class="fas fa-money-bill-wave"></i><span>المرتبات</span></a>
          <a class="dock-item" href="https://docs.google.com/spreadsheets/d/1I9QkNu2qjRFUTJcMuL3qo5f7scQaxQT_t-OVdm7ujVI/edit" target="_blank"><i class="fas fa-calendar-alt"></i><span>الحضور</span></a>
          <div class="dock-item" onclick="toggleSidebar(true)"><i class="fas fa-bars"></i><span>المزيد</span></div>
-    </div>
+         </div>
 
     <header>
         <div class="header-right-holder"><button class="menu-trigger" id="menuBtn" onclick="toggleSidebar(true)"><i class="fas fa-bars"></i></button></div>
@@ -730,12 +729,15 @@
             currentUser = user; let account = ACCOUNTS[user]; let displayLabel = (user === "ahmed") ? "أحمد (الإدارة)" : account.label;
             document.getElementById("headerUserNameSpan").innerText = "م / " + displayLabel; document.getElementById("headerUserBadge").style.display = "flex"; document.getElementById("sidebarUserName").innerText = "م / " + displayLabel;
             
-            if(user === "mostafa") { document.getElementById("sidebarAddEmployeeBtn").style.display = "block"; } else { document.getElementById("sidebarAddEmployeeBtn").style.display = "none"; }
-            if(user === "mostafa" || user === "ahmed") { document.getElementById("sidebarAddProjectBtn").style.display = "block"; } else { document.getElementById("sidebarAddProjectBtn").style.display = "none"; }
+            let addEmpBtn = document.getElementById("sidebarAddEmployeeBtn"); if(addEmpBtn) { addEmpBtn.style.display = (user === "mostafa") ? "block" : "none"; }
+            let addProjBtn = document.getElementById("sidebarAddProjectBtn"); if(addProjBtn) { addProjBtn.style.display = (user === "mostafa" || user === "ahmed") ? "block" : "none"; }
 
             setDynamicGreeting(account.label); document.getElementById("loginBox").style.display = "none"; document.getElementById("menuBtn").classList.add("visible");
             document.getElementById("mainContent").classList.add("visible"); document.getElementById("bottomDock").classList.add("visible"); document.getElementById("calcTrigger").classList.add("visible");
-            if(account.canSeeAllRevenue) document.getElementById("revenueCard").style.display = "block"; else document.getElementById("revenueCard").style.display = "none";
+            
+            let revCard = document.getElementById("revenueCard");
+            if(revCard) { revCard.style.display = account.canSeeAllRevenue ? "block" : "none"; }
+            if(SELECTED_PROJECT) setupSidebarNotesInterface(SELECTED_PROJECT);
         }
 
         function triggerLogOut() {
@@ -787,7 +789,23 @@
         function saveEngineerDailyNote() {
             let proj = SELECTED_PROJECT; let noteText = document.getElementById("txtEngNote").value.trim(); if(!proj || !noteText) return;
             database.ref('project_notes').child(proj).set({ writer: currentUser, text: noteText, time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) })
-            .then(() => { showGlobalAppModal({ title: "تم الحفظ", body: "📝 تم تسجيل ملحوظة الموقع بنجاح!", icon: "fas fa-clipboard-check", iconColor: "var(--success)" }); });
+            .then(() => { 
+                showGlobalAppModal({ title: "تم الحفظ", body: "📝 تم تسجيل ملحوظة الموقع بنجاح!", icon: "fas fa-clipboard-check", iconColor: "var(--success)" });
+                setupSidebarNotesInterface(proj);
+            });
+        }
+
+        function triggerClearDailyNote() {
+            if(!SELECTED_PROJECT) return;
+            showGlobalAppModal({
+                title: "تأكيد مسح الملاحظة", body: "هل أنت متأكد من رغبتك في حذف الملاحظة اليومية الحالية لهذا المشروع نهائياً؟", icon: "fas fa-trash-can", confirmText: "حذف الملحوظة", confirmColor: "var(--danger)",
+                onConfirm: function() {
+                    database.ref('project_notes').child(SELECTED_PROJECT).remove().then(() => {
+                        showGlobalAppModal({ title: "تم الحذف", body: "🗑️ تم مسح الملاحظة اليومية بنجاح من النظام.", icon: "fas fa-check-circle", iconColor: "var(--success)" });
+                        setupSidebarNotesInterface(SELECTED_PROJECT);
+                    });
+                }
+            });
         }
 
         function onProjectChange(proj) {
@@ -834,29 +852,50 @@
 
         function setupSidebarNotesInterface(projectName) {
             let account = ACCOUNTS[currentUser];
+            let delBtn = document.getElementById("btnDeleteNote");
+            if(delBtn) delBtn.style.display = "none"; 
+
+            if(!account) return;
+
             if(account.role === "admin") {
                 document.getElementById("adminNotesViewZone").style.display = "flex";
-                if(currentUser === "mostafa") { document.getElementById("engineerNotesInputZone").style.display = "flex"; } 
-                else { document.getElementById("engineerNotesInputZone").style.display = "none"; }
+                document.getElementById("engineerNotesInputZone").style.display = (currentUser === "mostafa") ? "flex" : "none";
                 
                 database.ref('project_notes').child(projectName).once('value', (snap) => {
                     let noteData = snap.val();
-                    if(noteData) {
+                    if(noteData && noteData.text) {
                         let writerName = ACCOUNTS[noteData.writer] ? ACCOUNTS[noteData.writer].label : noteData.writer;
                         document.getElementById("notesMetaLabel").innerText = `بواسطة: م/ ${writerName} • ${noteData.time || ''}`;
-                        document.getElementById("adminNotesContentText").innerText = noteData.text || "لا توجد ملاحظات مسجلة اليوم...";
-                        if(currentUser === "mostafa" && noteData.writer === currentUser) { document.getElementById("txtEngNote").value = noteData.text || ""; }
+                        document.getElementById("adminNotesContentText").innerText = noteData.text;
+                        if(delBtn) delBtn.style.display = "block";
+                        if(currentUser === "mostafa" && noteData.writer === currentUser) { document.getElementById("txtEngNote").value = noteData.text; }
                     } else {
+                        document.getElementById("notesMetaLabel").innerText = "بواسطة: -";
                         document.getElementById("adminNotesContentText").innerText = "لا توجد ملاحظات مسجلة اليوم...";
                         if(currentUser === "mostafa") document.getElementById("txtEngNote").value = "";
                     }
                 });
             } else {
-                document.getElementById("adminNotesViewZone").style.display = "none"; document.getElementById("engineerNotesInputZone").style.display = "flex";
+                document.getElementById("adminNotesViewZone").style.display = "flex"; 
+                document.getElementById("engineerNotesInputZone").style.display = "flex";
                 database.ref('project_notes').child(projectName).once('value', (snap) => {
                     let noteData = snap.val();
-                    if(noteData && noteData.writer === currentUser) document.getElementById("txtEngNote").value = noteData.text || "";
-                    else document.getElementById("txtEngNote").value = "";
+                    if(noteData && noteData.text) {
+                        let writerName = ACCOUNTS[noteData.writer] ? ACCOUNTS[noteData.writer].label : noteData.writer;
+                        document.getElementById("notesMetaLabel").innerText = `بواسطة: م/ ${writerName} • ${noteData.time || ''}`;
+                        document.getElementById("adminNotesContentText").innerText = noteData.text;
+                        
+                        if(noteData.writer === currentUser) {
+                            if(delBtn) delBtn.style.display = "block";
+                            document.getElementById("txtEngNote").value = noteData.text;
+                        } else {
+                            document.getElementById("txtEngNote").value = "";
+                        }
+                    } else {
+                        document.getElementById("notesMetaLabel").innerText = "بواسطة: -";
+                        document.getElementById("adminNotesContentText").innerText = "لا توجد ملاحظات مسجلة اليوم...";
+                        document.getElementById("txtEngNote").value = "";
+                    }
                 });
             }
         }
@@ -873,7 +912,7 @@
         function toggleCalc() { let panel = document.getElementById("calcPanel"); panel.style.display = (panel.style.display === "flex") ? "none" : "flex"; }
         function pressCalc(key) { let screen = document.getElementById("calcScreen"); if (key === 'C') { calcExpression = ""; screen.innerText = "0"; } else if (key === 'del') { calcExpression = calcExpression.slice(0, -1); screen.innerText = calcExpression || "0"; } else if (key === '=') { try { let result = eval(calcExpression); screen.innerText = Number(result.toFixed(2)).toLocaleString(); calcExpression = result.toString(); } catch(e) { screen.innerText = "خطأ رياضي"; calcExpression = ""; } } else { if(screen.innerText === "0" || screen.innerText === "خطأ") calcExpression = ""; calcExpression += key; screen.innerText = calcExpression; } }
         function pushCalcToInput() { let screen = document.getElementById("calcScreen").innerText.replace(/,/g, ''); let val = parseFloat(screen); if (!isNaN(val) && val > 0) { document.getElementById("amount").value = val; localStorage.setItem("draft_amt", val); toggleCalc(); } }
-        function toggleSidebar(open) { document.getElementById("sidebarMenu").classList.toggle("open", open); document.getElementById("sidebarOverlay").style.display = open ? "block" : "none"; }
+        function toggleSidebar(open) { document.getElementById("sidebarMenu").classList.toggle("open", open); document.getElementById("sidebarOverlay").style.display = open ? "block" : "none"; if(open && SELECTED_PROJECT) setupSidebarNotesInterface(SELECTED_PROJECT); }
         function switchDockTab(tab) { if(tab === 'home') resetProjectSelection(); }
         function openProjectInfoModal() { document.getElementById("projectInfoModal").style.display = "flex"; }
         function closeProjectInfoModal() { document.getElementById("projectInfoModal").style.display = "none"; }
