@@ -24,6 +24,7 @@
             --primary-dark: #E66000;
             --success: #10B981;
             --danger: #EF4444;
+            --info: #0EA5E9;
             --border: rgba(255, 255, 255, 0.06);
             --radius: 22px;
             --revenue-color: #ffcc00;
@@ -170,7 +171,6 @@
         .btn-logout { margin-top: auto; width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; }
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 190; display: none; }
 
-        /* حاوية الأبلكيشن */
         .app-container { width: 100%; max-width: 480px; padding: 15px 12px 100px; z-index: 5; display: flex; flex-direction: column; gap: 15px; position: relative; }
 
         .card {
@@ -194,11 +194,10 @@
         [data-theme="oled"] .input-ui { background-color: rgba(255, 255, 255, 0.03); }
         .input-ui:focus { border-color: var(--primary); }
         
-        .voice-mic-btn { position: absolute; left: 12px; background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 14px; transition: 0.2s; padding: 5px; z-index: 10; }
+        .voice-mic-btn { position: absolute; left: 12px; background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; transition: 0.2s; padding: 5px; z-index: 10; }
         .voice-mic-btn.listening { color: var(--danger); animation: micPulse 1s infinite alternate; }
         @keyframes micPulse { 100% { opacity: 0.4; transform: scale(1.1); } }
 
-        /* 📊 مربع اختيار المشاريع المخصص (Custom Dropdown) */
         .custom-dropdown-box { position: relative; width: 100%; }
         .dropdown-selected-trigger {
             width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.04); border: 1px solid var(--border); 
@@ -218,7 +217,6 @@
         .dropdown-option-item { padding: 11px 14px; font-size: 13px; font-weight: bold; color: var(--text-main); cursor: pointer; border-radius: 8px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
         .dropdown-option-item:hover { background: rgba(255, 107, 0, 0.12); color: var(--primary); }
 
-        /* أزرار الـ Liquid Glass */
         .btn-liquid-glass { padding: 14px 10px; border-radius: 16px; font-size: 13px; font-weight: bold; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid rgba(255, 255, 255, 0.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: all 0.3s; }
         .btn-liquid-orange { background: linear-gradient(135deg, rgba(255, 107, 0, 0.38) 0%, rgba(255, 60, 0, 0.12) 100%); box-shadow: 0 8px 20px rgba(255, 107, 0, 0.12); }
         .btn-liquid-blue { background: linear-gradient(135deg, rgba(14, 165, 233, 0.38) 0%, rgba(2, 132, 199, 0.12) 100%); box-shadow: 0 8px 20px rgba(14, 165, 233, 0.12); }
@@ -227,12 +225,11 @@
         .cash-chip { background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255, 255, 255, 0.12); padding: 7px 14px; border-radius: 10px; font-size: 11px; color: var(--text-main); font-weight: bold; cursor: pointer; transition: all 0.2s; }
         .cash-chip:active { transform: scale(0.9); background: var(--primary); color: white; }
 
-        /* HUD */
-        .stats-hud-row { display: grid; grid-template-columns: 1.2fr 0.9fr 0.9fr; gap: 6px; width: 100%; }
-        .hud-box { background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 12px 6px; border-radius: 14px; text-align: center; box-shadow: inset 0 3px 6px rgba(255,255,255,0.08); }
+        .stats-hud-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; }
+        .hud-box { background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 12px 4px; border-radius: 14px; text-align: center; box-shadow: inset 0 3px 6px rgba(255,255,255,0.08); }
         .hud-box.prime { border: 1px solid rgba(255, 107, 0, 0.4); background: linear-gradient(135deg, rgba(255, 107, 0, 0.12) 0%, rgba(255, 107, 0, 0.02) 100%); }
         .hud-box h4 { margin: 0; font-size: 10px; color: var(--text-dim); font-weight: bold; }
-        .hud-box .val { margin: 4px 0 0; font-size: 13px; font-weight: 900; white-space: nowrap; }
+        .hud-box .val { margin: 4px 0 0; font-size: 12px; font-weight: 900; white-space: nowrap; }
 
         .hud-progress-wrapper { width: 100%; background: rgba(255,255,255,0.04); height: 5px; border-radius: 10px; overflow: hidden; margin-top: -5px; border: 1px solid var(--border); }
         .hud-progress-bar { width: 0%; height: 100%; background: var(--primary); transition: width 0.7s ease; }
@@ -249,15 +246,19 @@
         .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; box-shadow: 0 6px 20px var(--glow); transition: all 0.2s; }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* لستة الكروت */
+        /* 📱 تصميم منطقة الـ Swipe المزدوجة المتطورة للموقع */
         .logs-list { max-height: 380px; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px; }
-        .swipe-item-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 14px; margin-bottom: 9px; background: var(--danger); touch-action: pan-y; }
+        .swipe-item-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 14px; margin-bottom: 9px; background: #0c1524; touch-action: pan-y; }
         
+        .swipe-action-zone { position: absolute; top: 0; height: 100%; width: 75px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; cursor: pointer; z-index: 1; }
+        .swipe-action-delete { left: 0; background: var(--danger); border-top-left-radius: 14px; border-bottom-left-radius: 14px; }
+        .swipe-action-edit { right: 0; background: var(--info); border-top-right-radius: 14px; border-bottom-right-radius: 14px; }
+
         .log-item { 
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.2) 100%);
             padding: 12px; border: 1px solid rgba(255,255,255,0.06); width: 100%; position: relative; z-index: 2;
             display: flex; justify-content: space-between; align-items: center; background-color: #0d1527;
-            will-change: transform; transition: transform 0.2s ease;
+            will-change: transform; transition: transform 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
         [data-theme="light"] .log-item { background: #f1f5f9; }
         
@@ -265,11 +266,15 @@
         .log-item.expense { border-left: 4px solid var(--danger); }
         .log-info h5 { margin: 0; font-size: 13px; font-weight: 700; color: var(--text-main); }
         .log-info p { margin: 3px 0 0; font-size: 10px; color: var(--text-dim); }
-        .log-amount { text-align: left; }
-        .log-amount .amt { display: block; font-size: 14px; font-weight: 800; }
-        .log-amount .date { font-size: 9px; color: var(--text-dim); }
-
-        .swipe-delete-trigger-zone { position: absolute; top: 0; left: 0; height: 100%; width: 75px; background: var(--danger); display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; z-index: 1; cursor: pointer; }
+        
+        .log-amount-holder { display: flex; align-items: center; gap: 12px; text-align: left; }
+        .log-amount-data { display: flex; flex-direction: column; }
+        .log-amount-data .amt { display: block; font-size: 14px; font-weight: 800; }
+        .log-amount-data .date { font-size: 9px; color: var(--text-dim); }
+        
+        /* أيقونة السلة السريعة بجانب المبلغ */
+        .quick-item-trash-btn { color: var(--text-dim); cursor: pointer; font-size: 13px; padding: 6px; transition: color 0.2s; }
+        .quick-item-trash-btn:hover { color: var(--danger); }
 
         /* Modals */
         .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
@@ -278,7 +283,6 @@
         .btn-modal-confirm { padding: 12px; background: var(--danger); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
         .btn-modal-cancel { padding: 12px; background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border); border-radius: 10px; font-weight: bold; cursor: pointer; }
 
-        /* 🍞 الـ Undo Toast العائم */
         .undo-toast-holder {
             position: fixed; bottom: 95px; left: 50%; transform: translateX(-50%) translateY(100px);
             width: 88%; max-width: 400px; padding: 12px 18px; background: rgba(15, 23, 42, 0.9);
@@ -289,7 +293,6 @@
         .undo-toast-holder.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .undo-toast-btn { background: none; border: none; color: var(--revenue-color); font-weight: 900; font-size: 13px; cursor: pointer; font-family: inherit; }
 
-        /* شريط السفلي العائم */
         .bottom-nav-dock { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 440px; height: 64px; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.12); border-radius: 30px; box-shadow: 0 12px 35px rgba(0,0,0,0.5); z-index: 180; display: none; align-items: center; justify-content: space-around; padding: 0 10px; }
         .bottom-nav-dock.visible { display: flex; }
         .dock-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-dim); text-decoration: none; cursor: pointer; width: 50px; }
@@ -552,7 +555,7 @@
                         <div class="label-group" style="margin-top: 10px;">
                             <div class="input-with-voice-holder">
                                  <input type="text" id="desc" class="input-ui" placeholder="اكتب البيان اللحظي...">
-                                 <button class="voice-mic-btn" onclick="startVoiceRecognition('desc', event)"><i class="fas fa-microphone"></i></button>
+                                 <button class="voice-mic-btn" id="micBtn-desc" onclick="startVoiceRecognition('desc')"><i class="fas fa-microphone"></i></button>
                             </div>
                         </div>
                         <button class="btn-primary" id="transactionSubmitBtn" onclick="handleAdd()">حفظ العملية اللحظية</button>
@@ -560,8 +563,8 @@
                 </div>
 
                 <div class="input-with-voice-holder">
-                     <input type="text" id="liveSearchInput" class="input-ui" placeholder="🔍 ابحث فوراً عن أي بيان أو خامة أو عمالة..." oninput="handleLiveSearch()" style="border-radius:14px; padding-right:38px; padding-left:42px; font-size:12px;">
-                     <button class="voice-mic-btn" onclick="startVoiceRecognition('liveSearchInput', event)"><i class="fas fa-microphone"></i></button>
+                     <input type="text" id="liveSearchInput" class="input-ui" placeholder="🔍 ابحث فوراً عن أي بيان..." oninput="handleLiveSearch()" style="border-radius:14px; padding-right:38px; padding-left:42px; font-size:12px;">
+                     <button class="voice-mic-btn" id="micBtn-search" onclick="startVoiceRecognition('liveSearchInput')"><i class="fas fa-microphone"></i></button>
                 </div>
                 <div class="logs-list" id="logBody"></div>
             </div>
@@ -642,24 +645,44 @@
         }
         function closeGlobalAppModal() { document.getElementById("globalAppModal").style.display = "none"; }
 
-        function startVoiceRecognition(targetId, evt) {
-            let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) return showGlobalAppModal({ title: "ميزة غير مدعومة", body: "❌ متصفحك الحالي لا يدعم الإدخال الصوتي، استخدم جوجل كروم" });
+        /* 🎤 إصلاح محرك التسجيل الصوتي الشامل وتثبيت التعرف على النطق بنجاح */
+        function startVoiceRecognition(targetId) {
+            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!window.SpeechRecognition) {
+                return showGlobalAppModal({ title: "ميزة غير مدعومة", body: "متصفحك لا يدعم الإدخال الصوتي، يرجى استخدام تطبيق جوجل كروم الأصلي الرسمي.", icon: "fas fa-microphone-slash" });
+            }
             
-            let recognition = new SpeechRecognition();
-            recognition.lang = 'ar-EG'; 
-            let micBtn = evt.currentTarget;
-            micBtn.classList.add("listening");
+            try {
+                let recognition = new window.SpeechRecognition();
+                recognition.lang = 'ar-EG';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
 
-            recognition.onresult = function(e) {
-                let resultText = e.results[0][0].transcript;
-                let input = document.getElementById(targetId);
-                input.value = resultText;
-                if(targetId === 'liveSearchInput') handleLiveSearch();
-                else if(targetId === 'desc') localStorage.setItem("draft_desc", resultText);
-            };
-            recognition.onend = function() { micBtn.classList.remove("listening"); };
-            recognition.start();
+                let micBtn = (targetId === 'desc') ? document.getElementById("micBtn-desc") : document.getElementById("micBtn-search");
+                if (micBtn) micBtn.classList.add("listening");
+
+                recognition.onresult = function(event) {
+                    if (event.results && event.results[0] && event.results[0][0]) {
+                        let text = event.results[0][0].transcript;
+                        document.getElementById(targetId).value = text;
+                        if (targetId === 'liveSearchInput') handleLiveSearch();
+                        else localStorage.setItem("draft_desc", text);
+                    }
+                };
+
+                recognition.onerror = function(e) {
+                    console.log("Speech Error: ", e);
+                    if (micBtn) micBtn.classList.remove("listening");
+                };
+
+                recognition.onend = function() {
+                    if (micBtn) micBtn.classList.remove("listening");
+                };
+
+                recognition.start();
+            } catch(e) {
+                console.log("Speech fatal crash avoided: ", e);
+            }
         }
 
         function initPullToRefreshEngine() {
@@ -706,25 +729,72 @@
             }
         }
 
+        /* 📱 محرك الـ Swipe المزدوج المطور (يمين للتعديل - يسار للحذف) بدون أي مشاكل */
         function bindSwipeGesturesToElements() {
             try {
                 let cards = document.querySelectorAll(".log-item");
                 cards.forEach(card => {
                     let touchStartX = 0;
-                    card.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; }, {passive: true});
+                    card.addEventListener("touchstart", (e) => { 
+                        touchStartX = e.touches[0].clientX; 
+                    }, {passive: true});
+
                     card.addEventListener("touchmove", (e) => {
                         let moveX = e.touches[0].clientX;
-                        let diff = touchStartX - moveX;
-                        if(diff > 30 && diff < 110) { card.style.transform = `translateX(-${diff}px)`; }
+                        let diff = touchStartX - moveX; 
+                        
+                        // سحب جهة اليسار (حذف بند)
+                        if(diff > 20 && diff < 100) { 
+                            card.style.transform = `translateX(-${diff}px)`; 
+                        } 
+                        // سحب جهة اليمين (تعديل بند)
+                        else if(diff < -20 && diff > -100) { 
+                            card.style.transform = `translateX(${Math.abs(diff)}px)`; 
+                        }
                     }, {passive: true});
+
                     card.addEventListener("touchend", (e) => {
                         let endX = e.changedTouches[0].clientX;
                         let diff = touchStartX - endX;
-                        if(diff >= 75) { card.style.transform = `translateX(-75px)`; }
-                        else { card.style.transform = `translateX(0)`; }
+                        
+                        if(diff >= 65) { 
+                            card.style.transform = `translateX(-75px)`; // تثبيت الحذف
+                        } else if(diff <= -65) { 
+                            card.style.transform = `translateX(75px)`;  // تثبيت التعديل
+                        } else { 
+                            card.style.transform = `translateX(0)`; 
+                        }
                     });
                 });
-            } catch(err) { console.log("Swipe gesture lay bypassed."); }
+            } catch(err) { console.log("Swipe track layout bypassed."); }
+        }
+
+        /* 🗑️ ميزة محاكاة حركة السحب التلقائي اللحظي عند الضغط على أيقونة السلة بجانب الحساب */
+        function triggerAutoSwipeToDelete(id, desc, elementBtn) {
+            let logItemCard = elementBtn.closest('.log-item');
+            if(logItemCard) {
+                logItemCard.style.transform = `translateX(-75px)`;
+                setTimeout(() => {
+                    askDelItem(id, desc);
+                }, 180);
+            }
+        }
+
+        /* ✏️ وظيفة تعديل بيان ومبلغ العملية اللحظي بكفاءة */
+        function triggerInlineEditItem(id, currentDesc, currentAmount) {
+            showGlobalAppModal({
+                title: "تعديل بيانات البند", body: `برجاء كتابة التعديل الجديد للبيان والمبلغ:`, icon: "fas fa-edit", showInput: true, inputValue: `${currentDesc} | ${currentAmount}`, confirmText: "حفظ التعديل", confirmColor: "var(--info)",
+                onConfirm: function(val) {
+                    if(val && val.includes('|')) {
+                        let parts = val.split('|');
+                        let newDesc = parts[0].trim();
+                        let newAmt = parseFloat(parts[1].trim());
+                        if(newDesc !== "" && !isNaN(newAmt)) {
+                            database.ref('transactions').child(id).update({ desc: newDesc, amount: newAmt });
+                        }
+                    }
+                }
+            });
         }
 
         function triggerAddCustomProjectModal() {
@@ -830,14 +900,12 @@
             .then(() => { showGlobalAppModal({ title: "تم الحفظ", body: "📝 تم تسجيل ملحوظة الموقع بنجاح!", icon: "fas fa-clipboard-check", iconColor: "var(--success)" }); });
         }
 
-        /* 🔒 الإصلاح الشامل والجذري هنا: عزل تام لأي استدعاء فرعي لضمان فتح الداتا والـ HUD فوراً وبشكل لحظي */
         function onProjectChange(proj) {
             let account = ACCOUNTS[currentUser];
             document.getElementById("headerProjName").innerText = proj; 
             document.getElementById("headerProjBadge").style.display = "flex";
             document.getElementById("projectSelectorCard").classList.add("hide-completely");
             
-            // فتح لوحة الحسابات فورا على الشاشة
             let financeContent = document.getElementById("financeContent");
             financeContent.style.display = "flex";
             financeContent.classList.remove("hidden-element");
@@ -845,13 +913,11 @@
             document.getElementById("sidebarProjInfoBlock").classList.add("visible"); 
             document.getElementById("sidebarNotesBlock").classList.add("visible"); 
 
-            // 🛠️ جدار الحماية (try/catch) لعزل استدعاء لوحات البيانات الإدارية الجانبية منعاً لأي بلوك
             try { listenToProjectInfo(proj); } catch(e) { console.log("Info route bypassed."); }
             try { setupSidebarNotesInterface(proj); } catch(e) { console.log("Notes route bypassed."); }
 
             showLoad(true);
             
-            // تشغيل دالة الاستماع للعمليات والـ HUD بحماية كاملة
             database.ref('transactions').on('value', (snap) => {
                 globalTransactions = []; 
                 let data = snap.val();
@@ -869,7 +935,6 @@
                 renderUI(globalTransactions); 
                 showLoad(false);
             }, (error) => {
-                console.log("Firebase listener error: ", error);
                 showLoad(false);
             });
         }
@@ -964,14 +1029,26 @@
                 
                 html += `
                     <div class="swipe-item-wrapper">
-                        <div class="swipe-delete-trigger-zone" onclick="askDelItem('${i.id}', '${i.desc}')">
+                        <div class="swipe-action-zone swipe-action-delete" onclick="askDelItem('${i.id}', '${i.desc}')">
                             <i class="fas fa-trash-alt"></i>
                         </div>
+                        <div class="swipe-action-zone swipe-action-edit" onclick="triggerInlineEditItem('${i.id}', '${i.desc}', ${i.amount})">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        
                         <div class="log-item ${i.type || 'expense'}">
-                            <div class="log-info"><h5>${i.desc || 'بدون بيان'}</h5><p>${i.category || 'عام'} • م/ ${engLabel}</p></div>
-                            <div class="log-amount">
-                                <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">${i.type==='income'?'+':'-'}${amtVal}</span>
-                                <span class="date">${i.date || '-'}</span>
+                            <div class="log-info">
+                                <h5>${i.desc || 'بدون بيان'}</h5>
+                                <p>${i.category || 'عام'} • م/ ${engLabel}</p>
+                            </div>
+                            <div class="log-amount-holder">
+                                <div class="log-amount-data">
+                                    <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">
+                                        ${i.type==='income'?'+':'-'}${amtVal}
+                                    </span>
+                                    <span class="date">${i.date || '-'}</span>
+                                </div>
+                                <i class="fas fa-trash-can quick-item-trash-btn" onclick="triggerAutoSwipeToDelete('${i.id}', '${i.desc}', this)"></i>
                             </div>
                         </div>
                     </div>
