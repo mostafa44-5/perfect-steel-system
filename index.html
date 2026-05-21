@@ -130,7 +130,6 @@
 
         .hidden-element { display: none !important; }
 
-        /* 🚪 القائمة الجانبية */
         .sidebar {
             position: fixed; top: 0; right: -300px; width: 290px; height: 100%;
             background: var(--bg-body); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px);
@@ -246,7 +245,7 @@
         .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; box-shadow: 0 6px 20px var(--glow); transition: all 0.2s; }
         .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* 📱 تصميم منطقة الـ Swipe المزدوجة المتطورة للموقع */
+        /* لستة الكروت */
         .logs-list { max-height: 380px; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px; }
         .swipe-item-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 14px; margin-bottom: 9px; background: #0c1524; touch-action: pan-y; }
         
@@ -272,7 +271,6 @@
         .log-amount-data .amt { display: block; font-size: 14px; font-weight: 800; }
         .log-amount-data .date { font-size: 9px; color: var(--text-dim); }
         
-        /* أيقونة السلة السريعة بجانب المبلغ */
         .quick-item-trash-btn { color: var(--text-dim); cursor: pointer; font-size: 13px; padding: 6px; transition: color 0.2s; }
         .quick-item-trash-btn:hover { color: var(--danger); }
 
@@ -302,7 +300,7 @@
 
         .calc-trigger-btn { position: fixed; bottom: 95px; right: 20px; width: 45px; height: 45px; background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%); border: 1px solid rgba(255,255,255,0.25); border-radius: 50%; color: white; font-size: 18px; display: none; align-items: center; justify-content: center; z-index: 175; cursor: pointer; }
         .calc-trigger-btn.visible { display: flex; }
-        .calc-panel { position: fixed; bottom: 155px; right: 20px; width: 240px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; z-index: 176; display: none; flex-direction: column; padding: 10px; }
+        .calc-panel { position: fixed; bottom: 155px; right: 20px; width: 240px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px; z-index: 176; display: none; flex-direction: column; padding: 10px; }
         .calc-screen { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 10px; border-radius: 10px; text-align: left; font-size: 16px; font-weight: bold; color: var(--text-main); min-height: 42px; word-break: break-all; margin-bottom: 8px; }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
         .calc-btn { padding: 10px 5px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-main); font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 13px; }
@@ -612,6 +610,7 @@
             renderCustomDropdownOptions();
             setupDropdownOutsideClickListener();
             initPullToRefreshEngine(); 
+            setupGlobalScreenCloseListeners(); // تفعيل محرك غلق الكروت المفتوحة عند الضغط الخارجي
         });
 
         function changeThemeMode(val) { document.documentElement.setAttribute("data-theme", val); localStorage.setItem("theme", val); }
@@ -640,12 +639,11 @@
             let inputContainer = document.getElementById("globalModalInputContainer"); let inputField = document.getElementById("globalModalInputField");
             if(config.showInput) { inputContainer.style.display = "block"; inputField.value = config.inputValue || ""; } else { inputContainer.style.display = "none"; }
             let confirmBtn = document.getElementById("globalModalConfirmBtn"); confirmBtn.style.background = config.confirmColor || "var(--primary)"; confirmBtn.innerText = config.confirmText || "تأكيد";
-            confirmBtn.onclick = function() { if(config.onConfirm) config.onConfirm(config.showInput ? inputField.value : null); closeGlobalAppModal(); };
+            confirmBtn.onclick = function() { if(config.onConfirm) config.onConfirm(config.showInput ? inputField.value : null); closeGlobalAppModal(); resetAllSwipeCards(); };
             document.getElementById("globalAppModal").style.display = "flex";
         }
-        function closeGlobalAppModal() { document.getElementById("globalAppModal").style.display = "none"; }
+        function closeGlobalAppModal() { document.getElementById("globalAppModal").style.display = "none"; resetAllSwipeCards(); }
 
-        /* 🎤 إصلاح محرك التسجيل الصوتي الشامل وتثبيت التعرف على النطق بنجاح */
         function startVoiceRecognition(targetId) {
             window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!window.SpeechRecognition) {
@@ -671,7 +669,6 @@
                 };
 
                 recognition.onerror = function(e) {
-                    console.log("Speech Error: ", e);
                     if (micBtn) micBtn.classList.remove("listening");
                 };
 
@@ -729,7 +726,7 @@
             }
         }
 
-        /* 📱 محرك الـ Swipe المزدوج المطور (يمين للتعديل - يسار للحذف) بدون أي مشاكل */
+        /* 📱 محرك الـ Swipe المزدوج المطور */
         function bindSwipeGesturesToElements() {
             try {
                 let cards = document.querySelectorAll(".log-item");
@@ -743,11 +740,9 @@
                         let moveX = e.touches[0].clientX;
                         let diff = touchStartX - moveX; 
                         
-                        // سحب جهة اليسار (حذف بند)
                         if(diff > 20 && diff < 100) { 
                             card.style.transform = `translateX(-${diff}px)`; 
                         } 
-                        // سحب جهة اليمين (تعديل بند)
                         else if(diff < -20 && diff > -100) { 
                             card.style.transform = `translateX(${Math.abs(diff)}px)`; 
                         }
@@ -758,9 +753,9 @@
                         let diff = touchStartX - endX;
                         
                         if(diff >= 65) { 
-                            card.style.transform = `translateX(-75px)`; // تثبيت الحذف
+                            card.style.transform = `translateX(-75px)`; 
                         } else if(diff <= -65) { 
-                            card.style.transform = `translateX(75px)`;  // تثبيت التعديل
+                            card.style.transform = `translateX(75px)`;  
                         } else { 
                             card.style.transform = `translateX(0)`; 
                         }
@@ -769,18 +764,35 @@
             } catch(err) { console.log("Swipe track layout bypassed."); }
         }
 
-        /* 🗑️ ميزة محاكاة حركة السحب التلقائي اللحظي عند الضغط على أيقونة السلة بجانب الحساب */
+        /* 🔒 إعادة إغلاق جميع كروت الـ Swipe المفتوحة وإرجاعها للوضع الطبيعي فورا */
+        function resetAllSwipeCards() {
+            try {
+                let cards = document.querySelectorAll(".log-item");
+                cards.forEach(card => {
+                    card.style.transform = "translateX(0)";
+                });
+            } catch(e) { console.log("Reset animation bypass."); }
+        }
+
+        /* 🖥️ مستمع ذكي: لو ضغطت في أي مكان فاضي في الأبلكيشن، الكروت هتقفل فوراً */
+        function setupGlobalScreenCloseListeners() {
+            document.body.addEventListener("click", (e) => {
+                // التأكد إن الضغطة مش جوة كرت عملية أو زرار الحذف/التعديل عشان الكروت متقفلش وقت الاستخدام
+                if(!e.target.closest('.log-item') && !e.target.closest('.swipe-action-zone') && !e.target.closest('.quick-item-trash-btn')) {
+                    resetAllSwipeCards();
+                }
+            });
+        }
+
         function triggerAutoSwipeToDelete(id, desc, elementBtn) {
+            resetAllSwipeCards(); // قفل أي كارت تاني مفتوح الأول
             let logItemCard = elementBtn.closest('.log-item');
             if(logItemCard) {
                 logItemCard.style.transform = `translateX(-75px)`;
-                setTimeout(() => {
-                    askDelItem(id, desc);
-                }, 180);
+                setTimeout(() => { askDelItem(id, desc); }, 180);
             }
         }
 
-        /* ✏️ وظيفة تعديل بيان ومبلغ العملية اللحظي بكفاءة */
         function triggerInlineEditItem(id, currentDesc, currentAmount) {
             showGlobalAppModal({
                 title: "تعديل بيانات البند", body: `برجاء كتابة التعديل الجديد للبيان والمبلغ:`, icon: "fas fa-edit", showInput: true, inputValue: `${currentDesc} | ${currentAmount}`, confirmText: "حفظ التعديل", confirmColor: "var(--info)",
