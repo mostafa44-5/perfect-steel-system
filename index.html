@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Perfect Steel Pro</title>
+    <title>Perfect Steel Pro Premium v4.0</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,50 +11,56 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         :root {
-            --bg-body: #050811; 
-            --bg-card: rgba(15, 23, 42, 0.35);
-            --text-main: #F8FAFC;
-            --text-dim: #94A3B8;
+            --bg-body: #030712; 
+            --bg-card: rgba(17, 24, 39, 0.55);
+            --text-main: #F9FAFB;
+            --text-dim: #9CA3AF;
             --primary: #FF6B00; 
             --primary-dark: #E66000;
             --success: #10B981;
             --danger: #EF4444;
             --info: #0EA5E9;
-            --border: rgba(255, 255, 255, 0.06);
-            --radius: 22px;
-            --revenue-color: #ffcc00;
-            --overlay-bg: rgba(5, 8, 17, 0.82);
-            --glow: rgba(255, 107, 0, 0.15);
-            --neon-shadow: 0 8px 25px rgba(255, 107, 0, 0.1);
+            --purple: #8B5CF6;
+            --purple-dark: #6D28D9;
+            --border: rgba(255, 255, 255, 0.07);
+            --radius: 24px;
+            --revenue-color: #FBBF24;
+            --overlay-bg: rgba(3, 7, 18, 0.88);
+            --glow: rgba(255, 107, 0, 0.25);
+            --neon-shadow: 0 12px 40px rgba(255, 107, 0, 0.05);
+            --card-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
         [data-theme="light"] {
-            --bg-body: #FFFFFF;
-            --bg-card: rgba(241, 245, 249, 0.9);
-            --text-main: #000000;
-            --text-dim: #334155;
-            --border: rgba(0, 0, 0, 0.15);
-            --overlay-bg: rgba(255, 255, 255, 0.95);
-            --glow: rgba(14, 165, 233, 0.15);
-            --neon-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            --bg-body: #F3F4F6;
+            --bg-card: rgba(255, 255, 255, 0.75);
+            --text-main: #111827;
+            --text-dim: #6B7280;
+            --border: rgba(17, 24, 39, 0.08);
+            --overlay-bg: rgba(243, 244, 246, 0.96);
+            --glow: rgba(255, 107, 0, 0.15);
+            --neon-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
             --primary: #FF5500;
             --primary-dark: #CC4400;
         }
 
         [data-theme="oled"] {
             --bg-body: #000000;
-            --bg-card: rgba(25, 25, 25, 0.45);
+            --bg-card: rgba(15, 15, 15, 0.6);
             --text-main: #FFFFFF;
             --text-dim: #A1A1AA;
-            --border: rgba(255, 255, 255, 0.07);
-            --overlay-bg: rgba(0, 0, 0, 0.88);
-            --glow: rgba(255, 107, 0, 0.2);
-            --neon-shadow: 0 8px 30px rgba(255, 107, 0, 0.25);
+            --border: rgba(255, 255, 255, 0.05);
+            --overlay-bg: rgba(0, 0, 0, 0.93);
+            --glow: rgba(255, 107, 0, 0.3);
+            --neon-shadow: 0 12px 40px rgba(255, 107, 0, 0.12);
         }
 
         * { 
@@ -75,237 +81,246 @@
             padding-top: env(safe-area-inset-top);
         }
 
-        .ptr-element {
-            position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            font-size: 11px; font-weight: bold; color: var(--primary); z-index: 100;
-            transition: transform 0.2s ease;
-        }
-        .ptr-element i { animation: ptrSpin 1.5s linear infinite; display: none; }
-        @keyframes ptrSpin { 100% { transform: rotate(-360deg); } }
-
         .bg-fixed {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1; 
             background-image: linear-gradient(var(--overlay-bg), var(--overlay-bg)), 
             url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200');
             background-size: cover; background-position: center;
-            will-change: transform;
-            transition: background-image 0.4s ease;
         }
 
         header {
-            width: 100%; padding: 5px 15px;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: none; width: 100%; padding: 0 20px;
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border-bottom: 1px solid var(--border);
-            background: rgba(15, 23, 42, 0.08); z-index: 150;
-            display: flex; justify-content: space-between; align-items: center;
-            height: 95px; position: sticky; top: 0;
+            background: rgba(3, 7, 18, 0.2); z-index: 150;
+            justify-content: space-between; align-items: center;
+            height: 85px; position: sticky; top: 0;
         }
+        header.visible-now { display: flex !important; }
         
-        .logo { position: absolute; left: 50%; transform: translateX(-50%); pointer-events: none; }
-        .logo h1 { color: var(--primary); font-size: 16px; margin: 0; font-weight: 900; letter-spacing: 1px; transition: color 0.3s; }
+        .logo h1 { color: var(--primary); font-size: 16px; margin: 0; font-weight: 900; letter-spacing: 1.5px; text-shadow: 0 0 15px var(--glow); }
         
-        .header-right-holder { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; z-index: 120; min-height: 60px; justify-content: center; }
-        .menu-trigger { background: none; border: none; color: var(--text-main); font-size: 22px; cursor: pointer; padding: 0; opacity: 0; pointer-events: none; transition: 0.2s; }
+        .menu-trigger { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-main); font-size: 18px; cursor: pointer; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; opacity: 0; pointer-events: none; }
         .menu-trigger.visible { opacity: 1; pointer-events: auto; }
 
-        .header-left-holder { display: flex; align-items: center; gap: 12px; z-index: 130; }
-        .user-site-column { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; min-width: 130px; }
-        .header-greet { font-size: 10px; color: var(--text-dim); font-weight: bold; margin-bottom: -2px; text-align: left; width: 100%; white-space: nowrap; }
+        .user-site-column { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+        .header-greet { font-size: 11px; color: var(--text-dim); font-weight: 600; }
+
+        .theme-toggle-header-btn {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+            width: 42px; height: 42px; border-radius: 50%; display: none;
+            align-items: center; justify-content: center; color: var(--text-main);
+            font-size: 16px; cursor: pointer; transition: 0.3s;
+        }
+        .theme-toggle-header-btn.visible { display: flex; }
 
         .header-user-badge {
-            display: none; align-items: center; gap: 5px; font-size: 11px; font-weight: bold; color: var(--text-main); 
-            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
-            padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.15);
+            display: none; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: var(--text-main); 
+            background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 12px; border: 1px solid var(--border);
         }
-        .header-user-badge i { color: var(--primary); font-size: 11px; }
+        .header-user-badge i { color: var(--primary); }
 
         .header-project-badge {
-            display: none; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; align-items: center; gap: 5px; color: var(--text-main); 
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0.05) 100%);
-            border: 1px solid var(--primary); box-shadow: inset 0 2px 6px rgba(255,255,255,0.15); transition: all 0.2s;
+            display: none; padding: 6px 14px; border-radius: 14px; font-size: 11px; font-weight: 700; cursor: pointer; align-items: center; gap: 6px; color: #fff; 
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.35) 0%, rgba(255, 107, 0, 0.1) 100%);
+            border: 1px solid var(--primary); transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.15);
         }
 
-        .hidden-element { display: none !important; }
+        .custom-modal-overlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
+            z-index: 999999 !important; justify-content: center; align-items: center; padding: 20px;
+        }
+        .custom-modal { 
+            background: #0f172a; border: 1px solid var(--border); border-radius: var(--radius); 
+            padding: 24px; width: 100%; max-width: 400px; text-align: center; 
+            box-shadow: var(--card-glow), 0 20px 50px rgba(0,0,0,0.6); 
+        }
+        .modal-btns { display: flex; gap: 10px; margin-top: 20px; width: 100%; }
+        .btn-modal-confirm { flex: 1; padding: 12px; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-family: inherit; }
+        .btn-modal-cancel { flex: 1; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; color: var(--text-dim); font-weight: bold; cursor: pointer; font-family: inherit; }
 
+        /* تعديل القائمة الجانبية لتشمل الروابط الجديدة بشكل منسق */
         .sidebar {
-            position: fixed; top: 0; right: -300px; width: 290px; height: 100%;
-            background: var(--bg-body); backdrop-filter: blur(35px); -webkit-backdrop-filter: blur(35px);
-            z-index: 200; border-left: 1px solid var(--border); padding: 25px 15px;
-            display: flex; flex-direction: column; gap: 12px; overflow-y: auto;
-            transition: right 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: fixed; top: 0; right: -310px; width: 300px; height: 100%;
+            background: linear-gradient(180deg, #090d1a 0%, #030712 100%); border-left: 1px solid var(--border);
+            z-index: 200; padding: 30px 20px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(20px);
         }
-        .sidebar.open { right: 0; box-shadow: -15px 0 35px rgba(0,0,0,0.5); }
+        .sidebar.open { right: 0; box-shadow: -20px 0 40px rgba(0,0,0,0.7); }
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-        .sidebar-close { background: none; border: none; color: var(--text-dim); font-size: 20px; cursor: pointer; }
+        .sidebar-close { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-dim); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .sidebar-user-info { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; border: 1px solid var(--border); text-align: center; font-weight: bold; }
         .sidebar-user-info i { color: var(--primary); font-size: 20px; margin-bottom: 5px; display: block; }
+
+        /* ستايل أزرار شيتات جوجل داخل المنيو الجانبي */
+        .sidebar-link-btn {
+            display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px;
+            color: var(--text-main); font-weight: 700; font-size: 13px; text-decoration: none; transition: 0.2s;
+        }
+        .sidebar-link-btn:hover { background: rgba(255,107,0,0.1); border-color: var(--primary); color: var(--primary); }
+        .sidebar-link-btn i { font-size: 16px; }
 
         .proj-info-sidebar-block {
             background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
             border: 1px solid rgba(255,255,255,0.08); padding: 14px 12px; border-radius: 16px;
-            box-shadow: inset 0 2px 4px rgba(255,255,255,0.05); display: none; flex-direction: column; gap: 8px;
-        }
-        .proj-info-sidebar-block.visible { display: flex; }
-        .info-row-item { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 5px; }
-        .info-row-item span { color: var(--text-dim); }
-        .info-row-item b { color: var(--text-main); text-align: left; }
-
-        .engineer-notes-block {
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
-            border: 1px solid rgba(255, 107, 0, 0.2); padding: 14px 12px; border-radius: 16px;
             display: none; flex-direction: column; gap: 8px;
         }
-        .engineer-notes-block.visible { display: flex; }
+        .proj-info-sidebar-block.visible { display: flex; }
+        .info-row-item { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 5px; align-items: center; }
+        .info-row-item span { color: var(--text-dim); }
+        .info-row-item b { color: var(--text-main); text-align: left; }
         
-        .notes-view-box { position: relative; background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 11px; color: var(--text-main); min-height: 45px; word-break: break-word; }
-        .note-delete-icon-btn { width: 100%; margin-top: 5px; padding: 8px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; font-size: 11px; font-weight: bold; cursor: pointer; display: none; align-items: center; justify-content: center; gap: 5px; transition: 0.2s; }
-        .note-delete-icon-btn:hover { background: var(--danger); color: white; }
+        .status-dot { inline-size: 8px; block-size: 8px; border-radius: 50%; margin-inline-start: 6px; display: inline-block; vertical-align: middle; }
 
-        .sidebar-stats-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 11px; display: flex; flex-direction: column; gap: 6px; }
-        .sidebar-stats-card span { display: flex; justify-content: space-between; color: var(--text-dim); }
-        .sidebar-stats-card b { color: var(--text-main); }
-
-        .theme-select-box { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); padding: 10px; border-radius: 12px; }
-        
-        .btn-logout { margin-top: auto; width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; }
+        .btn-logout { margin-top: auto; width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 190; display: none; }
 
-        .app-container { width: 100%; max-width: 480px; padding: 15px 12px 100px; z-index: 5; display: flex; flex-direction: column; gap: 15px; position: relative; }
+        /* تم تعديل الهامش السفلي لأن المنيو السفلي اتلغى تماماً والصفحة بقت مرتاحة */
+        .app-container { width: 100%; max-width: 480px; padding: 20px 16px 40px; z-index: 5; display: flex; flex-direction: column; gap: 18px; position: relative; }
 
         .card {
-            background: var(--bg-card); border-radius: var(--radius); padding: 18px; 
-            border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
-            box-shadow: var(--neon-shadow), inset 0 1px 2px rgba(255,255,255,0.05); 
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background: var(--bg-card); border-radius: var(--radius); padding: 22px; 
+            border: 1px solid var(--border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            box-shadow: var(--card-glow), var(--neon-shadow); 
+            transition: all 0.3s ease;
         }
 
-        .login-box { background: var(--bg-card); border-radius: var(--radius); padding: 25px 20px; border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); box-shadow: var(--neon-shadow); width: 100%; }
+        .system-smart-alert-banner {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(255, 107, 0, 0.1) 100%);
+            border: 1px solid var(--danger); padding: 12px 16px; border-radius: 16px;
+            font-size: 12px; font-weight: bold; color: #fca5a5; display: none; align-items: center; gap: 10px;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); animation: pulseAlert 2s infinite ease-in-out;
+        }
+        @keyframes pulseAlert { 0% { opacity: 0.9; } 50% { opacity: 1; box-shadow: 0 0 25px rgba(239, 68, 68, 0.4); } 100% { opacity: 0.9; } }
+
+        .login-box { background: var(--bg-card); border-radius: var(--radius); padding: 30px 24px; border: 1px solid var(--border); box-shadow: var(--card-glow); width: 100%; margin-top: 40px; }
+        
+        .project-selector-card { display: none; }
+        .project-selector-card.visible-now { display: block !important; }
         .project-selector-card.hide-completely { display: none !important; }
         
         .main-content { display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; width: 100%; }
         .main-content.visible { display: flex !important; flex-direction: column; gap: 15px; opacity: 1; transform: translateY(0); }
 
-        .label-group label { display: block; margin-bottom: 6px; font-size: 12px; color: var(--text-dim); font-weight: bold; }
+        .label-group label { display: block; margin-bottom: 8px; font-size: 12px; color: var(--text-dim); font-weight: bold; }
         
         .input-with-voice-holder { position: relative; width: 100%; display: flex; align-items: center; }
-        .input-ui { width: 100%; background-color: rgba(15, 23, 42, 0.04); border: 1px solid var(--border); border-radius: 12px; padding: 12px; color: var(--text-main); font-size: 14px; font-family: inherit; outline: none; transition: 0.2s; }
-        [data-theme="dark"] .input-ui { background-color: rgba(15, 23, 42, 0.5); }
-        [data-theme="oled"] .input-ui { background-color: rgba(255, 255, 255, 0.03); }
-        .input-ui:focus { border-color: var(--primary); }
+        .input-ui { width: 100%; background-color: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 16px; padding: 14px 16px; color: var(--text-main); font-size: 14px; font-family: inherit; outline: none; transition: 0.2s ease; }
+        .input-ui:focus { border-color: var(--primary); background-color: rgba(255,255,255,0.06); box-shadow: 0 0 12px var(--glow); }
         
-        .voice-mic-btn { position: absolute; left: 12px; background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; transition: 0.2s; padding: 5px; z-index: 10; }
-        .voice-mic-btn.listening { color: var(--danger); animation: micPulse 1s infinite alternate; }
-        @keyframes micPulse { 100% { opacity: 0.4; transform: scale(1.1); } }
+        .voice-mic-btn { position: absolute; left: 12px; background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; padding: 5px; z-index: 10; }
 
         .custom-dropdown-box { position: relative; width: 100%; }
         .dropdown-selected-trigger {
-            width: 100%; padding: 12px; background: rgba(15, 23, 42, 0.04); border: 1px solid var(--border); 
-            border-radius: 12px; color: var(--primary); font-weight: bold; font-size: 14px; cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center; transition: all 0.2s;
+            width: 100%; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); 
+            border-radius: 16px; color: var(--primary); font-weight: 700; font-size: 14px; cursor: pointer;
+            display: flex; justify-content: space-between; align-items: center; transition: 0.2s;
         }
         .custom-dropdown-box.open .dropdown-selected-trigger { border-color: var(--primary); }
 
         .dropdown-options-list {
             position: absolute; top: calc(100% + 5px); left: 0; width: 100%; max-height: 200px; overflow-y: auto;
-            background: var(--bg-body); border: 1px solid var(--border); border-radius: 12px; z-index: 100;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: none; flex-direction: column; padding: 5px;
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); opacity: 0; transform: translateY(-5px);
-            transition: opacity 0.2s ease, transform 0.2s ease;
+            background: #090d1a; border: 1px solid var(--border); border-radius: 14px; z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: none; flex-direction: column; padding: 6px;
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
         }
-        .custom-dropdown-box.open .dropdown-options-list { display: flex; opacity: 1; transform: translateY(0); }
-        .dropdown-option-item { padding: 11px 14px; font-size: 13px; font-weight: bold; color: var(--text-main); cursor: pointer; border-radius: 8px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+        .custom-dropdown-box.open .dropdown-options-list { display: flex; }
+        
+        /* تصميم صفوف كروت اختيار المشاريع لإضافة زر المسح النهائي للمكتمل */
+        .dropdown-option-item { padding: 11px 14px; font-size: 13px; font-weight: bold; color: var(--text-main); cursor: pointer; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
         .dropdown-option-item:hover { background: rgba(255, 107, 0, 0.12); color: var(--primary); }
+        .dropdown-item-text-zone { display: flex; align-items: center; gap: 8px; flex: 1; }
+        .project-hard-trash-btn { color: var(--text-dim); padding: 4px 8px; border-radius: 6px; transition: 0.2s; }
+        .project-hard-trash-btn:hover { color: var(--danger) !important; background: rgba(239, 68, 68, 0.15); }
 
         .quick-chips-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-        .cash-chip { background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255, 255, 255, 0.12); padding: 7px 14px; border-radius: 10px; font-size: 11px; color: var(--text-main); font-weight: bold; cursor: pointer; transition: all 0.2s; }
+        .cash-chip { background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255, 255, 255, 0.12); padding: 7px 14px; border-radius: 10px; font-size: 11px; color: var(--text-main); font-weight: bold; cursor: pointer; }
         .cash-chip:active { transform: scale(0.9); background: var(--primary); color: white; }
 
-        .stats-hud-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; }
-        .hud-box { background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255,255,255,0.1); padding: 12px 4px; border-radius: 14px; text-align: center; box-shadow: inset 0 3px 6px rgba(255,255,255,0.08); }
-        .hud-box.prime { border: 1px solid rgba(255, 107, 0, 0.4); background: linear-gradient(135deg, rgba(255, 107, 0, 0.12) 0%, rgba(255, 107, 0, 0.02) 100%); }
-        .hud-box h4 { margin: 0; font-size: 10px; color: var(--text-dim); font-weight: bold; }
-        .hud-box .val { margin: 4px 0 0; font-size: 12px; font-weight: 900; white-space: nowrap; }
+        .stats-hud-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+        .hud-box { 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid var(--border); padding: 16px 8px; border-radius: 18px; text-align: center; 
+            transition: all 0.3s; 
+        }
+        .hud-box.prime { border-color: rgba(16, 185, 129, 0.2); background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(3, 7, 18, 0.2) 100%); }
+        .hud-box h4 { margin: 0; font-size: 11px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .hud-box .val { margin: 6px 0 0; font-size: 16px; font-weight: 900; }
 
-        .hud-progress-wrapper { width: 100%; background: rgba(255,255,255,0.04); height: 5px; border-radius: 10px; overflow: hidden; margin-top: -5px; border: 1px solid var(--border); }
+        .hud-progress-wrapper { width: 100%; background: rgba(255,255,255,0.04); height: 6px; border-radius: 10px; overflow: hidden; margin-top: -4px; border: 1px solid var(--border); }
         .hud-progress-bar { width: 0%; height: 100%; background: var(--primary); transition: width 0.7s ease; }
 
         .filter-pills-container { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 8px; width: 100%; -webkit-overflow-scrolling: touch; }
         .filter-pills-container::-webkit-scrollbar { display: none; }
-        .pill-btn { background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255,255,255,0.08); padding: 7px 15px; border-radius: 20px; color: var(--text-dim); font-size: 11px; font-weight: bold; cursor: pointer; white-space: nowrap; }
-        .pill-btn.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: rgba(255,255,255,0.25); transform: translateY(-1px); }
+        .pill-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 10px 18px; border-radius: 25px; color: var(--text-dim); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+        .pill-btn.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: transparent; box-shadow: 0 4px 15px var(--glow); }
 
-        .tabs { display: flex; background: rgba(15, 23, 42, 0.05); padding: 4px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px; }
-        .tab-btn { flex: 1; padding: 11px; border: none; background: none; color: var(--text-dim); font-weight: bold; font-size: 13px; border-radius: 9px; cursor: pointer; transition: all 0.2s; }
-        .tab-btn.active { background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 100%); color: var(--primary); border: 1px solid rgba(255,255,255,0.15); }
+        .eng-filter-wrapper { display: flex; gap: 5px; overflow-x: auto; padding: 2px 0 6px; width: 100%; -webkit-overflow-scrolling: touch; border-bottom: 1px solid var(--border); margin-bottom: 5px; }
+        .eng-filter-wrapper::-webkit-scrollbar { display: none; }
+        .eng-pill { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 5px 12px; border-radius: 14px; color: var(--text-dim); font-size: 10px; font-weight: bold; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+        .eng-pill.active { background: rgba(14, 165, 233, 0.15); color: var(--info); border-color: var(--info); }
 
-        .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 14px; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; box-shadow: 0 6px 20px var(--glow); transition: all 0.2s; }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .tabs { display: flex; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 18px; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: none; color: var(--text-dim); font-weight: 700; font-size: 13px; border-radius: 14px; cursor: pointer; transition: 0.2s; }
+        .tab-btn.active { background: rgba(255, 255, 255, 0.07); color: var(--primary); box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+
+        .icon-selector-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; width: 100%; }
+        .icon-selector-item {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 18px;
+            padding: 12px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 8px; cursor: pointer; color: var(--text-dim); transition: 0.2s ease;
+        }
+        .icon-selector-item i { font-size: 20px; }
+        .icon-selector-item span { font-size: 10px; font-weight: 700; }
+        .icon-selector-item.selected {
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(255, 107, 0, 0.03) 100%);
+            border-color: var(--primary); color: var(--primary); box-shadow: 0 0 15px rgba(255, 107, 0, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .btn-primary { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 16px; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; transition: 0.2s; box-shadow: 0 6px 20px var(--glow); }
+        .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
 
         .logs-list { max-height: 380px; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px; }
-        .swipe-item-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 14px; margin-bottom: 9px; background: #0c1524; touch-action: pan-y; }
-        
-        .swipe-action-zone { position: absolute; top: 0; height: 100%; width: 75px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; cursor: pointer; z-index: 1; }
-        .swipe-action-delete { left: 0; background: var(--danger); border-top-left-radius: 14px; border-bottom-left-radius: 14px; }
-        .swipe-action-edit { right: 0; background: var(--info); border-top-right-radius: 14px; border-bottom-right-radius: 14px; }
+        .swipe-item-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 18px; margin-bottom: 10px; }
 
         .log-item { 
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(15, 23, 42, 0.2) 100%);
-            padding: 12px; border: 1px solid rgba(255,255,255,0.06); width: 100%; position: relative; z-index: 2;
-            display: flex; justify-content: space-between; align-items: center; background-color: #0d1527;
-            will-change: transform; transition: transform 0.2s ease-out;
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            padding: 14px 16px; border: 1px solid var(--border); width: 100%; border-radius: 18px;
+            display: flex; justify-content: space-between; align-items: center; background-color: #0f1322;
         }
-        [data-theme="light"] .log-item { background: #f1f5f9; }
-        
-        .log-item.income { border-left: 4px solid var(--success); }
-        .log-item.expense { border-left: 4px solid var(--danger); }
-        .log-info h5 { margin: 0; font-size: 13px; font-weight: 700; color: var(--text-main); }
-        .log-info p { margin: 3px 0 0; font-size: 10px; color: var(--text-dim); }
-        
-        .log-amount-holder { display: flex; align-items: center; gap: 12px; text-align: left; }
-        .log-amount-data { display: flex; flex-direction: column; }
-        .log-amount-data .amt { display: block; font-size: 14px; font-weight: 800; }
-        .log-amount-data .date { font-size: 9px; color: var(--text-dim); }
-        
-        .quick-item-trash-btn { color: var(--text-dim); cursor: pointer; font-size: 13px; padding: 6px; transition: color 0.2s; }
-        .quick-item-trash-btn:hover { color: var(--danger); }
+        .log-item.income { border-right: 4px solid var(--success); }
+        .log-item.expense { border-right: 4px solid var(--danger); }
+        .log-info h5 { margin: 0; font-size: 14px; font-weight: 700; color: var(--text-main); }
+        .log-info p { margin: 4px 0 0; font-size: 11px; color: var(--text-dim); font-weight: 600; }
+        .log-amount-holder { display: flex; align-items: center; gap: 10px; }
+        .log-amount-data .amt { display: block; font-size: 15px; font-weight: 900; text-align: left; }
+        .log-amount-data .date { font-size: 10px; color: var(--text-dim); text-align: left; display: block; margin-top: 2px; }
 
-        .custom-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .custom-modal { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid var(--border); padding: 22px; border-radius: var(--radius); width: 100%; max-width: 350px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
-        .btn-modal-confirm { padding: 12px; background: var(--danger); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        .btn-modal-cancel { padding: 12px; background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border); border-radius: 10px; font-weight: bold; cursor: pointer; }
-
-        .undo-toast-holder {
-            position: fixed; bottom: 95px; left: 50%; transform: translateX(-50%) translateY(100px);
-            width: 88%; max-width: 400px; padding: 12px 18px; background: rgba(15, 23, 42, 0.9);
-            border: 1px solid var(--primary); border-radius: 16px; backdrop-filter: blur(20px);
-            display: flex; justify-content: space-between; align-items: center; z-index: 2000;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .undo-toast-holder.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .undo-toast-btn { background: none; border: none; color: var(--revenue-color); font-weight: 900; font-size: 13px; cursor: pointer; font-family: inherit; }
-
-        .bottom-nav-dock { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 440px; height: 64px; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.12); border-radius: 30px; box-shadow: 0 12px 35px rgba(0,0,0,0.5); z-index: 180; display: none; align-items: center; justify-content: space-around; padding: 0 10px; }
-        .bottom-nav-dock.visible { display: flex; }
-        .dock-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-dim); text-decoration: none; cursor: pointer; width: 50px; }
-        .dock-item i { font-size: 18px; }
-        .dock-item span { font-size: 9px; font-weight: bold; }
-        .dock-item.active-item { color: var(--primary); text-shadow: 0 0 10px var(--glow); }
-
-        .calc-trigger-btn { position: fixed; bottom: 95px; right: 20px; width: 45px; height: 45px; background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%); border: 1px solid rgba(255,255,255,0.25); border-radius: 50%; color: white; font-size: 18px; display: none; align-items: center; justify-content: center; z-index: 175; cursor: pointer; }
+        /* تعديل: تعديل الـ bottom لزرار الـ FAB العائم بعد إلغاء المنيو السفلي */
+        .calc-trigger-btn { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%); border: 1px solid rgba(255,255,255,0.25); border-radius: 50%; color: white; font-size: 18px; display: none; align-items: center; justify-content: center; z-index: 175; cursor: pointer; }
         .calc-trigger-btn.visible { display: flex; }
-        .calc-panel { position: fixed; bottom: 155px; right: 20px; width: 240px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px; z-index: 176; display: none; flex-direction: column; padding: 10px; }
+        .calc-panel { position: fixed; bottom: 80px; right: 20px; width: 240px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px; z-index: 176; display: none; flex-direction: column; padding: 10px; }
         .calc-screen { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 10px; border-radius: 10px; text-align: left; font-size: 16px; font-weight: bold; color: var(--text-main); min-height: 42px; word-break: break-all; margin-bottom: 8px; }
         .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
         .calc-btn { padding: 10px 5px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-main); font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 13px; }
         .calc-btn:active { background: var(--primary); color: white; }
-        .calc-btn.op { background: rgba(255, 107, 0, 0.15); color: var(--primary); }
-        .calc-btn.action { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
 
         .loading-shimmer { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: var(--bg-body); opacity: 0.95; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
+        .project-indicators-edit-grid { display: flex; flex-direction: column; gap: 12px; text-align: right; width: 100%; margin-top: 10px; }
+
+        .floating-action-fab {
+            position: fixed; bottom: 25px; left: 24px; width: 56px; height: 56px;
+            background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%);
+            border: none; border-radius: 50%; color: white;
+            font-size: 22px; display: none; align-items: center; justify-content: center;
+            box-shadow: 0 10px 25px var(--glow); z-index: 9999 !important; cursor: pointer;
+        }
+        .floating-action-fab.visible { display: flex !important; }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -315,20 +330,12 @@
 
     <div class="bg-fixed"></div>
 
-    <div class="ptr-element" id="ptrIndicator">
-         <i class="fas fa-cog" id="ptrIcon"></i>
-         <span id="ptrText">اسحب لتأكيد المزامنة ⚡</span>
-    </div>
-
     <div class="loading-shimmer" id="loading">
-        <i class="fas fa-cog fa-spin" style="font-size: 35px; color: var(--primary);"></i>
-        <p style="margin-top: 12px; font-weight: bold; font-size: 13px;">مزامنة التدفق المالي... ⚡</p>
+        <i class="fas fa-cog fa-spin" style="font-size: 40px; color: var(--primary);"></i>
+        <p style="margin-top: 15px; font-weight: bold; font-size: 14px;">متابعة وضبط الهيكل المالي... ⚡</p>
     </div>
 
-    <div class="undo-toast-holder" id="undoToast">
-         <span style="font-size:12px; font-weight:bold; color:var(--text-main);" id="undoToastText">تم حذف البند.</span>
-         <button class="undo-toast-btn" onclick="executeUndoItemAction()">تراجع؟ (Undo)</button>
-    </div>
+    <div class="floating-action-fab" id="fastInputFab" onclick="scrollToTransactionForm()"><i class="fas fa-plus"></i></div>
 
     <div class="calc-trigger-btn" id="calcTrigger" onclick="toggleCalc()"><i class="fas fa-calculator"></i></div>
     <div class="calc-panel" id="calcPanel">
@@ -356,12 +363,42 @@
          </div>
     </div>
 
-    <div class="custom-modal-overlay" id="globalAppModal">
+    <div class="custom-modal-overlay" id="globalAppModal" style="display: none !important;">
          <div class="custom-modal" id="globalAppModalCard">
-              <i id="globalModalIcon" class="fas fa-info-circle" style="font-size: 26px; margin-bottom: 8px; color: var(--primary);"></i>
-              <h4 id="globalModalTitle" style="margin: 0 0 6px; font-weight: 900;">تنبيه النظام</h4>
-              <p id="globalModalBody" style="margin: 0; font-size: 12px; color: var(--text-dim);">الرسالة...</p>
-              <div id="globalModalInputContainer" style="display:none; margin-top:12px;">
+              <i id="globalModalIcon" class="fas fa-info-circle" style="font-size: 28px; margin-bottom: 10px; color: var(--primary);"></i>
+              <h4 id="globalModalTitle" style="margin: 0 0 8px; font-weight: 900;">تنبيه النظام</h4>
+              <p id="globalModalBody" style="margin: 0; font-size: 13px; color: var(--text-dim);">الرسالة...</p>
+              
+              <div id="projectIndicatorsFormContainer" class="project-indicators-edit-grid" style="display:none;">
+                   <div class="label-group">
+                        <label>اسم المهندس المسؤول</label>
+                        <input type="text" id="setupEngName" class="input-ui" placeholder="م / اسم المهندس">
+                   </div>
+                   <div class="label-group">
+                        <label>صاحب المشروع (المالك)</label>
+                        <input type="text" id="setupOwnerName" class="input-ui" placeholder="اسم العميل أو الشركة">
+                   </div>
+                   <div class="label-group" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                        <div>
+                             <label>عدد العمال بالموقع</label>
+                             <input type="number" id="setupLaborCount" class="input-ui" placeholder="0">
+                        </div>
+                        <div>
+                             <label>نسبة التقدم الإجمالية (%)</label>
+                             <input type="number" id="setupProgressPercent" class="input-ui" placeholder="%">
+                        </div>
+                   </div>
+                   <div class="label-group">
+                        <label>حالة موقع العمل النشط</label>
+                        <select id="setupProjectStatusSelect" class="input-ui" style="background:#090d1a;">
+                             <option value="جاري العمل">جاري العمل ونشط</option>
+                             <option value="متوقف مؤقتا">متوقف مؤقتاً</option>
+                             <option value="مكتمل">مكتمل ومؤرشف</option>
+                        </select>
+                   </div>
+              </div>
+
+              <div id="globalModalInputContainer" style="display:none; margin-top:14px;">
                    <input type="text" id="globalModalInputField" class="input-ui">
               </div>
               <div class="modal-btns">
@@ -371,93 +408,44 @@
          </div>
     </div>
 
-    <div class="custom-modal-overlay" id="projectInfoModal">
-         <div class="custom-modal" style="text-align: right;">
-              <h4 style="margin: 0 0 12px; font-weight: 900; color: var(--primary); text-align: center;"><i class="fas fa-edit"></i> تعديل بيانات المشروع</h4>
-              <div style="display: flex; flex-direction: column; gap: 8px;">
-                   <div class="label-group"><label>المهندس المسؤول</label><input type="text" id="infEng" class="input-ui"></div>
-                   <div class="label-group"><label>صاحب المشروع (العميل)</label><input type="text" id="infOwner" class="input-ui"></div>
-                   <div class="label-group"><label>عدد العمال الحالي بالموقع</label><input type="number" id="infLabor" class="input-ui"></div>
-                   <div class="label-group"><label>نسبة تقدم المشروع (%)</label><input type="number" id="infProgress" class="input-ui"></div>
-                   <div class="label-group"><label>تاريخ بدء العمل بالموقع</label><input type="date" id="infStart" class="input-ui"></div>
-                   <div class="label-group"><label>تاريخ الانتهاء المتوقع</label><input type="date" id="infEnd" class="input-ui"></div>
-              </div>
-              <div class="modal-btns">
-                   <button class="btn-modal-confirm" onclick="saveProjectInfoData()" style="background: var(--success);">حفظ التغييرات</button>
-                   <button class="btn-modal-cancel" onclick="closeProjectInfoModal()">إلغاء</button>
-              </div>
-         </div>
-    </div>
-
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
     <div class="sidebar" id="sidebarMenu">
-        <div class="sidebar-header">
-            <span style="font-weight: 900; color: var(--primary); font-size: 14px;">إدارة النظام</span>
+        <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+            <span style="font-weight: 900; color: var(--primary); font-size: 15px;">إدارة اللوحة</span>
             <button class="sidebar-close" onclick="toggleSidebar(false)"><i class="fas fa-times"></i></button>
         </div>
         <div class="sidebar-user-info"><i class="fas fa-user-hard-hat"></i><span id="sidebarUserName">م / اسم المهندس</span></div>
 
+        <a class="sidebar-link-btn" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank">
+            <i class="fas fa-money-bill-wave" style="color: var(--success);"></i>
+            <span>كشف مرتبات الإدارة</span>
+        </a>
+        <a class="sidebar-link-btn" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank">
+            <i class="fas fa-calendar-check" style="color: var(--info);"></i>
+            <span>كشف حضور وانصراف العمال</span>
+        </a>
+
         <div class="proj-info-sidebar-block" id="sidebarProjInfoBlock">
-             <div style="font-size: 12px; font-weight: 900; color: var(--primary); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 4px;">
-                  <span><i class="fas fa-circle-info"></i> معلومات عن المشروع</span>
-                  <button id="adminEditProjBtn" onclick="openProjectInfoModal()" style="background: none; border: none; color: var(--revenue-color); cursor: pointer; font-size: 11px; display: none;"><i class="fas fa-pen-to-square"></i> تعديل</button>
+             <div style="font-size: 12px; font-weight: 900; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 6px;">
+                  <span><i class="fas fa-circle-info"></i> مؤشرات وبيانات الموقع</span>
              </div>
+             <div class="info-row-item"><span>حالة الموقع:</span><b id="lblInfStatus">-</b></div>
              <div class="info-row-item"><span>المهندس المسؤول:</span><b id="lblInfEng">-</b></div>
              <div class="info-row-item"><span>صاحب المشروع:</span><b id="lblInfOwner">-</b></div>
              <div class="info-row-item"><span>عدد العمال الحالي:</span><b id="lblInfLabor">- عمال</b></div>
              <div class="info-row-item"><span>نسبة التقدم:</span><b id="lblInfProgress">-</b></div>
-             <div class="info-row-item"><span>تاريخ البدء بالموقع:</span><b id="lblInfStart">-</b></div>
-             <div class="info-row-item"><span>الانتهاء المتوقع:</span><b id="lblInfEnd">-</b></div>
-        </div>
-
-        <div class="engineer-notes-block" id="sidebarNotesBlock">
-             <div style="font-size: 12px; font-weight: 900; color: var(--primary); border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 6px; margin-bottom: 6px;">
-                  <i class="fas fa-clipboard-list"></i> ملاحظات المهندس المسؤول
-             </div>
-             <div id="adminNotesViewZone" style="display: none; flex-direction: column; gap: 4px; margin-bottom: 6px;">
-                  <div style="font-size: 9px; color: var(--revenue-color); font-weight: bold;" id="notesMetaLabel">بواسطة: -</div>
-                  <div class="notes-view-box" id="adminNotesContentText">لا توجد ملاحظات مسجلة اليوم...</div>
-                  <button class="note-delete-icon-btn" id="btnDeleteNote" onclick="triggerClearDailyNote()"><i class="fas fa-trash-can"></i> مسح الملاحظة الحالية</button>
-             </div>
-             <div id="engineerNotesInputZone" style="display: none; flex-direction: column; gap: 6px;">
-                  <textarea id="txtEngNote" class="input-ui" style="font-size: 11px; min-height: 60px; resize: none; padding: 8px;" placeholder="اكتب ملاحظات الموقع اليوم..."></textarea>
-                  <button class="btn-primary" style="padding: 8px; font-size: 11px; border-radius: 8px;" onclick="saveEngineerDailyNote()">حفظ الملاحظة اليومية</button>
-             </div>
-        </div>
-
-        <button class="btn-primary" id="sidebarAddProjectBtn" style="display:none; padding: 11px; font-size: 12px; margin-top: 5px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);" onclick="triggerAddCustomProjectModal()"><i class="fas fa-folder-plus"></i> إضافة موقع / مشروع جديد</button>
-
-        <button class="btn-primary" id="sidebarAddEmployeeBtn" style="display:none; padding: 11px; font-size: 12px; background: linear-gradient(135deg, var(--info) 0%, #0369a1 100%);" onclick="addCustomEmployee()"><i class="fas fa-user-plus"></i> إضافة مهندس جديد للنظام</button>
-
-        <div class="sidebar-stats-card">
-             <span>عملياتك المسجلة: <b id="sideTotalCount">0 عمليات</b></span>
-             <span>حالة المزامنة: <b>مباشرة وفورية ⚡</b></span>
-        </div>
-
-        <div class="theme-select-box">
-             <label style="font-size: 11px; font-weight: bold; color: var(--text-dim); display:block; margin-bottom:6px;">مظهر التطبيق المفضل</label>
-             <select class="input-ui" id="themeSelector" onchange="changeThemeMode(this.value)" style="font-size:12px; padding:8px;">
-                  <option value="dark">وضع ليلي سينمائي</option>
-                  <option value="light">وضع نهاري عالي التباين</option>
-                  <option value="oled">وضع فائق الظلام (OLED)</option>
-             </select>
+             <div class="info-row-item" style="display:none;"><span>حركات النشاط:</span><b id="sideTotalCount">0 عمليات</b></div>
         </div>
 
         <button class="btn-logout" onclick="triggerLogOut()"><i class="fas fa-door-open"></i> تسجيل الخروج</button>
     </div>
 
-    <div class="bottom-nav-dock" id="bottomDock">
-         <div class="dock-item active-item" onclick="switchDockTab('home')"><i class="fas fa-th-large"></i><span>الرئيسية</span></div>
-         <a class="dock-item" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank"><i class="fas fa-money-bill-wave"></i><span>المرتبات</span></a>
-         <a class="dock-item" href="https://docs.google.com/spreadsheets/d/1I9QkNu2qjRFUTJcMuL3qo5f7scQaxQT_t-OVdm7ujVI/edit" target="_blank"><i class="fas fa-calendar-alt"></i><span>الحضور</span></a>
-         <div class="dock-item" onclick="toggleSidebar(true)"><i class="fas fa-bars"></i><span>المزيد</span></div>
-         </div>
-
-    <header>
+    <header id="appGlobalHeader">
         <div class="header-right-holder"><button class="menu-trigger" id="menuBtn" onclick="toggleSidebar(true)"><i class="fas fa-bars"></i></button></div>
         <div class="logo"><h1>PERFECT STEEL</h1></div>
         <div class="header-left-holder">
+             <button class="theme-toggle-header-btn" id="headerThemeBtn" onclick="toggleThemeFast()"><i class="fas fa-moon"></i></button>
              <div class="user-site-column">
                   <span class="header-greet" id="dynamicGreeting"></span>
                   <div class="header-user-badge" id="headerUserBadge"><i class="fas fa-user-hard-hat"></i><span id="headerUserNameSpan">م / اسم المهندس</span></div>
@@ -469,80 +457,158 @@
     <div class="app-container" id="ptrTouchContainer">
         
         <div class="login-box" id="loginBox">
-            <div style="text-align: center; margin-bottom: 15px;">
-                 <i class="fas fa-user-shield" style="color: var(--primary); font-size: 26px;"></i>
-                 <h3 style="margin: 5px 0 0; font-weight: 900; font-size: 15px;">تسجيل دخول المهندسين</h3>
+            <div style="text-align: center; margin-bottom: 20px;">
+                 <i class="fas fa-user-shield" style="color: var(--primary); font-size: 32px; text-shadow: 0 0 15px var(--glow);"></i>
+                 <h3 style="margin: 8px 0 0; font-weight: 900; font-size: 16px;">بوابة المهندسين والموقع</h3>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
                  <input type="text" id="loginUsername" class="input-ui" placeholder="اسم المستخدم..">
                  <input type="password" id="loginPassword" class="input-ui" placeholder="••••">
-                 <button class="btn-primary" id="loginSubmitBtn" onclick="handleSecureLogin()">دخول للسيستم</button>
+                 <button class="btn-primary" id="loginSubmitBtn" onclick="handleSecureLogin()">ولوجه آمن للنظام</button>
             </div>
         </div>
 
         <div class="main-content" id="mainContent">
             
+            <div class="system-smart-alert-banner" id="smartAlertBanner" style="display: none;">
+                 <i class="fas fa-triangle-exclamation"></i>
+                 <span id="smartAlertText">تحذير السيولة الذكي...</span>
+            </div>
+
             <div class="card project-selector-card" id="projectSelectorCard">
                 <div class="label-group">
-                    <label><i class="fas fa-cubes" style="color: var(--primary);"></i> اختيار موقع العمل الحالي</label>
+                    <label><i class="fas fa-cubes" style="color: var(--primary);"></i> اختيار موقع العمل النشط</label>
                     <div class="custom-dropdown-box" id="customProjectDropdown">
-                         <div class="dropdown-selected-trigger" onclick="toggleCustomDropdown()">
-                              <span id="dropdownSelectedLabel">اختر المشروع للمتابعة..</span>
+                         <div class="dropdown-selected-trigger" onclick="toggleCustomDropdown('active')">
+                              <span id="dropdownSelectedLabel">اختر موقع العمل الشغال..</span>
                               <i class="fas fa-chevron-down"></i>
                          </div>
                          <div class="dropdown-options-list" id="dropdownOptionsList"></div>
                     </div>
                 </div>
-            </div>
 
-            <div class="card hidden-element" id="revenueCard" style="display: none;">
-                <div style="color: var(--revenue-color); font-weight: bold; font-size: 14px; margin-bottom: 10px; text-align: center;"><i class="fas fa-hand-holding-dollar"></i> إدخال دفعة من شركة (صلاحية الإدارة المالية)</div>
-                <input type="number" inputmode="numeric" id="companyAmt" class="input-ui" placeholder="المبلغ المستلم">
-                <div class="quick-chips-row">
-                     <div class="cash-chip" onclick="quickCompanyCash(5000)">+5,000</div>
-                     <div class="cash-chip" onclick="quickCompanyCash(10000)">+10,000</div>
+                <div class="label-group" style="margin-top: 18px;">
+                    <label><i class="fas fa-archive" style="color: var(--revenue-color);"></i> أرشيف المواقع المغلقة والتاريخية</label>
+                    <div class="custom-dropdown-box" id="customArchiveDropdown">
+                         <div class="dropdown-selected-trigger" style="color: var(--revenue-color); border-color: rgba(255,204,0,0.15);" onclick="toggleCustomDropdown('archive')">
+                              <span id="archiveDropdownSelectedLabel">تصفح مشاريع الأرشيف..</span>
+                              <i class="fas fa-chevron-down"></i>
+                         </div>
+                         <div class="dropdown-options-list" id="archiveDropdownOptionsList"></div>
+                    </div>
                 </div>
-                <select id="companyDesc" class="input-ui" style="margin-top: 10px;">
-                    <option value="دفعة مقدمة (Down Payment)">دفعة مقدمة (Down Payment)</option>
-                    <option value="مستخلص جاري (Progress Payment)">مستخلص جاري (Progress Payment)</option>
-                </select>
-                <button class="btn-primary" id="companySubmitBtn" style="background-color: var(--revenue-color); color: #000; margin-top: 10px;" onclick="submitCompanyRevenue()">تأكيد حفظ الدفعة</button>
             </div>
 
-            <div class="hidden-element" id="financeContent" style="display: none; flex-direction: column; gap: 15px;">
+            <div class="hidden-element" id="financeContent" style="display: none; flex-direction: column; gap: 18px;">
                 
-                <div class="stats-grid stats-hud-row">
-                    <div class="hud-box prime"><h4>الصافي المتبقي</h4><div class="val" id="netBalance" style="color: var(--primary);">0</div></div>
-                    <div class="hud-box"><h4>الإيرادات (+)</h4><div class="val" id="totalIncome" style="color: var(--success);">0</div></div>
-                    <div class="hud-box"><h4>المصروفات (-)</h4><div class="val" id="totalExpense" style="color: var(--danger);">0</div></div>
+                <div id="pdfExportArea" style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
+                    <div style="display:none; text-align:center; padding:10px 0; color: #ff6b00;" id="pdfHeaderLogo">
+                        <h2 style="margin:0; font-weight:900; font-size:20px;">PERFECT STEEL PRO SYSTEM REPORT</h2>
+                        <p style="margin:2px 0 0; font-size:12px; color:#666;" id="pdfProjectMeta">كشف تدفق حركة المستخلص الميداني</p>
+                    </div>
+
+                    <div class="stats-grid stats-hud-row">
+                        <div class="hud-box prime" id="hudCardNet"><h4>الصافي المتبقي</h4><div class="val" id="netBalance" style="color: var(--success);">0</div></div>
+                        <div class="hud-box"><h4>الإيرادات (+)</h4><div class="val" id="totalIncome" style="color: var(--success);">0</div></div>
+                        <div class="hud-box"><h4>المصروفات (-)</h4><div class="val" id="totalExpense" style="color: var(--danger);">0</div></div>
+                    </div>
+                    <div class="hud-progress-wrapper"><div class="hud-progress-bar" id="hudProgressBar"></div></div>
                 </div>
-                <div class="hud-progress-wrapper"><div class="hud-progress-bar" id="hudProgressBar"></div></div>
+
+                <div class="card chart-holder-card" id="analyticsChartCard">
+                     <div class="chart-container-fixed">
+                          <canvas id="perfectSteelPieChart"></canvas>
+                     </div>
+                     <div class="chart-legends-wrap" style="flex:1; padding-right:15px;">
+                          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-weight:700; font-size:11px;">
+                               <span style="color:var(--primary)">■ خامات</span>
+                               <span style="color:var(--info)">■ عمالة</span>
+                               <span style="color:var(--revenue-color)">■ نقل</span>
+                               <span style="color:var(--danger)">■ نثريات</span>
+                          </div>
+                     </div>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; width:100%;">
+                     <button class="btn-primary" onclick="generateProjectPDFReport()" style="padding:12px; font-size:12px; border-radius:14px; background: linear-gradient(135deg, #374151 0%, #111827 100%); box-shadow:none;"><i class="fas fa-file-pdf" style="color:#ef4444;"></i> طباعة مستخلص PDF</button>
+                     <button class="btn-primary" onclick="toggleLaborSubPanel()" style="padding:12px; font-size:12px; border-radius:14px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); box-shadow:none;"><i class="fas fa-users-gear"></i> كشوف حسابات العمالة</button>
+                </div>
+                
+                <div style="display:grid; grid-template-columns: 1.3fr 1fr; gap:10px; width:100%; margin-top:-8px;">
+                     <button class="btn-primary" onclick="exportToExcelCSVSheet()" style="padding:12px; font-size:12px; border-radius:14px; background: linear-gradient(135deg, #10b981 0%, #047857 100%); box-shadow:none;"><i class="fas fa-file-excel"></i> توريد شيت إكسيل (CSV)</button>
+                     <button class="btn-primary" onclick="openProjectIndicatorsEditModal()" style="padding:12px; font-size:12px; border-radius:14px; background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%); box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);"><i class="fas fa-sliders"></i> تعديل المؤشرات</button>
+                </div>
+
+                <div class="card" id="laborSubPanel" style="display:none; flex-direction:column; gap:12px; border-color: rgba(2, 132, 199, 0.25);">
+                     <h4 style="margin:0; font-size:13px; font-weight:900; color:var(--info);"><i class="fas fa-people-carry-box"></i> كشوف مسحوبات عمال الموقع</h4>
+                     <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:8px;">
+                          <input type="text" id="labWorkerName" class="input-ui" style="padding:10px; font-size:12px;" placeholder="اسم المقاول أو العامل..">
+                          <input type="text" id="labAmount" class="input-ui" style="padding:10px; font-size:12px;" placeholder="المبلغ المسحوب..">
+                     </div>
+                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                          <button class="btn-primary" onclick="saveLaborEntry()" style="padding:10px; font-size:12px; border-radius:12px;"><i class="fas fa-plus"></i> إثبات قيد السحب</button>
+                          <button class="btn-primary" onclick="transferLaborToExpenses()" style="padding:10px; font-size:12px; border-radius:12px; background:var(--success);"><i class="fas fa-share-from-square"></i> ترحيل للمصاريف</button>
+                     </div>
+                     <button class="btn-primary" onclick="generateLaborExpensesPDFReport()" style="padding:10px; font-size:12px; border-radius:12px; background:linear-gradient(135deg, #dc2626 0%, #991b1b 100%); box-shadow:none;"><i class="fas fa-file-pdf"></i> ملخص PDF لكشف العمالة</button>
+                     <div id="laborExpensesPdfHiddenArea" style="display:none; flex-direction:column; background:#030712; padding:20px; color:white; width:100%;">
+                          <div style="text-align:center; border-bottom: 2px solid #ff6b00; padding-bottom:10px; margin-bottom:12px;">
+                               <h2 style="margin:0; font-size:18px; color:#ff6b00; font-weight:900;">PERFECT STEEL PRO</h2>
+                               <h3 style="margin:4px 0 0; font-size:14px;" id="laborExpensesPdfTitleMeta">ملخص بند مسحوبات ويوميات العمالة</h3>
+                          </div>
+                          <div id="laborExpensesPdfTablePlaceholder"></div>
+                     </div>
+                     <div id="laborEntriesList" style="max-height:160px; overflow-y:auto; font-size:12px; display:flex; flex-direction:column; gap:6px; margin-top:6px;"></div>
+                </div>
 
                 <div class="filter-pills-container" id="filterPillsWrapper">
-                     <button class="pill-btn active" id="pill-all" onclick="filterLogs('all')">الكل</button>
+                     <button class="pill-btn active" id="pill-all" onclick="filterLogs('all')">كل البنود</button>
                      <button class="pill-btn" id="pill-materials" onclick="filterLogs('خامات')">خامات Steel</button>
                      <button class="pill-btn" id="pill-labor" onclick="filterLogs('عمالة')">يوميات وعمالة</button>
                      <button class="pill-btn" id="pill-nethria" onclick="filterLogs('نثريات')">نثريات موقع</button>
                      <button class="pill-btn" id="pill-shipping" onclick="filterLogs('نقل')">نقل وتوريد</button>
                 </div>
 
-                <div class="card">
+                <div class="card" id="mainInputTransactionCard">
                     <div class="tabs">
-                        <button class="tab-btn active" id="incBtn" onclick="switchTab('income')">إيراد</button>
-                        <button class="tab-btn" id="expBtn" onclick="switchTab('expense')">مصروف</button>
+                        <button class="tab-btn active" id="incBtn" onclick="switchTab('income')">إيراد جديد (+)</button>
+                        <button class="tab-btn" id="expBtn" onclick="switchTab('expense')">مصروف جديد (-)</button>
                     </div>
                     <div id="inputForm">
-                        <div class="label-group" id="catGroup" style="display:none;">
-                             <label>تصنيف المصروف</label>
-                             <select id="expenseCategory" class="input-ui">
-                                 <option value="خامات">خامات Steel</option>
-                                 <option value="نثريات">نثريات موقع</option>
-                                 <option value="عمالة">يوميات وعمالة</option>
-                                 <option value="نقل">نقل وتوريد</option>
-                             </select>
+                        <div class="label-group" id="catGroup" style="display:none; margin-bottom: 12px;">
+                             <label>تصنيف المصروف الفوري</label>
+                             <div class="icon-selector-grid">
+                                  <div class="icon-selector-item selected" id="item-cat-خامات" onclick="selectIconCategory('خامات')">
+                                       <i class="fas fa-layer-group" style="color:var(--primary)"></i><span>خامات Steel</span>
+                                  </div>
+                                  <div class="icon-selector-item" id="item-cat-عمالة" onclick="selectIconCategory('عمالة')">
+                                       <i class="fas fa-user-helmet" style="color:var(--info)"></i><span>يوميات عمال</span>
+                                  </div>
+                                  <div class="icon-selector-item" id="item-cat-نقل" onclick="selectIconCategory('نقل')">
+                                       <i class="fas fa-truck-ramp-box" style="color:var(--revenue-color)"></i><span>نقل وتوريد</span>
+                                  </div>
+                                  <div class="icon-selector-item" id="item-cat-نثريات" onclick="selectIconCategory('نثريات')">
+                                       <i class="fas fa-wallet" style="color:var(--danger)"></i><span>نثريات موقع</span>
+                                  </div>
+                             </div>
+                             <input type="hidden" id="expenseCategory" value="خامات">
                          </div>
+
+                        <div class="label-group" id="incomeCatGroup" style="display:none; margin-bottom: 12px;">
+                             <label>تصنيف حركة الإيراد</label>
+                             <div class="icon-selector-grid" style="grid-template-columns: 1fr 1fr;">
+                                  <div class="icon-selector-item selected" id="item-inc-عام" onclick="selectIconIncomeCategory('عام')">
+                                       <i class="fas fa-money-bill-trend-up" style="color:var(--success)"></i><span>إيراد عام للموقع</span>
+                                  </div>
+                                  <div class="icon-selector-item" id="item-inc-دفعة_شركة" onclick="selectIconIncomeCategory('دفعة شركة')">
+                                       <i class="fas fa-building-columns" style="color:var(--info)"></i><span>دفعة شركة مركزية</span>
+                                  </div>
+                             </div>
+                             <input type="hidden" id="incomeCategory" value="عام">
+                        </div>
+
                         <div class="label-group">
-                            <input type="number" inputmode="numeric" id="amount" class="input-ui" placeholder="أدخل المبلغ (ج.م)">
+                            <label>المبلغ (يدعم العمليات الحسابية المباشرة مثل 2500+450+1200)</label>
+                            <input type="text" id="amount" class="input-ui" placeholder="أدخل القيمة المادية هنا..">
                             <div class="quick-chips-row">
                                  <div class="cash-chip" onclick="quickCash(50)">+50</div>
                                  <div class="cash-chip" onclick="quickCash(100)">+100</div>
@@ -550,20 +616,23 @@
                                  <div class="cash-chip" onclick="quickCash(1000)">+1,000</div>
                             </div>
                         </div>
-                        <div class="label-group" style="margin-top: 10px;">
+                        
+                        <div class="label-group" style="margin-top: 12px;">
                             <div class="input-with-voice-holder">
-                                 <input type="text" id="desc" class="input-ui" placeholder="اكتب البيان اللحظي...">
+                                 <input type="text" id="desc" class="input-ui" placeholder="اكتب البيان وسيتصنف ذكياً تلقائياً بناءً على كلماتك..." oninput="handleSmartAutoCat(this.value)">
                                  <button class="voice-mic-btn" id="micBtn-desc" onclick="startVoiceRecognition('desc')"><i class="fas fa-microphone"></i></button>
                             </div>
                         </div>
-                        <button class="btn-primary" id="transactionSubmitBtn" onclick="handleAdd()">حفظ العملية اللحظية</button>
+                        <button class="btn-primary" id="transactionSubmitBtn" onclick="handleAdd()" style="margin-top:5px;">حفظ وتقييد العملية الحالية</button>
                     </div>
                 </div>
 
                 <div class="input-with-voice-holder">
-                     <input type="text" id="liveSearchInput" class="input-ui" placeholder="🔍 ابحث فوراً عن أي بيان..." oninput="handleLiveSearch()" style="border-radius:14px; padding-right:38px; padding-left:42px; font-size:12px;">
+                     <input type="text" id="liveSearchInput" class="input-ui" placeholder="🔍 ابحث بالكلمة عن أي بيان أو قيد مالي بالموقع..." oninput="handleLiveSearch()" style="border-radius:16px; padding-right:42px; padding-left:42px; font-size:13px;">
                      <button class="voice-mic-btn" id="micBtn-search" onclick="startVoiceRecognition('liveSearchInput')"><i class="fas fa-microphone"></i></button>
                 </div>
+
+                <div class="eng-filter-wrapper" id="engFilterWrapper"></div>
                 <div class="logs-list" id="logBody"></div>
             </div>
         </div>
@@ -584,36 +653,199 @@
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        let currentMode = 'income'; let globalTransactions = []; let activeFilter = 'all'; let calcExpression = ""; let currentUser = null; let lastDeletedItemData = null; 
-        let PROJECT_LIST = ["New Cairo", "Old Cairo", "Helwan", "Ismailia"]; let SELECTED_PROJECT = "";
+        let currentMode = 'income'; let globalTransactions = []; let activeFilter = 'all'; let activeEngineerFilter = 'all'; let currentUser = null; 
+        let PROJECT_LIST = ["New Cairo", "Old Cairo", "Helwan", "Ismailia"]; 
+        let SELECTED_PROJECT = ""; let firebaseTransactionsRef = null; let firebaseProjectInfoRef = null;
+        let globalProjectStatuses = {}; let currentProjectLaborList = []; let chartInstance = null; let calcExpression = "";
+        let currentProjectLoadedDataSnapshot = {}; 
 
-        const ACCOUNTS = {
-            "ahmed": { pass: "222", role: "admin", canSeeAllRevenue: true, canSeeAllFinancials: true, label: "أحمد" }, 
-            "mostafa": { pass: "1519", role: "admin", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "مصطفى" }, 
-            "mohamed": { pass: "333", role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "محمد" },
-            "tawfik": { pass: "444", role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "توفيق" }
+        const ACCOUNTS_ROLES = {
+            "ahmed": { role: "admin", canSeeAllRevenue: true, canSeeAllFinancials: true, label: "أحمد" }, 
+            "mostafa": { role: "admin", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "مصطفى" }, 
+            "mohamed": { role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "محمد" },
+            "tawfik": { role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "توفيق" }
         };
 
         window.addEventListener('DOMContentLoaded', () => { 
             const savedTheme = localStorage.getItem("theme") || "dark";
-            document.documentElement.setAttribute("data-theme", savedTheme); document.getElementById("themeSelector").value = savedTheme;
-            loadDraftInputs(); autoLoginSession(); renderCustomDropdownOptions(); setupDropdownOutsideClickListener(); initPullToRefreshEngine(); setupGlobalScreenCloseListeners(); 
+            document.documentElement.setAttribute("data-theme", savedTheme);
+            updateHeaderThemeToggleIcon(savedTheme);
+            loadDraftInputs(); autoLoginSession(); listenToGlobalProjectStatuses(); setupDropdownOutsideClickListener(); setupGlobalScreenCloseListeners(); checkAndSyncOfflineTransactions();
         });
 
-        function changeThemeMode(val) { document.documentElement.setAttribute("data-theme", val); localStorage.setItem("theme", val); }
-        function setDynamicGreeting(userLabel) {
-            let currentHour = new Date().getHours(); let greetingWord = "صباح الخير"; if (currentHour >= 12 && currentHour < 24) greetingWord = "مساء الخير";
-            document.getElementById("dynamicGreeting").innerText = `${greetingWord} يا بشمهندس ${userLabel} ☕`;
+        function triggerHapticFeedback() { if (window.navigator && window.navigator.vibrate) { window.navigator.vibrate(12); } }
+        function scrollToTransactionForm() { triggerHapticFeedback(); let form = document.getElementById("mainInputTransactionCard"); if(form) { form.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
+
+        function openProjectIndicatorsEditModal() {
+            triggerHapticFeedback();
+            document.getElementById("setupEngName").value = currentProjectLoadedDataSnapshot.engineer || "";
+            document.getElementById("setupOwnerName").value = currentProjectLoadedDataSnapshot.owner || "";
+            document.getElementById("setupLaborCount").value = currentProjectLoadedDataSnapshot.labor || "0";
+            document.getElementById("setupProgressPercent").value = currentProjectLoadedDataSnapshot.progress || "0";
+            document.getElementById("setupProjectStatusSelect").value = currentProjectLoadedDataSnapshot.status || "جاري العمل";
+
+            document.getElementById("projectIndicatorsFormContainer").style.display = "flex";
+            document.getElementById("globalModalInputContainer").style.display = "none";
+
+            showGlobalAppModal({
+                title: `تحديث بيانات: ${SELECTED_PROJECT}`,
+                body: "برجاء مراجعة وضبط مؤشرات الموقع الحالية للرفع والتحكم المالي الإلكتروني المباشر:",
+                icon: "fas fa-sliders", iconColor: "var(--purple)", confirmText: "حفظ المؤشرات", confirmColor: "var(--purple)",
+                onConfirm: function() {
+                    database.ref('project_info').child(SELECTED_PROJECT).update({
+                        engineer: document.getElementById("setupEngName").value.trim(),
+                        owner: document.getElementById("setupOwnerName").value.trim(),
+                        labor: document.getElementById("setupLaborCount").value.trim() || "0",
+                        progress: document.getElementById("setupProgressPercent").value.trim() || "0",
+                        status: document.getElementById("setupProjectStatusSelect").value
+                    }).then(() => { triggerHapticFeedback(); document.getElementById("projectIndicatorsFormContainer").style.display = "none"; });
+                }
+            });
+            document.getElementById("globalModalConfirmBtn").nextElementSibling.onclick = function() { document.getElementById("projectIndicatorsFormContainer").style.display = "none"; closeGlobalAppModal(); };
         }
 
-        function toggleCustomDropdown() { document.getElementById("customProjectDropdown").classList.toggle("open"); }
-        function renderCustomDropdownOptions() {
-            let listContainer = document.getElementById("dropdownOptionsList"); let html = "";
-            PROJECT_LIST.forEach(proj => { html += `<div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}')"><i class="fas fa-map-location-dot" style="color:var(--primary); font-size:11px;"></i> ${proj}</div>`; });
-            listContainer.innerHTML = html;
+        /* دالة جراحية لحذف المشروع نهائياً وحذف كافة العمليات المالية واليوميات والعمال المرتبطة به من السيرفر */
+        function triggerHardDeleteProject(projectName, event) {
+            if(event) event.stopPropagation(); // منع فتح المشروع عند الضغط على زر الحذف
+            triggerHapticFeedback();
+
+            showGlobalAppModal({
+                title: "⚠️ تدمير وحذف قيد المشروع نهائياً",
+                body: `هل أنت متأكد من مسح وإزالة موقع (${projectName}) نهائياً؟ هذا الأكشن سيمسح المشروع من الأرشيف، وسيمسح كافة الجداول المالية واليوميات المرتبطة به من السيرفر تماماً ومستحيل استعادتها!`,
+                icon: "fas fa-exclamation-triangle", iconColor: "var(--danger)", confirmText: "نعم، حذف نهائي ومسح داتا السيرفر", confirmColor: "var(--danger)",
+                onConfirm: function() {
+                    showLoad(true);
+                    // 1. مسح مؤشرات المشروع وبياناته العامة
+                    database.ref('project_info').child(projectName).remove();
+                    // 2. مسح سحبيات العمالة المؤقتة الخاصة به
+                    database.ref('project_labors').child(projectName).remove();
+                    
+                    // 3. مسح جميع العمليات والقيود المالية المرتبطة بالمشروع من السيرفر
+                    database.ref('transactions').once('value').then((snapshot) => {
+                        let data = snapshot.val();
+                        if(data) {
+                            for(let id in data) {
+                                if(data[id] && data[id].project === projectName) {
+                                    database.ref('transactions').child(id).remove();
+                                }
+                            }
+                        }
+                        showLoad(false);
+                        triggerHapticFeedback();
+                        alert(`✓ تم تدمير ومسح موقع (${projectName}) وجميع سجلاته المالية بنجاح من الـ Firebase.`);
+                    }).catch(() => showLoad(false));
+                }
+            });
         }
-        function selectCustomProjectOption(proj) { SELECTED_PROJECT = proj; document.getElementById("dropdownSelectedLabel").innerText = proj; document.getElementById("customProjectDropdown").classList.remove("open"); onProjectChange(proj); }
-        function setupDropdownOutsideClickListener() { document.addEventListener("click", (e) => { let dropdown = document.getElementById("customProjectDropdown"); if (dropdown && !dropdown.contains(e.target)) dropdown.classList.remove("open"); }); }
+
+        function handleSmartAutoCat(text) {
+            if(currentMode !== 'expense') return;
+            let val = text.toLowerCase();
+            let steelKeywords = ['حديد', 'صاج', 'زوايا', 'مسمار', 'مسامير', 'سلك', 'اليكترود', 'دهان', 'تنر', 'كمر', 'قطاعات', 'لوح', 'علب'];
+            let laborKeywords = ['يومية', 'يوميات', 'عامل', 'عمال', 'صنايعي', 'مقاول', 'مسحوب', 'مسحوبات', 'غفير'];
+            let shippingKeywords = ['نقل', 'نقلية', 'عربية', 'لوري', 'شحن', 'جرار', 'ونش'];
+            let nethriaKeywords = ['اكل', 'شاي', 'قهوة', 'مصاريف', 'سلكت', 'بنزين', 'زيت', 'فطار'];
+
+            if(steelKeywords.some(keyword => val.includes(keyword))) { selectIconCategory('خامات'); }
+            else if(laborKeywords.some(keyword => val.includes(keyword))) { selectIconCategory('عمالة'); }
+            else if(shippingKeywords.some(keyword => val.includes(keyword))) { selectIconCategory('نقل'); }
+            else if(nethriaKeywords.some(keyword => val.includes(keyword))) { selectIconCategory('نثريات'); }
+        }
+
+        function parseInlineCalculation(inputStr) {
+            if (!inputStr) return 0; let cleanStr = String(inputStr).replace(/[^0-9+\-*/.]/g, ''); if (!cleanStr) return 0;
+            try {
+                let numbers = cleanStr.split(/([+\-*/])/); let total = parseFloat(numbers[0]) || 0;
+                for (let i = 1; i < numbers.length; i += 2) {
+                    let operator = numbers[i]; let nextValue = parseFloat(numbers[i + 1]) || 0;
+                    if (operator === '+') total += nextValue; if (operator === '-') total -= nextValue; if (operator === '*') total *= nextValue; if (operator === '/') total = nextValue !== 0 ? total / nextValue : total;
+                }
+                return isNaN(total) || !isFinite(total) ? 0 : parseFloat(total.toFixed(2));
+            } catch(e) { return parseFloat(cleanStr) || 0; }
+        }
+
+        function exportToExcelCSVSheet() {
+            if(globalTransactions.length === 0) return alert("لا توجد بيانات لتصديرها لإكسيل حالياً.");
+            let csvContent = "\uFEFF"; csvContent += "التاريخ,التصنيف,البيان المالي للعملية,النوع,المبلغ ج.م,المهندس المسؤول\n";
+            globalTransactions.forEach(item => {
+                let typeText = item.type === 'income' ? "إيراد (+)" : "مصروف (-)";
+                let engName = ACCOUNTS_ROLES[item.engineer] ? ACCOUNTS_ROLES[item.engineer].label : item.engineer;
+                csvContent += `${item.date || '-'},${item.category || 'عام'},${item.desc.replace(/,/g, ' ')},${typeText},${item.amount},م / ${engName}\n`;
+            });
+            let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }); let url = URL.createObjectURL(blob);
+            let link = document.createElement("a"); link.setAttribute("href", url); link.setAttribute("download", `Perfect_Steel_Report_${SELECTED_PROJECT}.csv`);
+            link.style.visibility = 'hidden'; document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        }
+
+        function toggleThemeFast() {
+            triggerHapticFeedback(); let current = document.documentElement.getAttribute("data-theme") || "dark"; let next = current === "dark" ? "light" : (current === "light" ? "oled" : "dark");
+            document.documentElement.setAttribute("data-theme", next); localStorage.setItem("theme", next); updateHeaderThemeToggleIcon(next);
+        }
+
+        function updateHeaderThemeToggleIcon(theme) {
+            let btn = document.getElementById("headerThemeBtn"); if(!btn) return;
+            btn.innerHTML = theme === 'light' ? `<i class="fas fa-sun" style="color:#ffaa00;"></i>` : (theme === 'oled' ? `<i class="fas fa-bolt" style="color:#0ea5e9;"></i>` : `<i class="fas fa-moon"></i>`);
+        }
+
+        function selectIconCategory(cat) { document.querySelectorAll('#catGroup .icon-selector-item').forEach(el => el.classList.remove('selected')); let activeElement = document.getElementById('item-cat-' + cat); if(activeElement) activeElement.classList.add('selected'); document.getElementById('expenseCategory').value = cat; }
+        function selectIconIncomeCategory(cat) { document.querySelectorAll('#incomeCatGroup .icon-selector-item').forEach(el => el.classList.remove('selected')); let activeElement = document.getElementById('item-inc-' + cat.replace(' ', '_')); if(activeElement) activeElement.classList.add('selected'); document.getElementById('incomeCategory').value = cat; }
+        function setDynamicGreeting(userLabel) { let currentHour = new Date().getHours(); let greetingWord = currentHour >= 12 ? "مساء الخير" : "صباح الخير"; document.getElementById("dynamicGreeting").innerText = `${greetingWord} يا بشمهندس ${userLabel} ☕`; }
+        function toggleCustomDropdown(type) { if(type === 'active') { document.getElementById("customProjectDropdown").classList.toggle("open"); document.getElementById("customArchiveDropdown").classList.remove("open"); } else { document.getElementById("customArchiveDropdown").classList.toggle("open"); document.getElementById("customProjectDropdown").classList.remove("open"); } }
+        function toggleLaborSubPanel() { let p = document.getElementById("laborSubPanel"); p.style.display = (p.style.display === 'flex') ? 'none' : 'flex'; }
+
+        function listenToGlobalProjectStatuses() {
+            database.ref('project_info').on('value', (snap) => {
+                globalProjectStatuses = snap.val() || {}; let serverProjects = Object.keys(globalProjectStatuses);
+                let defaultProjects = ["New Cairo", "Old Cairo", "Helwan", "Ismailia"]; let merged = [...new Set([...defaultProjects, ...serverProjects])];
+                PROJECT_LIST = merged.filter(p => !localStorage.getItem("deleted_proj_" + p));
+                renderCustomDropdownOptions();
+            });
+        }
+
+        /* تعديل: حقن أزرار الحذف النهائي (أيقونة السلة) للمشاريع المكتملة والمؤرشفة فقط داخل قائمة الخيارات */
+        function renderCustomDropdownOptions() {
+            let activeContainer = document.getElementById("dropdownOptionsList"); let archiveContainer = document.getElementById("archiveDropdownOptionsList");
+            let activeHtml = ""; let archiveHtml = "";
+
+            PROJECT_LIST.forEach(proj => {
+                let statusInfo = globalProjectStatuses[proj] ? globalProjectStatuses[proj].status : "جاري العمل";
+                if(statusInfo === "مكتمل") {
+                    archiveHtml += `
+                        <div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}', 'archive')">
+                             <div class="dropdown-item-text-zone" style="color:var(--revenue-color);">
+                                  <i class="fas fa-box-archive" style="color:var(--revenue-color); font-size:11px;"></i> ${proj} (مؤرشف)
+                             </div>
+                             <i class="fas fa-trash-can project-hard-trash-btn" title="حذف وتدمير داتا المشروع" onclick="triggerHardDeleteProject('${proj}', event)"></i>
+                        </div>`;
+                } else {
+                    let dotColor = (statusInfo === "متوقف مؤقتا") ? "var(--danger)" : "var(--success)";
+                    activeHtml += `
+                        <div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}', 'active')">
+                             <div class="dropdown-item-text-zone">
+                                  <i class="fas fa-map-location-dot" style="color:${dotColor}; font-size:11px;"></i> ${proj}
+                             </div>
+                        </div>`;
+                }
+            });
+
+            activeContainer.innerHTML = activeHtml || `<div style="padding:10px; font-size:12px; color:var(--text-dim);">لا توجد مواقع عمل نشطة..</div>`;
+            archiveContainer.innerHTML = archiveHtml || `<div style="padding:10px; font-size:12px; color:var(--text-dim);">الأرشيف فارغ..</div>`;
+        }
+
+        function selectCustomProjectOption(proj, type) { 
+            SELECTED_PROJECT = proj; 
+            if(type === 'active') {
+                document.getElementById("dropdownSelectedLabel").innerText = proj; document.getElementById("archiveDropdownSelectedLabel").innerText = "تصفح مشاريع الأرشيف..";
+                document.getElementById("mainInputTransactionCard").style.display = "block";
+            } else {
+                document.getElementById("archiveDropdownSelectedLabel").innerText = proj; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل..";
+                document.getElementById("mainInputTransactionCard").style.display = (currentUser === 'mostafa' || currentUser === 'ahmed') ? "block" : "none";
+            }
+            document.getElementById("customProjectDropdown").classList.remove("open"); document.getElementById("customArchiveDropdown").classList.remove("open");
+            onProjectChange(proj); 
+        }
+
+        function setupDropdownOutsideClickListener() { document.addEventListener("click", (e) => { let d1 = document.getElementById("customProjectDropdown"); let d2 = document.getElementById("customArchiveDropdown"); if (d1 && !d1.contains(e.target)) d1.classList.remove("open"); if (d2 && !d2.contains(e.target)) d2.classList.remove("open"); }); }
 
         function showGlobalAppModal(config) {
             document.getElementById("globalModalIcon").className = config.icon || "fas fa-info-circle"; document.getElementById("globalModalIcon").style.color = config.iconColor || "var(--primary)";
@@ -622,282 +854,168 @@
             if(config.showInput) { inputContainer.style.display = "block"; inputField.value = config.inputValue || ""; } else { inputContainer.style.display = "none"; }
             let confirmBtn = document.getElementById("globalModalConfirmBtn"); confirmBtn.style.background = config.confirmColor || "var(--primary)"; confirmBtn.innerText = config.confirmText || "تأكيد";
             confirmBtn.onclick = function() { if(config.onConfirm) config.onConfirm(config.showInput ? inputField.value : null); closeGlobalAppModal(); resetAllSwipeCards(); };
-            document.getElementById("globalAppModal").style.display = "flex";
+            
+            let modalEl = document.getElementById("globalAppModal"); if(modalEl) modalEl.style.setProperty('display', 'flex', 'important');
         }
-        function closeGlobalAppModal() { document.getElementById("globalAppModal").style.display = "none"; resetAllSwipeCards(); }
+        function closeGlobalAppModal() { let modalEl = document.getElementById("globalAppModal"); if(modalEl) modalEl.style.setProperty('display', 'none', 'important'); resetAllSwipeCards(); }
 
         function startVoiceRecognition(targetId) {
-            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!window.SpeechRecognition) { return showGlobalAppModal({ title: "ميزة غير مدعومة", body: "متصفحك لا يدعم الإدخال الصوتي، يرجى استخدام تطبيق جوجل كروم الأصلي الرسمي.", icon: "fas fa-microphone-slash" }); }
+            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; if (!window.SpeechRecognition) return;
             try {
-                let recognition = new window.SpeechRecognition(); recognition.lang = 'ar-EG'; recognition.interimResults = false; recognition.maxAlternatives = 1;
-                let micBtn = (targetId === 'desc') ? document.getElementById("micBtn-desc") : document.getElementById("micBtn-search"); if (micBtn) micBtn.classList.add("listening");
-                recognition.onresult = function(event) {
-                    if (event.results && event.results[0] && event.results[0][0]) {
-                        let text = event.results[0][0].transcript; document.getElementById(targetId).value = text;
-                        if (targetId === 'liveSearchInput') handleLiveSearch(); else localStorage.setItem("draft_desc", text);
-                    }
-                };
-                recognition.onerror = function(e) { if (micBtn) micBtn.classList.remove("listening"); };
-                recognition.onend = function() { if (micBtn) micBtn.classList.remove("listening"); };
+                let recognition = new window.SpeechRecognition(); recognition.lang = 'ar-EG';
+                recognition.onresult = function(event) { if (event.results && event.results[0]) { let text = event.results[0][0].transcript; document.getElementById(targetId).value = text; if (targetId === 'liveSearchInput') handleLiveSearch(); else { localStorage.setItem("draft_desc", text); handleSmartAutoCat(text); } } };
                 recognition.start();
             } catch(e) {}
         }
 
-        function initPullToRefreshEngine() {
-            let container = document.getElementById("ptrTouchContainer"); let ptr = document.getElementById("ptrIndicator"); let startY = 0, currentY = 0;
-            container.addEventListener("touchstart", (e) => { if(window.scrollY === 0) startY = e.touches[0].pageY; }, {passive: true});
-            container.addEventListener("touchmove", (e) => {
-                if(startY === 0) return; currentY = e.touches[0].pageY; let diff = currentY - startY;
-                if(diff > 0 && diff < 80) { ptr.style.transform = `translateX(-50%) translateY(${diff}px)`; }
-            }, {passive: true});
-            container.addEventListener("touchend", () => {
-                let diff = currentY - startY;
-                if(diff >= 65) {
-                    document.getElementById("ptrIcon").style.display = "inline-block"; document.getElementById("ptrText").innerText = "جاري مزامنة قاعدة البيانات... ⚡";
-                    setTimeout(() => {
-                        document.getElementById("ptrIcon").style.display = "none"; document.getElementById("ptrText").innerText = "تمت المزامنة فوراً بنجاح! ✓";
-                        setTimeout(() => { ptr.style.transform = `translateX(-50%) translateY(0)`; }, 600);
-                    }, 1200);
-                } else { ptr.style.transform = `translateX(-50%) translateY(0)`; }
-                startY = 0; currentY = 0;
-            });
-        }
+        function setupGlobalScreenCloseListeners() { document.body.addEventListener("click", (e) => { if(!e.target.closest('.log-item')) { resetAllSwipeCards(); } }); }
 
-        function triggerUndoToastSystem(itemData) {
-            lastDeletedItemData = itemData; document.getElementById("undoToastText").innerText = `تم حذف: (${itemData.desc})`;
-            let toast = document.getElementById("undoToast"); toast.classList.add("show"); setTimeout(() => { toast.classList.remove("show"); }, 5000); 
-        }
-        function executeUndoItemAction() { if(lastDeletedItemData) { database.ref('transactions').push(lastDeletedItemData); document.getElementById("undoToast").classList.remove("show"); lastDeletedItemData = null; } }
-
-        function bindSwipeGesturesToElements() {
-            try {
-                document.querySelectorAll(".log-item").forEach(card => {
-                    let touchStartX = 0; let touchStartY = 0; let isScrollDetected = false; 
-                    card.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; isScrollDetected = false; }, {passive: true});
-                    card.addEventListener("touchmove", (e) => {
-                        if (isScrollDetected) return; 
-                        let moveX = e.touches[0].clientX; let moveY = e.touches[0].clientY;
-                        let diffX = touchStartX - moveX; let diffY = touchStartY - moveY;
-                        if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 10) { isScrollDetected = true; card.style.transform = "translateX(0)"; return; }
-                        if(diffX > 20 && diffX < 100) { card.style.transform = `translateX(-${diffX}px)`; } 
-                        else if(diffX < -20 && diffX > -100) { card.style.transform = `translateX(${Math.abs(diffX)}px)`; }
-                    }, {passive: true});
-                    card.addEventListener("touchend", (e) => {
-                        if (isScrollDetected) return; let endX = e.changedTouches[0].clientX; let diffX = touchStartX - endX;
-                        if(diffX >= 60) { card.style.transform = `translateX(-75px)`; } else if(diffX <= -60) { card.style.transform = `translateX(75px)`;  } else { card.style.transform = `translateX(0)`; }
-                    });
-                });
-            } catch(err) {}
-        }
-
-        function resetAllSwipeCards() { try { document.querySelectorAll(".log-item").forEach(card => { card.style.transform = "translateX(0)"; }); } catch(e) {} }
-        function setupGlobalScreenCloseListeners() { document.body.addEventListener("click", (e) => { if(!e.target.closest('.log-item') && !e.target.closest('.swipe-action-zone') && !e.target.closest('.quick-item-trash-btn')) { resetAllSwipeCards(); } }); }
-        function triggerAutoSwipeToDelete(id, desc, elementBtn) { resetAllSwipeCards(); let logItemCard = elementBtn.closest('.log-item'); if(logItemCard) { logItemCard.style.transform = `translateX(-75px)`; setTimeout(() => { askDelItem(id, desc); }, 180); } }
-
-        function triggerInlineEditItem(id, currentDesc, currentAmount) {
-            showGlobalAppModal({
-                title: "تعديل بيانات البند", body: `برجاء كتابة التعديل الجديد للبيان والمبلغ:`, icon: "fas fa-edit", showInput: true, inputValue: `${currentDesc} | ${currentAmount}`, confirmText: "حفظ التعديل", confirmColor: "var(--info)",
-                onConfirm: function(val) {
-                    if(val && val.includes('|')) {
-                        let parts = val.split('|'); let newDesc = parts[0].trim(); let newAmt = parseFloat(parts[1].trim());
-                        if(newDesc !== "" && !isNaN(newAmt)) { database.ref('transactions').child(id).update({ desc: newDesc, amount: newAmt }); }
+        function listenToProjectLaborData(proj) {
+            database.ref('project_labors').child(proj).on('value', (snap) => {
+                currentProjectLaborList = []; let data = snap.val(); let html = "";
+                if(data) {
+                    for(let key in data) {
+                        currentProjectLaborList.push({...data[key], id: key});
+                        html += `
+                            <div style="background:rgba(255,255,255,0.02); padding:6px; border:1px solid var(--border); border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                                 <span><b>${data[key].name}</b>: ${parseFloat(data[key].amount).toLocaleString()} ج.م</span>
+                                 <i class="fas fa-trash-can" style="color:var(--danger); cursor:pointer;" onclick="deleteLaborEntry('${key}')"></i>
+                            </div>`;
                     }
                 }
+                document.getElementById("laborEntriesList").innerHTML = html || `<div style="color:var(--text-dim); text-align:center; font-size:10px;">لا توجد سحبيات مسجلة للموقع...</div>`;
             });
         }
 
-        function triggerAddCustomProjectModal() {
-            showGlobalAppModal({
-                title: "إضافة مشروع جديد", body: "برجاء كتابة اسم موقع العمل الجديد لإضافته للسيستم:", icon: "fas fa-folder-plus", showInput: true, confirmText: "حفظ الموقع",
-                onConfirm: function(val) { if(val && val.trim() !== "") { PROJECT_LIST.push(val.trim()); renderCustomDropdownOptions(); toggleSidebar(false); } }
-            });
+        function saveLaborEntry() {
+            let name = document.getElementById("labWorkerName").value.trim(); let amountRaw = document.getElementById("labAmount").value.trim(); let amt = parseInlineCalculation(amountRaw);
+            if(!name || isNaN(amt) || amt <= 0) return alert("برجاء إدخال البيانات بشكل صحيح.");
+            database.ref('project_labors').child(SELECTED_PROJECT).push({ name: name, amount: amt, date: new Date().toISOString().split('T')[0] }).then(() => { document.getElementById("labWorkerName").value = ""; document.getElementById("labAmount").value = ""; triggerHapticFeedback(); });
+        }
+        function deleteLaborEntry(key) { if(confirm("هل تريد حذف هذا القيد العمالي؟")) { database.ref('project_labors').child(SELECTED_PROJECT).child(key).remove(); } }
+
+        function transferLaborToExpenses() {
+            if(currentProjectLaborList.length === 0) return alert("لا توجد بنود لترحيلها للمصاريف العامة.");
+            let total = currentProjectLaborList.reduce((sum, item) => sum + parseFloat(item.amount), 0);
+            if(confirm(`ترحيل إجمالي عمالة وقدره (${total.toLocaleString()} ج.م) كبند مصروفات رسمي؟`)) {
+                database.ref('transactions').push({ project: SELECTED_PROJECT, engineer: currentUser, type: 'expense', category: 'عمالة', amount: total, desc: `[ترحيل تلقائي] - إجمالي سحبيات عمال موقع ${SELECTED_PROJECT}`, date: new Date().toISOString().split('T')[0], ts: Date.now() }).then(() => { database.ref('project_labors').child(SELECTED_PROJECT).remove(); document.getElementById("laborSubPanel").style.display = 'none'; triggerHapticFeedback(); showGlobalAppModal({ title: "تم الترحيل", body: "✓ تم مزامنة وقيد المبلغ بنجاح.", icon: "fas fa-check-circle", iconColor: "var(--success)" }); });
+            }
+        }
+
+        function generateLaborExpensesPDFReport() {
+            let registeredLaborExpenses = globalTransactions.filter(item => item && item.type === 'expense' && item.category === 'عمالة'); if(registeredLaborExpenses.length === 0) return;
+            let expenseZone = document.getElementById("laborExpensesPdfHiddenArea"); let tablePlaceholder = document.getElementById("laborExpensesPdfTablePlaceholder");
+            document.getElementById("laborExpensesPdfTitleMeta").innerText = `ملخص كشف مصاريف عمالة موقع: ${SELECTED_PROJECT}`;
+            let tableHtml = `<table style="width:100%; border-collapse:collapse; margin-top:15px; color:white;"><thead><tr style="background:#ff6b00; color:black;"><th>التاريخ</th><th>البيان المالي للعملية</th><th>المبلغ</th><th>بواسطة</th></tr></thead><tbody>`;
+            let totalSum = 0; registeredLaborExpenses.forEach(item => { let amtCalculated = parseInlineCalculation(item.amount); totalSum += parseFloat(amtCalculated || 0); tableHtml += `<tr style="border-bottom:1px solid #333; text-align:center;"><td>${item.date || '-'}</td><td>${item.desc || ''}</td><td style="color:#ef4444;">${parseFloat(amtCalculated).toLocaleString()} ج.م</td><td>م / ${ACCOUNTS_ROLES[item.engineer]?.label || ''}</td></tr>`; });
+            tableHtml += `<tr><td colspan="2">الإجمالي الكلي</td><td colspan="2">${totalSum.toLocaleString()} ج.م</td></tr></tbody></table>`;
+            tablePlaceholder.innerHTML = tableHtml; expenseZone.style.display = "flex"; 
+            let opt = { margin: 12, filename: `مصاريف_عمالة_${SELECTED_PROJECT}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+            html2pdf().set(opt).from(expenseZone).save().then(() => { expenseZone.style.display = "none"; });
+        }
+
+        function generateProjectPDFReport() {
+            let area = document.getElementById("pdfExportArea"); let logoHeader = document.getElementById("pdfHeaderLogo"); logoHeader.style.display = "block";
+            document.getElementById("pdfProjectMeta").innerText = `موقع العمل: ${SELECTED_PROJECT} | تاريخ التقرير: ${new Date().toLocaleDateString('ar-EG')}`;
+            let opt = { margin: 10, filename: `Perfect_Steel_Report_${SELECTED_PROJECT}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+            html2pdf().set(opt).from(area).save().then(() => { logoHeader.style.display = "none"; });
         }
 
         function handleSecureLogin() {
-            let user = document.getElementById("loginUsername").value.trim().toLowerCase(); let pass = document.getElementById("loginPassword").value.trim(); let btn = document.getElementById("loginSubmitBtn");
-            if(!user || !pass) return showGlobalAppModal({ title: "بيانات ناقصة", body: "❌ برجاء كتابة اسم المستخدم وكلمة المرور أولاً", icon: "fas fa-exclamation-triangle" });
-            btn.disabled = true; 
-            if(ACCOUNTS[user] && ACCOUNTS[user].pass === pass) { localStorage.setItem("active_session_user", user); activateUserInterface(user); } 
-            else { showGlobalAppModal({ title: "خطأ في الدخول", body: "❌ اسم المستخدم أو كلمة المرور غير صحيحة!", icon: "fas fa-times-circle", iconColor: "var(--danger)" }); }
-            btn.disabled = false;
+            let user = document.getElementById("loginUsername").value.trim().toLowerCase(); let pass = document.getElementById("loginPassword").value.trim();
+            const LOCAL_MOCK = {"ahmed":"222", "mostafa":"1519", "mohamed":"333", "tawfik":"444"};
+            if(LOCAL_MOCK[user] && LOCAL_MOCK[user] === pass) { localStorage.setItem("active_session_user", user); activateUserInterface(user); }
+            else { showGlobalAppModal({ title: "خطأ في الدخول", body: "❌ البيانات غير صحيحة!", icon: "fas fa-times-circle", iconColor: "var(--danger)" }); }
         }
 
-        function autoLoginSession() { let savedUser = localStorage.getItem("active_session_user"); if(savedUser && ACCOUNTS[savedUser]) activateUserInterface(savedUser); else document.getElementById("dynamicGreeting").innerText = ""; }
+        function autoLoginSession() { let savedUser = localStorage.getItem("active_session_user"); if(savedUser && ACCOUNTS_ROLES[savedUser]) activateUserInterface(savedUser); }
         
         function activateUserInterface(user) {
-            currentUser = user; let account = ACCOUNTS[user]; let displayLabel = (user === "ahmed") ? "أحمد (الإدارة)" : account.label;
+            currentUser = user; let account = ACCOUNTS_ROLES[user]; let displayLabel = (user === "ahmed") ? "أحمد (الإدارة)" : account.label;
             document.getElementById("headerUserNameSpan").innerText = "م / " + displayLabel; document.getElementById("headerUserBadge").style.display = "flex"; document.getElementById("sidebarUserName").innerText = "م / " + displayLabel;
-            
-            let addEmpBtn = document.getElementById("sidebarAddEmployeeBtn"); if(addEmpBtn) { addEmpBtn.style.display = (user === "mostafa") ? "block" : "none"; }
-            let addProjBtn = document.getElementById("sidebarAddProjectBtn"); if(addProjBtn) { addProjBtn.style.display = (user === "mostafa" || user === "ahmed") ? "block" : "none"; }
-
             setDynamicGreeting(account.label); document.getElementById("loginBox").style.display = "none"; document.getElementById("menuBtn").classList.add("visible");
-            document.getElementById("mainContent").classList.add("visible"); document.getElementById("bottomDock").classList.add("visible"); document.getElementById("calcTrigger").classList.add("visible");
-            
-            let revCard = document.getElementById("revenueCard");
-            if(revCard) { revCard.style.display = account.canSeeAllRevenue ? "block" : "none"; }
-            if(SELECTED_PROJECT) setupSidebarNotesInterface(SELECTED_PROJECT);
+            document.getElementById("mainContent").classList.add("visible"); document.getElementById("appGlobalHeader").classList.add("visible-now"); 
+            document.getElementById("calcTrigger").classList.add("visible"); document.getElementById("headerThemeBtn").classList.add("visible"); document.getElementById("fastInputFab").classList.add("visible");
+            document.getElementById("projectSelectorCard").classList.add("visible-now"); switchTab(currentMode);
         }
 
         function triggerLogOut() {
             showGlobalAppModal({
-                title: "تسجيل الخروج", body: "هل تريد إنهاء الجلسة الحالية وتسجيل الخروج؟", icon: "fas fa-door-open", confirmText: "خروج نهائي", confirmColor: "var(--danger)",
+                title: "تسجيل الخروج", body: "هل تريد تسجيل الخروج؟", icon: "fas fa-door-open", confirmText: "خروج نهائي", confirmColor: "var(--danger)",
                 onConfirm: function() {
-                    const currentTheme = localStorage.getItem("theme"); localStorage.clear(); if (currentTheme) localStorage.setItem("theme", currentTheme);
-                    toggleSidebar(false); document.getElementById("headerUserBadge").style.display = "none"; document.getElementById("headerProjBadge").style.display = "none";
-                    document.getElementById("projectSelectorCard").classList.remove("hide-completely"); document.getElementById("bottomDock").classList.remove("visible");
+                    if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off();
+                    localStorage.clear(); toggleSidebar(false);
+                    document.getElementById("appGlobalHeader").classList.remove("visible-now"); document.getElementById("projectSelectorCard").classList.remove("hide-completely", "visible-now");
                     document.getElementById("calcTrigger").classList.remove("visible"); document.getElementById("calcPanel").style.display = "none";
-                    document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("sidebarNotesBlock").classList.remove("visible");
-                    document.getElementById("revenueCard").style.display = "none"; document.getElementById("loginBox").style.display = "block";
+                    document.getElementById("headerThemeBtn").classList.remove("visible"); document.getElementById("fastInputFab").classList.remove("visible");
+                    document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("loginBox").style.display = "block";
                     document.getElementById("menuBtn").classList.remove("visible"); document.getElementById("mainContent").classList.remove("visible");
-                    document.getElementById("financeContent").style.display = "none"; SELECTED_PROJECT = ""; document.getElementById("dropdownSelectedLabel").innerText = "اختر المشروع للمتابعة..";
-                    document.getElementById("dynamicGreeting").innerText = ""; currentUser = null;
+                    document.getElementById("financeContent").style.display = "none"; SELECTED_PROJECT = ""; currentUser = null;
                 }
             });
         }
 
-        function askDelItem(id, desc) {
-            showGlobalAppModal({
-                title: "تأكيد حذف البند", body: `هل تريد مسح كارت العملية: (${desc}) بشكل نهائي؟`, icon: "fas fa-trash-alt", confirmText: "حذف نهائي", confirmColor: "var(--danger)",
-                onConfirm: function() {
-                    database.ref('transactions').child(id).once('value', (snap) => {
-                        let data = snap.val(); if(data) { triggerUndoToastSystem(data); database.ref('transactions').child(id).remove(); }
-                    });
-                }
-            });
-        }
+        function askDelItem(id, desc) { showGlobalAppModal({ title: "تأكيد حذف البند", body: `هل تريد مسح كارت العملية: (${desc})؟`, icon: "fas fa-trash-alt", confirmText: "حذف نهائي", confirmColor: "var(--danger)", onConfirm: function() { database.ref('transactions').child(id).remove(); } }); }
 
         function handleAdd() {
-            let amt = parseFloat(document.getElementById("amount").value); let dsc = document.getElementById("desc").value; let btn = document.getElementById("transactionSubmitBtn");
-            if(!amt || !dsc) return showGlobalAppModal({ title: "بيانات ناقصة", body: "❌ برجاء إدخال المبلغ والبيان أولاً", icon: "fas fa-exclamation-circle" });
-            btn.disabled = true; 
-            database.ref('transactions').push({
-                project: SELECTED_PROJECT, engineer: currentUser, type: currentMode,
-                category: currentMode==='income'?'عام':document.getElementById("expenseCategory").value,
-                amount: amt, desc: dsc, date: new Date().toISOString().split('T')[0], ts: Date.now()
-            }).then(() => { clearDrafts(); btn.disabled = false; });
+            let amountRaw = document.getElementById("amount").value; let dsc = document.getElementById("desc").value.trim(); let amt = parseInlineCalculation(amountRaw);
+            if(!amt || amt <= 0 || !dsc) return showGlobalAppModal({ title: "بيانات ناقصة", body: "❌ برجاء التأكد من صحة البيانات الحالية.", icon: "fas fa-exclamation-circle" });
+            
+            let finalCategory = currentMode === 'expense' ? document.getElementById("expenseCategory").value : document.getElementById("incomeCategory").value;
+            let txObject = { project: SELECTED_PROJECT, engineer: currentUser, type: currentMode, category: finalCategory, amount: amt, desc: dsc, date: new Date().toISOString().split('T')[0], ts: Date.now() };
+
+            if(navigator.onLine) { database.ref('transactions').push(txObject).then(() => { finishTxSuccessfully(); }); }
+            else {
+                txObject.isOffline = true; txObject.id = 'offline_' + Date.now();
+                let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); offlineList.push(txObject);
+                localStorage.setItem('perfect_steel_offline_txs', JSON.stringify(offlineList));
+                globalTransactions.unshift(txObject); renderUI(globalTransactions); finishTxSuccessfully(); alert("⚠️ تم الحفظ المؤقت أوفلاين!");
+            }
         }
 
-        function submitCompanyRevenue() {
-            let amt = parseFloat(document.getElementById("companyAmt").value) || 0; let desc = document.getElementById("companyDesc").value; let btn = document.getElementById("companySubmitBtn"); if(amt <= 0) return;
-            btn.disabled = true;
-            database.ref('transactions').push({ project: SELECTED_PROJECT, engineer: currentUser, type: 'income', category: 'دفعة شركة', amount: amt, desc: desc, date: new Date().toISOString().split('T')[0], ts: Date.now() })
-            .then(() => { document.getElementById("companyAmt").value = ""; btn.disabled = false; });
-        }
-
-        function saveEngineerDailyNote() {
-            let proj = SELECTED_PROJECT; let noteText = document.getElementById("txtEngNote").value.trim(); if(!proj || !noteText) return;
-            database.ref('project_notes').child(proj).set({ writer: currentUser, text: noteText, time: new Date().toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) })
-            .then(() => { 
-                showGlobalAppModal({ title: "تم الحفظ", body: "📝 تم تسجيل ملحوظة الموقع بنجاح!", icon: "fas fa-clipboard-check", iconColor: "var(--success)" });
-                setupSidebarNotesInterface(proj);
-            });
-        }
-
-        function triggerClearDailyNote() {
-            if(!SELECTED_PROJECT) return;
-            showGlobalAppModal({
-                title: "تأكيد مسح الملاحظة", body: "هل أنت متأكد من رغبتك في حذف الملاحظة اليومية الحالية لهذا المشروع نهائياً؟", icon: "fas fa-trash-can", confirmText: "حذف الملحوظة", confirmColor: "var(--danger)",
-                onConfirm: function() {
-                    database.ref('project_notes').child(SELECTED_PROJECT).remove().then(() => {
-                        showGlobalAppModal({ title: "تم الحذف", body: "🗑️ تم مسح الملاحظة اليومية بنجاح من النظام.", icon: "fas fa-check-circle", iconColor: "var(--success)" });
-                        setupSidebarNotesInterface(SELECTED_PROJECT);
-                    });
-                }
-            });
-        }
+        function finishTxSuccessfully() { clearDrafts(); selectIconIncomeCategory('عام'); selectIconCategory('خامات'); triggerHapticFeedback(); }
+        function checkAndSyncOfflineTransactions() { if(!navigator.onLine) return; let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); if(offlineList.length === 0) return; showLoad(true); let promises = offlineList.map(tx => { delete tx.isOffline; delete tx.id; return database.ref('transactions').push(tx); }); Promise.all(promises).then(() => { localStorage.removeItem('perfect_steel_offline_txs'); showLoad(false); triggerHapticFeedback(); }).catch(() => showLoad(false)); }
+        window.addEventListener('online', checkAndSyncOfflineTransactions);
 
         function onProjectChange(proj) {
-            let account = ACCOUNTS[currentUser];
-            document.getElementById("headerProjName").innerText = proj; document.getElementById("headerProjBadge").style.display = "flex";
+            let account = ACCOUNTS_ROLES[currentUser]; document.getElementById("headerProjName").innerText = proj; document.getElementById("headerProjBadge").style.display = "flex";
             document.getElementById("projectSelectorCard").classList.add("hide-completely");
-            
-            let financeContent = document.getElementById("financeContent"); financeContent.style.display = "flex"; financeContent.classList.remove("hidden-element");
-            document.getElementById("sidebarProjInfoBlock").classList.add("visible"); document.getElementById("sidebarNotesBlock").classList.add("visible"); 
+            let financeContent = document.getElementById("financeContent"); financeContent.style.display = "flex"; document.getElementById("sidebarProjInfoBlock").classList.add("visible"); 
 
-            try { listenToProjectInfo(proj); } catch(e) {}
-            try { setupSidebarNotesInterface(proj); } catch(e) {}
-            showLoad(true);
+            listenToProjectInfo(proj); listenToProjectLaborData(proj); showLoad(true);
+            if (firebaseTransactionsRef) firebaseTransactionsRef.off();
             
-            database.ref('transactions').on('value', (snap) => {
+            firebaseTransactionsRef = database.ref('transactions');
+            firebaseTransactionsRef.on('value', (snap) => {
                 globalTransactions = []; let data = snap.val();
-                if(data) {
-                    for(let id in data) {
-                        try {
-                            if(data[id] && data[id].project === proj) {
-                                if(data[id].category === 'دفعة شركة' && !account.canSeeAllRevenue) continue; 
-                                if(account.canSeeAllFinancials || data[id].engineer === currentUser) globalTransactions.push({...data[id], id});
-                            }
-                        } catch(e) {}
-                    }
-                }
-                globalTransactions.reverse(); renderUI(globalTransactions); showLoad(false);
-            }, (error) => { showLoad(false); });
+                let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]');
+                offlineList.forEach(offTx => { if(offTx.project === proj) globalTransactions.push(offTx); });
+                if(data) { for(let id in data) { if(data[id] && data[id].project === proj) { if(account.canSeeAllFinancials || data[id].engineer === currentUser) globalTransactions.push({...data[id], id}); } } }
+                globalTransactions.sort((a,b) => b.ts - a.ts); buildEngineerFilterPills(globalTransactions); renderUI(globalTransactions); showLoad(false);
+            }, () => showLoad(false));
         }
+
+        function buildEngineerFilterPills(items) {
+            let engineersInProject = new Set(); items.forEach(i => { if(i.engineer) engineersInProject.add(i.engineer); });
+            let wrapper = document.getElementById("engFilterWrapper"); if(engineersInProject.size <= 1) { wrapper.innerHTML = ""; return; }
+            let html = `<div class="eng-pill ${activeEngineerFilter==='all'?'active':''}" onclick="filterByEngineer('all')">كل المهندسين</div>`;
+            engineersInProject.forEach(eng => { html += `<div class="eng-pill ${activeEngineerFilter===eng?'active':''}" onclick="filterByEngineer('${eng}')">م / ${(ACCOUNTS_ROLES[eng]?ACCOUNTS_ROLES[eng].label:eng)}</div>`; });
+            wrapper.innerHTML = html;
+        }
+
+        function filterByEngineer(eng) { triggerHapticFeedback(); activeEngineerFilter = eng; renderUI(globalTransactions); }
 
         function listenToProjectInfo(projectName) {
-            database.ref('project_info').child(projectName).once('value', (snap) => {
-                let info = snap.val();
-                if(info) {
-                    document.getElementById("lblInfEng").innerText = info.engineer || "-"; document.getElementById("lblInfOwner").innerText = info.owner || "-";
-                    document.getElementById("lblInfLabor").innerText = (info.labor || "0") + " عمال"; document.getElementById("lblInfProgress").innerText = (info.progress || "0") + " %";
-                    document.getElementById("lblInfStart").innerText = info.startDate || "-"; document.getElementById("lblInfEnd").innerText = info.endDate || "-";
-                    document.getElementById("infEng").value = info.engineer || ""; document.getElementById("infOwner").value = info.owner || "";
-                    document.getElementById("infLabor").value = info.labor || ""; document.getElementById("infProgress").value = info.progress || "";
-                    document.getElementById("infStart").value = info.startDate || ""; document.getElementById("infEnd").value = info.endDate || "";
-                }
+            if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); 
+            firebaseProjectInfoRef = database.ref('project_info').child(projectName);
+            firebaseProjectInfoRef.on('value', (snap) => {
+                let info = snap.val() || {}; currentProjectLoadedDataSnapshot = info;
+                let statusText = info.status || "جاري العمل";
+                let dotColor = (statusText === "متوقف مؤقتا") ? "var(--danger)" : (statusText === "مكتمل" ? "var(--revenue-color)" : "var(--success)");
+                document.getElementById("lblInfStatus").innerHTML = `<span class="status-dot" style="background-color:${dotColor}"></span>` + statusText;
+                document.getElementById("lblInfEng").innerText = info.engineer || "-"; document.getElementById("lblInfOwner").innerText = info.owner || "-";
+                document.getElementById("lblInfLabor").innerText = (info.labor || "0") + " عمال"; document.getElementById("lblInfProgress").innerText = (info.progress || "0") + " %";
             });
-        }
-
-        function setupSidebarNotesInterface(projectName) {
-            let account = ACCOUNTS[currentUser];
-            let delBtn = document.getElementById("btnDeleteNote");
-            if(delBtn) delBtn.style.display = "none"; 
-
-            if(!account) return;
-
-            if(account.role === "admin") {
-                document.getElementById("adminNotesViewZone").style.display = "flex";
-                document.getElementById("engineerNotesInputZone").style.display = (currentUser === "mostafa") ? "flex" : "none";
-                
-                database.ref('project_notes').child(projectName).once('value', (snap) => {
-                    let noteData = snap.val();
-                    if(noteData && noteData.text) {
-                        let writerName = ACCOUNTS[noteData.writer] ? ACCOUNTS[noteData.writer].label : noteData.writer;
-                        document.getElementById("notesMetaLabel").innerText = `بواسطة: م/ ${writerName} • ${noteData.time || ''}`;
-                        document.getElementById("adminNotesContentText").innerText = noteData.text;
-                        if(delBtn) delBtn.style.display = "block";
-                        if(currentUser === "mostafa" && noteData.writer === currentUser) { document.getElementById("txtEngNote").value = noteData.text; }
-                    } else {
-                        document.getElementById("notesMetaLabel").innerText = "بواسطة: -";
-                        document.getElementById("adminNotesContentText").innerText = "لا توجد ملاحظات مسجلة اليوم...";
-                        if(currentUser === "mostafa") document.getElementById("txtEngNote").value = "";
-                    }
-                });
-            } else {
-                document.getElementById("adminNotesViewZone").style.display = "flex"; 
-                document.getElementById("engineerNotesInputZone").style.display = "flex";
-                database.ref('project_notes').child(projectName).once('value', (snap) => {
-                    let noteData = snap.val();
-                    if(noteData && noteData.text) {
-                        let writerName = ACCOUNTS[noteData.writer] ? ACCOUNTS[noteData.writer].label : noteData.writer;
-                        document.getElementById("notesMetaLabel").innerText = `بواسطة: م/ ${writerName} • ${noteData.time || ''}`;
-                        document.getElementById("adminNotesContentText").innerText = noteData.text;
-                        
-                        if(noteData.writer === currentUser) {
-                            if(delBtn) delBtn.style.display = "block";
-                            document.getElementById("txtEngNote").value = noteData.text;
-                        } else {
-                            document.getElementById("txtEngNote").value = "";
-                        }
-                    } else {
-                        document.getElementById("notesMetaLabel").innerText = "بواسطة: -";
-                        document.getElementById("adminNotesContentText").innerText = "لا توجد ملاحظات مسجلة اليوم...";
-                        document.getElementById("txtEngNote").value = "";
-                    }
-                });
-            }
         }
 
         function loadDraftInputs() {
@@ -907,63 +1025,88 @@
             if(localStorage.getItem("draft_desc")) document.getElementById("desc").value = localStorage.getItem("draft_desc");
         }
         function clearDrafts() { localStorage.removeItem("draft_amt"); localStorage.removeItem("draft_desc"); document.getElementById("amount").value = ""; document.getElementById("desc").value = ""; }
-        function quickCash(val) { let input = document.getElementById("amount"); let current = parseFloat(input.value) || 0; input.value = current + val; localStorage.setItem("draft_amt", input.value); }
-        function quickCompanyCash(val) { let input = document.getElementById("companyAmt"); let current = parseFloat(input.value) || 0; input.value = current + val; }
+        function quickCash(val) { let input = document.getElementById("amount"); let current = parseInlineCalculation(input.value) || 0; input.value = current + val; localStorage.setItem("draft_amt", input.value); }
         function toggleCalc() { let panel = document.getElementById("calcPanel"); panel.style.display = (panel.style.display === "flex") ? "none" : "flex"; }
-        function pressCalc(key) { let screen = document.getElementById("calcScreen"); if (key === 'C') { calcExpression = ""; screen.innerText = "0"; } else if (key === 'del') { calcExpression = calcExpression.slice(0, -1); screen.innerText = calcExpression || "0"; } else if (key === '=') { try { let result = eval(calcExpression); screen.innerText = Number(result.toFixed(2)).toLocaleString(); calcExpression = result.toString(); } catch(e) { screen.innerText = "خطأ رياضي"; calcExpression = ""; } } else { if(screen.innerText === "0" || screen.innerText === "خطأ") calcExpression = ""; calcExpression += key; screen.innerText = calcExpression; } }
+        function pressCalc(key) { let screen = document.getElementById("calcScreen"); if (key === 'C') { calcExpression = ""; screen.innerText = "0"; } else if (key === 'del') { calcExpression = calcExpression.slice(0, -1); screen.innerText = calcExpression || "0"; } else if (key === '=') { try { let result = eval(calcExpression); screen.innerText = Number(result.toFixed(2)).toLocaleString(); calcExpression = result.toString(); } catch(e) { screen.innerText = "Error"; calcExpression = ""; } } else { if(screen.innerText === "0" || screen.innerText === "خطأ") calcExpression = ""; calcExpression += key; screen.innerText = calcExpression; } }
         function pushCalcToInput() { let screen = document.getElementById("calcScreen").innerText.replace(/,/g, ''); let val = parseFloat(screen); if (!isNaN(val) && val > 0) { document.getElementById("amount").value = val; localStorage.setItem("draft_amt", val); toggleCalc(); } }
-        function toggleSidebar(open) { document.getElementById("sidebarMenu").classList.toggle("open", open); document.getElementById("sidebarOverlay").style.display = open ? "block" : "none"; if(open && SELECTED_PROJECT) setupSidebarNotesInterface(SELECTED_PROJECT); }
+        function toggleSidebar(open) { document.getElementById("sidebarMenu").classList.toggle("open", open); document.getElementById("sidebarOverlay").style.display = open ? "block" : "none"; }
         function switchDockTab(tab) { if(tab === 'home') resetProjectSelection(); }
-        function openProjectInfoModal() { document.getElementById("projectInfoModal").style.display = "flex"; }
-        function closeProjectInfoModal() { document.getElementById("projectInfoModal").style.display = "none"; }
-        function saveProjectInfoData() { let proj = SELECTED_PROJECT; database.ref('project_info').child(proj).set({ engineer: document.getElementById("infEng").value, owner: document.getElementById("infOwner").value, labor: document.getElementById("infLabor").value, progress: document.getElementById("infProgress").value, startDate: document.getElementById("infStart").value, endDate: document.getElementById("infEnd").value }).then(() => { closeProjectInfoModal(); }); }
-        function filterLogs(category) { activeFilter = category; document.querySelectorAll('.pill-btn').forEach(btn => btn.classList.remove('active')); if(category === 'all') document.getElementById('pill-all').classList.add('active'); else if(category === 'خامات') document.getElementById('pill-materials').classList.add('active'); else if(category === 'عمالة') document.getElementById('pill-labor').classList.add('active'); else if(category === 'نثريات') document.getElementById('pill-nethria').classList.add('active'); else if(category === 'نقل') document.getElementById('pill-shipping').classList.add('active'); renderUI(globalTransactions); }
+
+        function filterLogs(category) { activeFilter = category; document.querySelectorAll('.filter-pills-container .pill-btn').forEach(btn => btn.classList.remove('active')); if(category === 'all') document.getElementById('pill-all').classList.add('active'); else if(category === 'خامات') document.getElementById('pill-materials').classList.add('active'); else if(category === 'عمالة') document.getElementById('pill-labor').classList.add('active'); else if(category === 'نثريات') document.getElementById('pill-nethria').classList.add('active'); else if(category === 'نقل') document.getElementById('pill-shipping').classList.add('active'); renderUI(globalTransactions); }
         function handleLiveSearch() { renderUI(globalTransactions); }
         document.addEventListener('keydown', function(e) { if (e.key === 'Enter' && e.target.id === 'loginPassword') handleSecureLogin(); });
-        function resetProjectSelection() { document.getElementById("projectSelectorCard").classList.remove("hide-completely"); document.getElementById("headerProjBadge").style.display = "none"; SELECTED_PROJECT = ""; document.getElementById("dropdownSelectedLabel").innerText = "اختر المشروع للمتابعة.."; document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("sidebarNotesBlock").classList.remove("visible"); filterLogs('all'); }
+        
+        function resetProjectSelection() { 
+            if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off();
+            document.getElementById("projectSelectorCard").classList.remove("hide-completely"); document.getElementById("projectSelectorCard").classList.add("visible-now"); 
+            document.getElementById("headerProjBadge").style.display = "none"; SELECTED_PROJECT = ""; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل..";
+            document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); filterLogs('all'); 
+            document.getElementById("smartAlertBanner").style.display = "none"; document.getElementById("laborSubPanel").style.display = "none"; activeEngineerFilter = 'all';
+        }
+        
         function showLoad(s) { document.getElementById("loading").style.display = s?'flex':'none'; }
         function animateValue(obj, start, end, duration) { if (start === end) { obj.innerText = end.toLocaleString(); return; } let range = end - start; let current = start; let increment = end > start ? Math.ceil(range / 15) : Math.floor(range / 15); let timer = setInterval(() => { current += increment; if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) { clearInterval(timer); current = end; } obj.innerText = current.toLocaleString(); }, 20); }
-        function addCustomEmployee() { alert("تم فتح لوحة إضافة مهندس جديد للنظام."); }
-        function switchTab(mode) { currentMode = mode; document.getElementById("incBtn").className = "tab-btn " + (mode==='income'?'active':''); document.getElementById("expBtn").className = "tab-btn " + (mode==='expense'?'active':''); let catGroup = document.getElementById("catGroup"); if (catGroup) { catGroup.style.display = (mode==='expense'?'block':'none'); } }
+        function switchTab(mode) { currentMode = mode; document.getElementById("incBtn").className = "tab-btn " + (mode==='income'?'active':''); document.getElementById("expBtn").className = "tab-btn " + (mode==='expense'?'active':''); let catGroup = document.getElementById("catGroup"); let incomeCatGroup = document.getElementById("incomeCatGroup"); if(mode === 'expense') { if(catGroup) catGroup.style.display = 'block'; if(incomeCatGroup) incomeCatGroup.style.display = 'none'; } else { if(catGroup) catGroup.style.display = 'none'; if(incomeCatGroup) incomeCatGroup.style.display = 'block'; selectIconIncomeCategory('عام'); } }
+
+        function updatePerfectSteelDonutChart(mat, lab, ship, neth) {
+            let canvas = document.getElementById('perfectSteelPieChart'); if(!canvas) return;
+            let total = mat + lab + ship + neth; if(total === 0) { mat = 1; lab = 1; ship = 1; neth = 1; }
+            if (chartInstance) { chartInstance.data.datasets[0].data = [mat, lab, ship, neth]; chartInstance.update(); } 
+            else { let ctx = canvas.getContext('2d'); chartInstance = new Chart(ctx, { type: 'doughnut', data: { labels: ['خامات', 'عمالة', 'نقل', 'نثريات'], datasets: [{ data: [mat, lab, ship, neth], backgroundColor: ['#FF6B00', '#0EA5E9', '#FBBF24', '#EF4444'], borderWidth: 0 }] }, options: { plugins: { legend: { display: false } }, cutout: '75%', responsive: true, maintainAspectRatio: false } }); }
+        }
 
         function renderUI(items) {
             let query = document.getElementById("liveSearchInput").value.trim().toLowerCase(); let filteredItems = items.filter(i => i && typeof i.desc === 'string' && typeof i.category === 'string');
+            if(activeEngineerFilter !== 'all') filteredItems = filteredItems.filter(i => i.engineer === activeEngineerFilter);
             if(activeFilter !== 'all') filteredItems = filteredItems.filter(i => i.category === activeFilter);
             if(query !== "") filteredItems = filteredItems.filter(i => i.desc.toLowerCase().includes(query) || i.category.toLowerCase().includes(query));
-            let inc = 0, exp = 0, html = "";
-            filteredItems.forEach(i => { if(i.amount && !isNaN(i.amount)) { if(i.type === 'income') inc += parseFloat(i.amount); else exp += parseFloat(i.amount); } });
+            
+            let inc = 0, exp = 0, html = ""; let catMat = 0, catLab = 0, catShip = 0, catNeth = 0;
+            filteredItems.forEach(i => { let amtCalculated = parseInlineCalculation(i.amount); if(i.amount && !isNaN(amtCalculated)) { if(i.type === 'income') { inc += amtCalculated; } else { exp += amtCalculated; if(i.category === 'خامات') catMat += amtCalculated; if(i.category === 'عمالة') catLab += amtCalculated; if(i.category === 'نقل') catShip += amtCalculated; if(i.category === 'نثريات') catNeth += amtCalculated; } } });
 
-            animateValue(document.getElementById("netBalance"), parseFloat(document.getElementById("netBalance").innerText.replace(/,/g, ''))||0, (inc - exp), 300);
+            updatePerfectSteelDonutChart(catMat, catLab, catShip, catNeth);
+            let finalNetValue = inc - exp;
+            animateValue(document.getElementById("netBalance"), parseFloat(document.getElementById("netBalance").innerText.replace(/,/g, ''))||0, finalNetValue, 300);
             animateValue(document.getElementById("totalIncome"), parseFloat(document.getElementById("totalIncome").innerText.replace(/,/g, ''))||0, inc, 300);
             animateValue(document.getElementById("totalExpense"), parseFloat(document.getElementById("totalExpense").innerText.replace(/,/g, ''))||0, exp, 300);
+            
+            let netCard = document.getElementById("hudCardNet"); let netBalanceText = document.getElementById("netBalance"); let alertBanner = document.getElementById("smartAlertBanner"); let alertText = document.getElementById("smartAlertText");
+            let budgetPercentage = inc > 0 ? (exp / inc) * 100 : 0;
+            if(SELECTED_PROJECT !== "") {
+                if(finalNetValue <= 3000 && inc > 0) { if(alertBanner) alertBanner.style.display = "flex"; if(alertText) alertText.innerHTML = `⚠️ <b>سيولة حرجة!</b> الصافي الحالي (${finalNetValue.toLocaleString()} ج.م) غير كافٍ لتغطية الموقع.`; } 
+                else if(budgetPercentage >= 85) { if(alertBanner) alertBanner.style.display = "flex"; if(alertText) alertText.innerHTML = `🚨 <b>تنبيه مالي!</b> إجمالي المصاريف تخطى <b>${Math.round(budgetPercentage)}%</b> من قيمة الدفعات.`; } 
+                else { if(alertBanner) alertBanner.style.display = "none"; }
+            } else { if(alertBanner) alertBanner.style.display = "none"; }
+            
+            if(netCard && netBalanceText) {
+                if(finalNetValue <= 5000) { netCard.style.background = "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "var(--danger)"; netBalanceText.style.color = "var(--danger)"; } 
+                else if(finalNetValue <= 15000) { netCard.style.background = "linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "var(--primary)"; netBalanceText.style.color = "var(--primary)"; } 
+                else { netCard.style.background = "linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "rgba(16, 185, 129, 0.3)"; netBalanceText.style.color = "var(--success)"; }
+            }
+
             let pct = inc > 0 ? (exp / inc) * 100 : 0; if(pct > 100) pct = 100;
             let bar = document.getElementById("hudProgressBar"); if(bar) { bar.style.width = pct + "%"; bar.style.backgroundColor = pct > 85 ? "var(--danger)" : "var(--primary)"; }
-            document.getElementById("sideTotalCount").innerText = items.length + " عمليات";
+            
+            let countEl = document.getElementById("sideTotalCount"); if(countEl) countEl.innerText = items.length + " عمليات";
 
             filteredItems.forEach(i => {
-                let engLabel = ACCOUNTS[i.engineer] ? ACCOUNTS[i.engineer].label : (i.engineer || "عام"); let amtVal = i.amount ? i.amount.toLocaleString() : "0";
+                let engLabel = ACCOUNTS_ROLES[i.engineer] ? ACCOUNTS_ROLES[i.engineer].label : (i.engineer || "عام"); 
+                let amtCalculated = parseInlineCalculation(i.amount); let amtVal = amtCalculated ? amtCalculated.toLocaleString() : "0";
+                let displayCategory = i.category;
+                let cloudIcon = i.isOffline ? `<i class="fas fa-cloud" style="color:var(--text-dim); margin-right:5px; font-size:11px;"></i>` : `<i class="fas fa-check-circle" style="color:var(--success) !important; margin-right:5px; font-size:11px;"></i>`;
+
                 html += `
                     <div class="swipe-item-wrapper">
-                        <div class="swipe-action-zone swipe-action-delete" onclick="askDelItem('${i.id}', '${i.desc}')"><i class="fas fa-trash-alt"></i></div>
-                        <div class="swipe-action-zone swipe-action-edit" onclick="triggerInlineEditItem('${i.id}', '${i.desc}', ${i.amount})"><i class="fas fa-edit"></i></div>
                         <div class="log-item ${i.type || 'expense'}">
-                            <div class="log-info">
-                                <h5>${i.desc || 'بدون بيان'}</h5>
-                                <p>${i.category || 'عام'} • م / ${engLabel}</p>
-                            </div>
+                            <div class="log-info"><h5>${i.desc || 'بدون بيان'}</h5><p>${displayCategory || 'عام'} • م / ${engLabel} ${cloudIcon}</p></div>
                             <div class="log-amount-holder">
-                                <div class="log-amount-data">
-                                    <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">${i.type==='income'?'+':'-'}${amtVal}</span>
-                                    <span class="date">${i.date || '-'}</span>
-                                </div>
-                                <i class="fas fa-trash-can quick-item-trash-btn" onclick="triggerAutoSwipeToDelete('${i.id}', '${i.desc}', this)"></i>
+                                <div class="log-amount-data"><span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">${i.type==='income'?'+':'-'}${amtVal}</span><span class="date">${i.date || '-'}</span></div>
+                                <i class="fas fa-trash-can" style="color:var(--text-dim); cursor:pointer; font-size:13px; padding:6px; margin-right:8px;" onclick="askDelItem('${i.id}', '${i.desc}')"></i>
                             </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
-            document.getElementById("logBody").innerHTML = html || `<div style="text-align:center; color:var(--text-dim); font-size:12px; padding:20px;">لا توجد عمليات...</div>`;
-            bindSwipeGesturesToElements();
+            document.getElementById("logBody").innerHTML = html || `<div style="text-align:center; color:var(--text-dim); font-size:13px; padding:25px;">لا توجد عمليات...</div>`;
         }
     </script>
 </body>
