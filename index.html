@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Perfect Steel Pro Premium v4.0</title>
+    <title>Perfect Steel Pro Mobile Premium v4.7</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,7 +20,7 @@
     <style>
         :root {
             --bg-body: #030712; 
-            --bg-card: rgba(17, 24, 39, 0.55);
+            --bg-card: rgba(17, 24, 39, 0.6);
             --text-main: #F9FAFB;
             --text-dim: #9CA3AF;
             --primary: #FF6B00; 
@@ -30,37 +30,33 @@
             --info: #0EA5E9;
             --purple: #8B5CF6;
             --purple-dark: #6D28D9;
-            --border: rgba(255, 255, 255, 0.07);
-            --radius: 24px;
+            --border: rgba(255, 255, 255, 0.08);
+            --radius: 20px;
             --revenue-color: #FBBF24;
-            --overlay-bg: rgba(3, 7, 18, 0.88);
+            --overlay-bg: rgba(3, 7, 18, 0.9);
             --glow: rgba(255, 107, 0, 0.25);
-            --neon-shadow: 0 12px 40px rgba(255, 107, 0, 0.05);
-            --card-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --card-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
         [data-theme="light"] {
             --bg-body: #F3F4F6;
-            --bg-card: rgba(255, 255, 255, 0.75);
+            --bg-card: rgba(255, 255, 255, 0.8);
             --text-main: #111827;
             --text-dim: #6B7280;
             --border: rgba(17, 24, 39, 0.08);
             --overlay-bg: rgba(243, 244, 246, 0.96);
             --glow: rgba(255, 107, 0, 0.15);
-            --neon-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
             --primary: #FF5500;
             --primary-dark: #CC4400;
         }
 
         [data-theme="oled"] {
             --bg-body: #000000;
-            --bg-card: rgba(15, 15, 15, 0.6);
+            --bg-card: rgba(15, 15, 15, 0.7);
             --text-main: #FFFFFF;
             --text-dim: #A1A1AA;
             --border: rgba(255, 255, 255, 0.05);
-            --overlay-bg: rgba(0, 0, 0, 0.93);
-            --glow: rgba(255, 107, 0, 0.3);
-            --neon-shadow: 0 12px 40px rgba(255, 107, 0, 0.12);
+            --overlay-bg: rgba(0, 0, 0, 0.95);
         }
 
         * { 
@@ -77,7 +73,6 @@
             overflow-x: hidden; min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
             -webkit-font-smoothing: antialiased;
-            transition: background-color 0.4s ease, color 0.4s ease;
             padding-top: env(safe-area-inset-top);
         }
 
@@ -90,236 +85,191 @@
         }
 
         header {
-            display: none; width: 100%; padding: 0 20px;
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            display: none; width: 100%; padding: 0 16px;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
-            background: rgba(3, 7, 18, 0.2); z-index: 150;
+            background: rgba(3, 7, 18, 0.4); z-index: 150;
             justify-content: space-between; align-items: center;
-            height: 85px; position: sticky; top: 0;
+            height: 70px; position: sticky; top: 0;
         }
         header.visible-now { display: flex !important; }
         
-        .logo h1 { color: var(--primary); font-size: 16px; margin: 0; font-weight: 900; letter-spacing: 1.5px; text-shadow: 0 0 15px var(--glow); }
+        .logo h1 { color: var(--primary); font-size: 15px; margin: 0; font-weight: 900; text-shadow: 0 0 10px var(--glow); }
         
-        .menu-trigger { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-main); font-size: 18px; cursor: pointer; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; opacity: 0; pointer-events: none; }
+        .menu-trigger { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main); font-size: 18px; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; }
         .menu-trigger.visible { opacity: 1; pointer-events: auto; }
 
-        .user-site-column { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-        .header-greet { font-size: 11px; color: var(--text-dim); font-weight: 600; }
+        .user-site-column { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+        .header-greet { font-size: 10px; color: var(--text-dim); font-weight: 600; }
 
         .theme-toggle-header-btn {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
-            width: 42px; height: 42px; border-radius: 50%; display: none;
-            align-items: center; justify-content: center; color: var(--text-main);
-            font-size: 16px; cursor: pointer; transition: 0.3s;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+            width: 44px; height: 44px; border-radius: 50%; display: none;
+            align-items: center; justify-content: center; color: var(--text-main); font-size: 16px;
         }
         .theme-toggle-header-btn.visible { display: flex; }
 
         .header-user-badge {
-            display: none; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: var(--text-main); 
-            background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 12px; border: 1px solid var(--border);
+            display: none; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: var(--text-main); 
+            background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 10px; border: 1px solid var(--border);
         }
         .header-user-badge i { color: var(--primary); }
 
         .header-project-badge {
-            display: none; padding: 6px 14px; border-radius: 14px; font-size: 11px; font-weight: 700; cursor: pointer; align-items: center; gap: 6px; color: #fff; 
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.35) 0%, rgba(255, 107, 0, 0.1) 100%);
-            border: 1px solid var(--primary); transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.15);
+            display: none; padding: 5px 12px; border-radius: 12px; font-size: 10px; font-weight: 700; color: #fff; 
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.3) 0%, rgba(255, 107, 0, 0.1) 100%);
+            border: 1px solid var(--primary);
         }
 
         .custom-modal-overlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
-            z-index: 999999 !important; justify-content: center; align-items: center; padding: 20px;
+            display: none !important; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(3, 7, 18, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); 
+            z-index: 999999 !important; justify-content: center; align-items: center; padding: 16px;
         }
         .custom-modal { 
             background: #0f172a; border: 1px solid var(--border); border-radius: var(--radius); 
-            padding: 24px; width: 100%; max-width: 400px; text-align: center; 
-            box-shadow: var(--card-glow), 0 20px 50px rgba(0,0,0,0.6); 
+            padding: 20px; width: 100%; max-width: 380px; text-align: center; 
+            box-shadow: var(--card-glow); 
         }
-        .modal-btns { display: flex; gap: 10px; margin-top: 20px; width: 100%; }
-        .btn-modal-confirm { flex: 1; padding: 12px; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-family: inherit; }
-        .btn-modal-cancel { flex: 1; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; color: var(--text-dim); font-weight: bold; cursor: pointer; font-family: inherit; }
+        .modal-btns { display: flex; gap: 10px; margin-top: 16px; width: 100%; }
+        .btn-modal-confirm { flex: 1; padding: 14px; border: none; border-radius: 12px; color: white; font-weight: bold; font-size: 14px; }
+        .btn-modal-cancel { flex: 1; padding: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; color: var(--text-dim); font-weight: bold; font-size: 14px; }
 
-        /* تعديل القائمة الجانبية لتشمل الروابط الجديدة بشكل منسق */
         .sidebar {
-            position: fixed; top: 0; right: -310px; width: 300px; height: 100%;
+            position: fixed; top: 0; right: -310px; width: 290px; height: 100%;
             background: linear-gradient(180deg, #090d1a 0%, #030712 100%); border-left: 1px solid var(--border);
-            z-index: 200; padding: 30px 20px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto;
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(20px);
+            z-index: 200; padding: 24px 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(20px);
         }
-        .sidebar.open { right: 0; box-shadow: -20px 0 40px rgba(0,0,0,0.7); }
-        .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-        .sidebar-close { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-dim); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .sidebar-user-info { background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; border: 1px solid var(--border); text-align: center; font-weight: bold; }
-        .sidebar-user-info i { color: var(--primary); font-size: 20px; margin-bottom: 5px; display: block; }
+        .sidebar.open { right: 0; box-shadow: -15px 0 30px rgba(0,0,0,0.6); }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .sidebar-close { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-dim); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .sidebar-user-info { background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; border: 1px solid var(--border); text-align: center; font-weight: bold; font-size: 12px; }
+        .sidebar-user-info i { color: var(--primary); font-size: 16px; margin-bottom: 4px; display: block; }
 
-        /* ستايل أزرار شيتات جوجل داخل المنيو الجانبي */
-        .sidebar-link-btn {
-            display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px;
-            color: var(--text-main); font-weight: 700; font-size: 13px; text-decoration: none; transition: 0.2s;
-        }
-        .sidebar-link-btn:hover { background: rgba(255,107,0,0.1); border-color: var(--primary); color: var(--primary); }
-        .sidebar-link-btn i { font-size: 16px; }
+        .sidebar-link-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); font-weight: 700; font-size: 12px; text-decoration: none; cursor: pointer; }
+        .sidebar-link-btn i { font-size: 14px; }
+        
+        .sidebar-project-actions-zone { display: none; flex-direction: column; gap: 8px; border-top: 1px dashed var(--border); padding-top: 10px; }
+        .sidebar-project-actions-zone.active-now { display: flex; }
 
-        .proj-info-sidebar-block {
-            background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
-            border: 1px solid rgba(255,255,255,0.08); padding: 14px 12px; border-radius: 16px;
-            display: none; flex-direction: column; gap: 8px;
-        }
+        .proj-info-sidebar-block { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 12px; border-radius: 14px; display: none; flex-direction: column; gap: 8px; }
         .proj-info-sidebar-block.visible { display: flex; }
-        .info-row-item { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 5px; align-items: center; }
-        .info-row-item span { color: var(--text-dim); }
-        .info-row-item b { color: var(--text-main); text-align: left; }
+        .info-row-item { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px; }
         
         .status-dot { inline-size: 8px; block-size: 8px; border-radius: 50%; margin-inline-start: 6px; display: inline-block; vertical-align: middle; }
+        .btn-logout { margin-top: auto; width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 12px; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        
+        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 190; display: none; }
 
-        .btn-logout { margin-top: auto; width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
-        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 190; display: none; }
+        .app-container { width: 100%; max-width: 480px; padding: 16px 14px 60px; z-index: 5; display: flex; flex-direction: column; gap: 16px; position: relative; }
 
-        /* تم تعديل الهامش السفلي لأن المنيو السفلي اتلغى تماماً والصفحة بقت مرتاحة */
-        .app-container { width: 100%; max-width: 480px; padding: 20px 16px 40px; z-index: 5; display: flex; flex-direction: column; gap: 18px; position: relative; }
+        .card { background: var(--bg-card); border-radius: var(--radius); padding: 18px; border: 1px solid var(--border); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: var(--card-glow); }
 
-        .card {
-            background: var(--bg-card); border-radius: var(--radius); padding: 22px; 
-            border: 1px solid var(--border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-            box-shadow: var(--card-glow), var(--neon-shadow); 
-            transition: all 0.3s ease;
-        }
+        .system-smart-alert-banner { background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(255, 107, 0, 0.08) 100%); border: 1px solid var(--danger); padding: 12px; border-radius: 14px; font-size: 11px; font-weight: bold; color: #fca5a5; display: none; align-items: center; gap: 8px; }
 
-        .system-smart-alert-banner {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(255, 107, 0, 0.1) 100%);
-            border: 1px solid var(--danger); padding: 12px 16px; border-radius: 16px;
-            font-size: 12px; font-weight: bold; color: #fca5a5; display: none; align-items: center; gap: 10px;
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2); animation: pulseAlert 2s infinite ease-in-out;
-        }
-        @keyframes pulseAlert { 0% { opacity: 0.9; } 50% { opacity: 1; box-shadow: 0 0 25px rgba(239, 68, 68, 0.4); } 100% { opacity: 0.9; } }
-
-        .login-box { background: var(--bg-card); border-radius: var(--radius); padding: 30px 24px; border: 1px solid var(--border); box-shadow: var(--card-glow); width: 100%; margin-top: 40px; }
+        .login-box { background: var(--bg-card); border-radius: var(--radius); padding: 24px 16px; border: 1px solid var(--border); width: 100%; margin-top: 20px; }
         
         .project-selector-card { display: none; }
         .project-selector-card.visible-now { display: block !important; }
         .project-selector-card.hide-completely { display: none !important; }
         
-        .main-content { display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; width: 100%; }
-        .main-content.visible { display: flex !important; flex-direction: column; gap: 15px; opacity: 1; transform: translateY(0); }
+        .main-content { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; }
+        .main-content.visible { display: flex !important; flex-direction: column; gap: 16px; opacity: 1; }
 
-        .label-group label { display: block; margin-bottom: 8px; font-size: 12px; color: var(--text-dim); font-weight: bold; }
+        .label-group label { display: block; margin-bottom: 6px; font-size: 11px; color: var(--text-dim); font-weight: bold; }
+        
+        .input-ui { width: 100%; background-color: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 14px; padding: 14px; color: var(--text-main); font-size: 14px; font-family: inherit; outline: none; -webkit-appearance: none; }
+        .input-ui:focus { border-color: var(--primary); background-color: rgba(255,255,255,0.06); }
         
         .input-with-voice-holder { position: relative; width: 100%; display: flex; align-items: center; }
-        .input-ui { width: 100%; background-color: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 16px; padding: 14px 16px; color: var(--text-main); font-size: 14px; font-family: inherit; outline: none; transition: 0.2s ease; }
-        .input-ui:focus { border-color: var(--primary); background-color: rgba(255,255,255,0.06); box-shadow: 0 0 12px var(--glow); }
-        
-        .voice-mic-btn { position: absolute; left: 12px; background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; padding: 5px; z-index: 10; }
+        .voice-mic-btn { position: absolute; left: 12px; background: none; border: none; color: var(--text-dim); font-size: 18px; padding: 6px; z-index: 10; }
 
         .custom-dropdown-box { position: relative; width: 100%; }
-        .dropdown-selected-trigger {
-            width: 100%; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); 
-            border-radius: 16px; color: var(--primary); font-weight: 700; font-size: 14px; cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center; transition: 0.2s;
-        }
-        .custom-dropdown-box.open .dropdown-selected-trigger { border-color: var(--primary); }
+        .dropdown-selected-trigger { width: 100%; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; color: var(--primary); font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
 
-        .dropdown-options-list {
-            position: absolute; top: calc(100% + 5px); left: 0; width: 100%; max-height: 200px; overflow-y: auto;
-            background: #090d1a; border: 1px solid var(--border); border-radius: 14px; z-index: 100;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: none; flex-direction: column; padding: 6px;
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-        }
+        .dropdown-options-list { position: absolute; top: calc(100% + 5px); left: 0; width: 100%; max-height: 220px; overflow-y: auto; background: #090d1a; border: 1px solid var(--border); border-radius: 14px; z-index: 100; display: none; flex-direction: column; padding: 6px; backdrop-filter: blur(20px); }
         .custom-dropdown-box.open .dropdown-options-list { display: flex; }
         
-        /* تصميم صفوف كروت اختيار المشاريع لإضافة زر المسح النهائي للمكتمل */
-        .dropdown-option-item { padding: 11px 14px; font-size: 13px; font-weight: bold; color: var(--text-main); cursor: pointer; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-        .dropdown-option-item:hover { background: rgba(255, 107, 0, 0.12); color: var(--primary); }
+        .dropdown-option-item { padding: 12px; font-size: 13px; font-weight: bold; color: var(--text-main); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
         .dropdown-item-text-zone { display: flex; align-items: center; gap: 8px; flex: 1; }
-        .project-hard-trash-btn { color: var(--text-dim); padding: 4px 8px; border-radius: 6px; transition: 0.2s; }
-        .project-hard-trash-btn:hover { color: var(--danger) !important; background: rgba(239, 68, 68, 0.15); }
+        .project-hard-trash-btn { color: var(--text-dim); padding: 6px 10px; border-radius: 8px; font-size: 14px; }
+        .project-hard-trash-btn:hover { color: var(--danger) !important; background: rgba(239, 68, 68, 0.1); }
 
         .quick-chips-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-        .cash-chip { background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255, 255, 255, 0.12); padding: 7px 14px; border-radius: 10px; font-size: 11px; color: var(--text-main); font-weight: bold; cursor: pointer; }
-        .cash-chip:active { transform: scale(0.9); background: var(--primary); color: white; }
+        .cash-chip { background: rgba(255,255,255,0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 14px; border-radius: 10px; font-size: 11px; color: var(--text-main); font-weight: bold; }
 
-        .stats-hud-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
-        .hud-box { 
-            background: rgba(255, 255, 255, 0.02); 
-            border: 1px solid var(--border); padding: 16px 8px; border-radius: 18px; text-align: center; 
-            transition: all 0.3s; 
-        }
-        .hud-box.prime { border-color: rgba(16, 185, 129, 0.2); background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(3, 7, 18, 0.2) 100%); }
-        .hud-box h4 { margin: 0; font-size: 11px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .hud-box .val { margin: 6px 0 0; font-size: 16px; font-weight: 900; }
+        .stats-hud-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; }
+        .hud-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); padding: 12px 4px; border-radius: 14px; text-align: center; }
+        .hud-box.prime { border-color: rgba(16, 185, 129, 0.2); background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(3, 7, 18, 0.2) 100%); }
+        .hud-box h4 { margin: 0; font-size: 9px; color: var(--text-dim); font-weight: 700; }
+        .hud-box .val { margin: 4px 0 0; font-size: 13px; font-weight: 900; }
 
-        .hud-progress-wrapper { width: 100%; background: rgba(255,255,255,0.04); height: 6px; border-radius: 10px; overflow: hidden; margin-top: -4px; border: 1px solid var(--border); }
-        .hud-progress-bar { width: 0%; height: 100%; background: var(--primary); transition: width 0.7s ease; }
+        .hud-progress-wrapper { width: 100%; background: rgba(255,255,255,0.04); height: 5px; border-radius: 6px; overflow: hidden; margin-top: -4px; border: 1px solid var(--border); }
+        .hud-progress-bar { width: 0%; height: 100%; background: var(--primary); }
 
-        .filter-pills-container { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 8px; width: 100%; -webkit-overflow-scrolling: touch; }
+        .filter-pills-container { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0; width: 100%; -webkit-overflow-scrolling: touch; }
         .filter-pills-container::-webkit-scrollbar { display: none; }
-        .pill-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 10px 18px; border-radius: 25px; color: var(--text-dim); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: 0.2s; }
-        .pill-btn.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: transparent; box-shadow: 0 4px 15px var(--glow); }
+        .pill-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 10px 16px; border-radius: 20px; color: var(--text-dim); font-size: 11px; font-weight: 700; white-space: nowrap; }
+        .pill-btn.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: transparent; }
 
-        .eng-filter-wrapper { display: flex; gap: 5px; overflow-x: auto; padding: 2px 0 6px; width: 100%; -webkit-overflow-scrolling: touch; border-bottom: 1px solid var(--border); margin-bottom: 5px; }
+        .eng-filter-wrapper { display: flex; gap: 5px; overflow-x: auto; padding: 2px 0 6px; width: 100%; -webkit-overflow-scrolling: touch; border-bottom: 1px solid var(--border); }
         .eng-filter-wrapper::-webkit-scrollbar { display: none; }
-        .eng-pill { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 5px 12px; border-radius: 14px; color: var(--text-dim); font-size: 10px; font-weight: bold; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+        .eng-pill { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 6px 12px; border-radius: 12px; color: var(--text-dim); font-size: 10px; font-weight: bold; white-space: nowrap; }
         .eng-pill.active { background: rgba(14, 165, 233, 0.15); color: var(--info); border-color: var(--info); }
 
-        .tabs { display: flex; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 18px; border: 1px solid var(--border); margin-bottom: 18px; }
-        .tab-btn { flex: 1; padding: 12px; border: none; background: none; color: var(--text-dim); font-weight: 700; font-size: 13px; border-radius: 14px; cursor: pointer; transition: 0.2s; }
-        .tab-btn.active { background: rgba(255, 255, 255, 0.07); color: var(--primary); box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .tabs { display: flex; background: rgba(0,0,0,0.2); padding: 4px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 14px; }
+        .tab-btn { flex: 1; padding: 10px; border: none; background: none; color: var(--text-dim); font-weight: 700; font-size: 12px; border-radius: 10px; }
+        .tab-btn.active { background: rgba(255, 255, 255, 0.06); color: var(--primary); }
 
-        .icon-selector-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 12px; width: 100%; }
-        .icon-selector-item {
-            background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 18px;
-            padding: 12px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 8px; cursor: pointer; color: var(--text-dim); transition: 0.2s ease;
-        }
-        .icon-selector-item i { font-size: 20px; }
-        .icon-selector-item span { font-size: 10px; font-weight: 700; }
-        .icon-selector-item.selected {
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.15) 0%, rgba(255, 107, 0, 0.03) 100%);
-            border-color: var(--primary); color: var(--primary); box-shadow: 0 0 15px rgba(255, 107, 0, 0.1);
-            transform: translateY(-3px);
-        }
+        .icon-selector-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; width: 100%; }
+        .icon-selector-item { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 14px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--text-dim); }
+        .icon-selector-item i { font-size: 18px; }
+        .icon-selector-item span { font-size: 9px; font-weight: 700; }
+        .icon-selector-item.selected { background: linear-gradient(135deg, rgba(255, 107, 0, 0.12) 0%, rgba(255, 107, 0, 0.02) 100%); border-color: var(--primary); color: var(--primary); }
 
-        .btn-primary { width: 100%; padding: 15px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 16px; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; transition: 0.2s; box-shadow: 0 6px 20px var(--glow); }
-        .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
+        .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 14px; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; box-shadow: 0 4px 12px var(--glow); }
 
-        .logs-list { max-height: 380px; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px; }
-        .swipe-item-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 18px; margin-bottom: 10px; }
-
+        .logs-list { max-height: 360px; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px; }
+        
+        .swipe-item-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 16px; margin-bottom: 8px; background: #1e293b; }
+        
         .log-item { 
-            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-            padding: 14px 16px; border: 1px solid var(--border); width: 100%; border-radius: 18px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.00) 100%);
+            padding: 12px 14px; border: 1px solid var(--border); width: 100%; border-radius: 16px;
             display: flex; justify-content: space-between; align-items: center; background-color: #0f1322;
+            position: relative; z-index: 10; transition: transform 0.25s cubic-bezier(0.1, 0.8, 0.3, 1);
         }
         .log-item.income { border-right: 4px solid var(--success); }
         .log-item.expense { border-right: 4px solid var(--danger); }
-        .log-info h5 { margin: 0; font-size: 14px; font-weight: 700; color: var(--text-main); }
-        .log-info p { margin: 4px 0 0; font-size: 11px; color: var(--text-dim); font-weight: 600; }
-        .log-amount-holder { display: flex; align-items: center; gap: 10px; }
-        .log-amount-data .amt { display: block; font-size: 15px; font-weight: 900; text-align: left; }
-        .log-amount-data .date { font-size: 10px; color: var(--text-dim); text-align: left; display: block; margin-top: 2px; }
-
-        /* تعديل: تعديل الـ bottom لزرار الـ FAB العائم بعد إلغاء المنيو السفلي */
-        .calc-trigger-btn { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%); border: 1px solid rgba(255,255,255,0.25); border-radius: 50%; color: white; font-size: 18px; display: none; align-items: center; justify-content: center; z-index: 175; cursor: pointer; }
-        .calc-trigger-btn.visible { display: flex; }
-        .calc-panel { position: fixed; bottom: 80px; right: 20px; width: 240px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 18px; z-index: 176; display: none; flex-direction: column; padding: 10px; }
-        .calc-screen { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 10px; border-radius: 10px; text-align: left; font-size: 16px; font-weight: bold; color: var(--text-main); min-height: 42px; word-break: break-all; margin-bottom: 8px; }
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-        .calc-btn { padding: 10px 5px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-main); font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 13px; }
-        .calc-btn:active { background: var(--primary); color: white; }
-
-        .loading-shimmer { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: var(--bg-body); opacity: 0.95; display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
-        .project-indicators-edit-grid { display: flex; flex-direction: column; gap: 12px; text-align: right; width: 100%; margin-top: 10px; }
-
-        .floating-action-fab {
-            position: fixed; bottom: 25px; left: 24px; width: 56px; height: 56px;
-            background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%);
-            border: none; border-radius: 50%; color: white;
-            font-size: 22px; display: none; align-items: center; justify-content: center;
-            box-shadow: 0 10px 25px var(--glow); z-index: 9999 !important; cursor: pointer;
+        
+        .swipe-actions-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: flex-end; align-items: center; z-index: 5; padding-left: 10px;
         }
+        .swipe-btn {
+            height: 100%; width: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 14px; color: white; font-weight: bold; cursor: pointer; transition: 0.1s; gap: 4px;
+        }
+        .swipe-btn span { font-size: 8px; font-weight: 900; }
+        .swipe-btn.edit { background: var(--info); }
+        .swipe-btn.delete { background: var(--danger); border-top-left-radius: 16px; border-bottom-left-radius: 16px; }
+
+        .log-amount-holder { display: flex; align-items: center; gap: 10px; min-width: 90px; justify-content: flex-end; }
+        .log-amount-data { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 2px; }
+        .log-amount-data .amt { font-size: 14px; font-weight: 900; text-align: left; line-height: 1.2; display: block; white-space: nowrap; }
+        .log-amount-data .date { font-size: 10px; color: var(--text-dim); text-align: left; font-weight: 600; line-height: 1.1; display: block; white-space: nowrap; margin-top: 2px; }
+
+        .chart-holder-card { display: flex; align-items: center; justify-content: space-around; gap: 16px; padding: 16px; }
+        .chart-container-fixed { position: relative; width: 100px; height: 100px; }
+
+        .calc-trigger-btn { position: fixed; bottom: 16px; left: 16px; width: 46px; height: 46px; background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; color: white; font-size: 18px; display: none; align-items: center; justify-content: center; z-index: 175; }
+        .calc-trigger-btn.visible { display: flex; }
+        .calc-panel { position: fixed; bottom: 74px; left: 16px; width: 235px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; z-index: 176; display: none; flex-direction: column; padding: 8px; }
+        
+        .loading-shimmer { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: var(--bg-body); opacity: 0.95; display: none !important; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; }
+
+        .floating-action-fab { position: fixed; bottom: 16px; right: 16px; width: 54px; height: 54px; background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%); border: none; border-radius: 50%; color: white; font-size: 20px; display: none; align-items: center; justify-content: center; box-shadow: 0 6px 16px var(--glow); z-index: 180 !important; }
         .floating-action-fab.visible { display: flex !important; }
     </style>
 
@@ -331,43 +281,43 @@
     <div class="bg-fixed"></div>
 
     <div class="loading-shimmer" id="loading">
-        <i class="fas fa-cog fa-spin" style="font-size: 40px; color: var(--primary);"></i>
-        <p style="margin-top: 15px; font-weight: bold; font-size: 14px;">متابعة وضبط الهيكل المالي... ⚡</p>
+        <i class="fas fa-cog fa-spin" style="font-size: 36px; color: var(--primary);"></i>
+        <p style="margin-top: 12px; font-weight: bold; font-size: 13px;">متابعة وضبط الهيكل المالي... ⚡</p>
     </div>
 
-    <div class="floating-action-fab" id="fastInputFab" onclick="scrollToTransactionForm()"><i class="fas fa-plus"></i></div>
-
+    <div class="floating-action-fab" id="fastInputFab" onclick="handleFloatingFabClick()"><i class="fas fa-plus"></i></div>
     <div class="calc-trigger-btn" id="calcTrigger" onclick="toggleCalc()"><i class="fas fa-calculator"></i></div>
+    
     <div class="calc-panel" id="calcPanel">
          <div class="calc-screen" id="calcScreen">0</div>
          <div class="calc-grid">
-              <button class="calc-btn action" onclick="pressCalc('C')">C</button>
-              <button class="calc-btn op" onclick="pressCalc('/')">/</button>
-              <button class="calc-btn op" onclick="pressCalc('*')">×</button>
-              <button class="calc-btn action" onclick="pressCalc('del')">←</button>
+              <button class="calc-btn" style="background:rgba(239,68,68,0.15); color:var(--danger);" onclick="pressCalc('C')">C</button>
+              <button class="calc-btn" onclick="pressCalc('/')">/</button>
+              <button class="calc-btn" onclick="pressCalc('*')">×</button>
+              <button class="calc-btn" style="background:rgba(239,68,68,0.15); color:var(--danger);" onclick="pressCalc('del')">←</button>
               <button class="calc-btn" onclick="pressCalc('7')">7</button>
               <button class="calc-btn" onclick="pressCalc('8')">8</button>
               <button class="calc-btn" onclick="pressCalc('9')">9</button>
-              <button class="calc-btn op" onclick="pressCalc('-')">-</button>
+              <button class="calc-btn" onclick="pressCalc('-')">-</button>
               <button class="calc-btn" onclick="pressCalc('4')">4</button>
               <button class="calc-btn" onclick="pressCalc('5')">5</button>
               <button class="calc-btn" onclick="pressCalc('6')">6</button>
-              <button class="calc-btn op" onclick="pressCalc('+')">+</button>
+              <button class="calc-btn" onclick="pressCalc('+')">+</button>
               <button class="calc-btn" onclick="pressCalc('1')">1</button>
               <button class="calc-btn" onclick="pressCalc('2')">2</button>
               <button class="calc-btn" onclick="pressCalc('3')">3</button>
-              <button class="calc-btn op" onclick="pressCalc('=')">=</button>
+              <button class="calc-btn" style="background:var(--primary); color:white;" onclick="pressCalc('=')">=</button>
               <button class="calc-btn" style="grid-column: span 2;" onclick="pressCalc('0')">0</button>
               <button class="calc-btn" onclick="pressCalc('.')">.</button>
-              <button class="calc-btn op" style="font-size:10px; padding:10px 2px;" onclick="pushCalcToInput()">تنزيل</button>
+              <button class="calc-btn" style="font-size:10px; color:var(--primary); background:rgba(255,107,0,0.1);" onclick="pushCalcToInput()">تنزيل</button>
          </div>
     </div>
 
-    <div class="custom-modal-overlay" id="globalAppModal" style="display: none !important;">
+    <div class="custom-modal-overlay" id="globalAppModal">
          <div class="custom-modal" id="globalAppModalCard">
-              <i id="globalModalIcon" class="fas fa-info-circle" style="font-size: 28px; margin-bottom: 10px; color: var(--primary);"></i>
-              <h4 id="globalModalTitle" style="margin: 0 0 8px; font-weight: 900;">تنبيه النظام</h4>
-              <p id="globalModalBody" style="margin: 0; font-size: 13px; color: var(--text-dim);">الرسالة...</p>
+              <i id="globalModalIcon" class="fas fa-info-circle" style="font-size: 26px; margin-bottom: 8px; color: var(--primary);"></i>
+              <h4 id="globalModalTitle" style="margin: 0 0 6px; font-weight: 900; font-size: 15px;">تنبيه النظام</h4>
+              <p id="globalModalBody" style="margin: 0; font-size: 12px; color: var(--text-dim);">الرسالة...</p>
               
               <div id="projectIndicatorsFormContainer" class="project-indicators-edit-grid" style="display:none;">
                    <div class="label-group">
@@ -384,7 +334,7 @@
                              <input type="number" id="setupLaborCount" class="input-ui" placeholder="0">
                         </div>
                         <div>
-                             <label>نسبة التقدم الإجمالية (%)</label>
+                             <label>نسبة التقدم (%)</label>
                              <input type="number" id="setupProgressPercent" class="input-ui" placeholder="%">
                         </div>
                    </div>
@@ -398,7 +348,7 @@
                    </div>
               </div>
 
-              <div id="globalModalInputContainer" style="display:none; margin-top:14px;">
+              <div id="globalModalInputContainer" style="display:none; margin-top:10px;">
                    <input type="text" id="globalModalInputField" class="input-ui">
               </div>
               <div class="modal-btns">
@@ -412,30 +362,43 @@
 
     <div class="sidebar" id="sidebarMenu">
         <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-            <span style="font-weight: 900; color: var(--primary); font-size: 15px;">إدارة اللوحة</span>
+            <span style="font-weight: 900; color: var(--primary); font-size: 14px;">إدارة اللوحة</span>
             <button class="sidebar-close" onclick="toggleSidebar(false)"><i class="fas fa-times"></i></button>
         </div>
         <div class="sidebar-user-info"><i class="fas fa-user-hard-hat"></i><span id="sidebarUserName">م / اسم المهندس</span></div>
 
         <a class="sidebar-link-btn" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank">
             <i class="fas fa-money-bill-wave" style="color: var(--success);"></i>
-            <span>كشف مرتبات الإدارة</span>
+            <span>كشف مرتبات العمال</span>
         </a>
         <a class="sidebar-link-btn" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank">
             <i class="fas fa-calendar-check" style="color: var(--info);"></i>
             <span>كشف حضور وانصراف العمال</span>
         </a>
 
+        <div class="sidebar-project-actions-zone" id="sidebarProjectActionsZone">
+             <div style="font-size: 11px; font-weight: 900; color: var(--primary); padding-bottom: 4px; margin-bottom: 2px;"><i class="fas fa-sliders-h"></i> عمليات المشروع الحالي:</div>
+             <div class="sidebar-link-btn" onclick="generateProjectPDFReport()" style="background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.2); color: #f87171;">
+                  <i class="fas fa-file-pdf"></i><span>طباعة مستخلص PDF</span>
+             </div>
+             <div class="sidebar-link-btn" onclick="exportToExcelCSVSheet()" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.2); color: #34d399;">
+                  <i class="fas fa-file-excel"></i><span>توريد شيت إكسيل</span>
+             </div>
+             <div class="sidebar-link-btn" onclick="openProjectIndicatorsEditModal()" style="background: rgba(139, 92, 246, 0.08); border-color: rgba(139, 92, 246, 0.2); color: #c084fc;">
+                  <i class="fas fa-sliders"></i><span>تعديل مؤشرات الموقع</span>
+             </div>
+        </div>
+
         <div class="proj-info-sidebar-block" id="sidebarProjInfoBlock">
-             <div style="font-size: 12px; font-weight: 900; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 6px;">
+             <div style="font-size: 11px; font-weight: 900; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 6px;">
                   <span><i class="fas fa-circle-info"></i> مؤشرات وبيانات الموقع</span>
              </div>
              <div class="info-row-item"><span>حالة الموقع:</span><b id="lblInfStatus">-</b></div>
-             <div class="info-row-item"><span>المهندس المسؤول:</span><b id="lblInfEng">-</b></div>
-             <div class="info-row-item"><span>صاحب المشروع:</span><b id="lblInfOwner">-</b></div>
-             <div class="info-row-item"><span>عدد العمال الحالي:</span><b id="lblInfLabor">- عمال</b></div>
-             <div class="info-row-item"><span>نسبة التقدم:</span><b id="lblInfProgress">-</b></div>
-             <div class="info-row-item" style="display:none;"><span>حركات النشاط:</span><b id="sideTotalCount">0 عمليات</b></div>
+             <div class="info-row-item"><span>المهندس:</span><b id="lblInfEng">-</b></div>
+             <div class="info-row-item"><span>المالك:</span><b id="lblInfOwner">-</b></div>
+             <div class="info-row-item"><span>العمال الحالية:</span><b id="lblInfLabor">- عمال</b></div>
+             <div class="info-row-item"><span>نسبة الإنجاز:</span><b id="lblInfProgress">-</b></div>
+             <div class="info-row-item" style="display:none;"><span>العمليات:</span><b id="sideTotalCount">0</b></div>
         </div>
 
         <button class="btn-logout" onclick="triggerLogOut()"><i class="fas fa-door-open"></i> تسجيل الخروج</button>
@@ -457,14 +420,14 @@
     <div class="app-container" id="ptrTouchContainer">
         
         <div class="login-box" id="loginBox">
-            <div style="text-align: center; margin-bottom: 20px;">
-                 <i class="fas fa-user-shield" style="color: var(--primary); font-size: 32px; text-shadow: 0 0 15px var(--glow);"></i>
-                 <h3 style="margin: 8px 0 0; font-weight: 900; font-size: 16px;">بوابة المهندسين والموقع</h3>
+            <div style="text-align: center; margin-bottom: 16px;">
+                 <i class="fas fa-user-shield" style="color: var(--primary); font-size: 28px; text-shadow: 0 0 10px var(--glow);"></i>
+                 <h3 style="margin: 6px 0 0; font-weight: 900; font-size: 14px;">بوابة المهندسين والموقع</h3>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
                  <input type="text" id="loginUsername" class="input-ui" placeholder="اسم المستخدم..">
                  <input type="password" id="loginPassword" class="input-ui" placeholder="••••">
-                 <button class="btn-primary" id="loginSubmitBtn" onclick="handleSecureLogin()">ولوجه آمن للنظام</button>
+                 <button class="btn-primary" id="loginSubmitBtn" onclick="handleSecureLogin()">تسجيل الدخول</button>
             </div>
         </div>
 
@@ -472,7 +435,7 @@
             
             <div class="system-smart-alert-banner" id="smartAlertBanner" style="display: none;">
                  <i class="fas fa-triangle-exclamation"></i>
-                 <span id="smartAlertText">تحذير السيولة الذكي...</span>
+                 <span id="smartAlertText">تحذير السيولة...</span>
             </div>
 
             <div class="card project-selector-card" id="projectSelectorCard">
@@ -487,7 +450,7 @@
                     </div>
                 </div>
 
-                <div class="label-group" style="margin-top: 18px;">
+                <div class="label-group" style="margin-top: 14px;">
                     <label><i class="fas fa-archive" style="color: var(--revenue-color);"></i> أرشيف المواقع المغلقة والتاريخية</label>
                     <div class="custom-dropdown-box" id="customArchiveDropdown">
                          <div class="dropdown-selected-trigger" style="color: var(--revenue-color); border-color: rgba(255,204,0,0.15);" onclick="toggleCustomDropdown('archive')">
@@ -499,12 +462,12 @@
                 </div>
             </div>
 
-            <div class="hidden-element" id="financeContent" style="display: none; flex-direction: column; gap: 18px;">
+            <div class="hidden-element" id="financeContent" style="display: none; flex-direction: column; gap: 16px;">
                 
-                <div id="pdfExportArea" style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
+                <div id="pdfExportArea" style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
                     <div style="display:none; text-align:center; padding:10px 0; color: #ff6b00;" id="pdfHeaderLogo">
-                        <h2 style="margin:0; font-weight:900; font-size:20px;">PERFECT STEEL PRO SYSTEM REPORT</h2>
-                        <p style="margin:2px 0 0; font-size:12px; color:#666;" id="pdfProjectMeta">كشف تدفق حركة المستخلص الميداني</p>
+                        <h2 style="margin:0; font-weight:900; font-size:18px;">PERFECT STEEL PRO REPORT</h2>
+                        <p style="margin:2px 0 0; font-size:11px; color:#666;" id="pdfProjectMeta">كشف تدفق حركة المستخلص الميداني</p>
                     </div>
 
                     <div class="stats-grid stats-hud-row">
@@ -519,8 +482,8 @@
                      <div class="chart-container-fixed">
                           <canvas id="perfectSteelPieChart"></canvas>
                      </div>
-                     <div class="chart-legends-wrap" style="flex:1; padding-right:15px;">
-                          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-weight:700; font-size:11px;">
+                     <div class="chart-legends-wrap" style="flex:1; padding-right:10px;">
+                          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-weight:700; font-size:10px;">
                                <span style="color:var(--primary)">■ خامات</span>
                                <span style="color:var(--info)">■ عمالة</span>
                                <span style="color:var(--revenue-color)">■ نقل</span>
@@ -529,35 +492,23 @@
                      </div>
                 </div>
 
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; width:100%;">
-                     <button class="btn-primary" onclick="generateProjectPDFReport()" style="padding:12px; font-size:12px; border-radius:14px; background: linear-gradient(135deg, #374151 0%, #111827 100%); box-shadow:none;"><i class="fas fa-file-pdf" style="color:#ef4444;"></i> طباعة مستخلص PDF</button>
-                     <button class="btn-primary" onclick="toggleLaborSubPanel()" style="padding:12px; font-size:12px; border-radius:14px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); box-shadow:none;"><i class="fas fa-users-gear"></i> كشوف حسابات العمالة</button>
-                </div>
-                
-                <div style="display:grid; grid-template-columns: 1.3fr 1fr; gap:10px; width:100%; margin-top:-8px;">
-                     <button class="btn-primary" onclick="exportToExcelCSVSheet()" style="padding:12px; font-size:12px; border-radius:14px; background: linear-gradient(135deg, #10b981 0%, #047857 100%); box-shadow:none;"><i class="fas fa-file-excel"></i> توريد شيت إكسيل (CSV)</button>
-                     <button class="btn-primary" onclick="openProjectIndicatorsEditModal()" style="padding:12px; font-size:12px; border-radius:14px; background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%); box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);"><i class="fas fa-sliders"></i> تعديل المؤشرات</button>
+                <div style="display:flex; width:100%;">
+                     <button class="btn-primary" onclick="toggleLaborSubPanel()" style="padding:12px; font-size:12px; border-radius:12px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); box-shadow:none;"><i class="fas fa-users-gear"></i> كشوف مسحوبات العمالة الميدانية</button>
                 </div>
 
-                <div class="card" id="laborSubPanel" style="display:none; flex-direction:column; gap:12px; border-color: rgba(2, 132, 199, 0.25);">
-                     <h4 style="margin:0; font-size:13px; font-weight:900; color:var(--info);"><i class="fas fa-people-carry-box"></i> كشوف مسحوبات عمال الموقع</h4>
+                <div class="card" id="laborSubPanel" style="display:none; flex-direction:column; gap:10px; border-color: rgba(2, 132, 199, 0.2);">
+                     <h4 style="margin:0; font-size:12px; font-weight:900; color:var(--info);"><i class="fas fa-people-carry-box"></i> كشوف مسحوبات عمال الموقع</h4>
                      <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:8px;">
-                          <input type="text" id="labWorkerName" class="input-ui" style="padding:10px; font-size:12px;" placeholder="اسم المقاول أو العامل..">
-                          <input type="text" id="labAmount" class="input-ui" style="padding:10px; font-size:12px;" placeholder="المبلغ المسحوب..">
+                          <input type="text" id="labWorkerName" class="input-ui" style="padding:10px; font-size:12px;" placeholder="اسم المقاول/العامل..">
+                          <input type="text" id="labAmount" class="input-ui" style="padding:10px; font-size:12px;" placeholder="المبلغ..">
                      </div>
                      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                          <button class="btn-primary" onclick="saveLaborEntry()" style="padding:10px; font-size:12px; border-radius:12px;"><i class="fas fa-plus"></i> إثبات قيد السحب</button>
-                          <button class="btn-primary" onclick="transferLaborToExpenses()" style="padding:10px; font-size:12px; border-radius:12px; background:var(--success);"><i class="fas fa-share-from-square"></i> ترحيل للمصاريف</button>
+                          <button class="btn-primary" onclick="saveLaborEntry()" style="padding:10px; font-size:12px; border-radius:10px;"><i class="fas fa-plus"></i> قيد السحب</button>
+                          <button class="btn-primary" onclick="transferLaborToExpenses()" style="padding:10px; font-size:12px; border-radius:10px; background:var(--success);"><i class="fas fa-share-from-square"></i> ترحيل للمصاريف</button>
                      </div>
-                     <button class="btn-primary" onclick="generateLaborExpensesPDFReport()" style="padding:10px; font-size:12px; border-radius:12px; background:linear-gradient(135deg, #dc2626 0%, #991b1b 100%); box-shadow:none;"><i class="fas fa-file-pdf"></i> ملخص PDF لكشف العمالة</button>
-                     <div id="laborExpensesPdfHiddenArea" style="display:none; flex-direction:column; background:#030712; padding:20px; color:white; width:100%;">
-                          <div style="text-align:center; border-bottom: 2px solid #ff6b00; padding-bottom:10px; margin-bottom:12px;">
-                               <h2 style="margin:0; font-size:18px; color:#ff6b00; font-weight:900;">PERFECT STEEL PRO</h2>
-                               <h3 style="margin:4px 0 0; font-size:14px;" id="laborExpensesPdfTitleMeta">ملخص بند مسحوبات ويوميات العمالة</h3>
-                          </div>
-                          <div id="laborExpensesPdfTablePlaceholder"></div>
-                     </div>
-                     <div id="laborEntriesList" style="max-height:160px; overflow-y:auto; font-size:12px; display:flex; flex-direction:column; gap:6px; margin-top:6px;"></div>
+                     <button class="btn-primary" onclick="generateLaborExpensesPDFReport()" style="padding:10px; font-size:12px; border-radius:10px; background:linear-gradient(135deg, #dc2626 0%, #991b1b 100%); box-shadow:none;"><i class="fas fa-file-pdf"></i> ملخص حسابات PDF</button>
+                     <div id="laborExpensesPdfHiddenArea" style="display:none; flex-direction:column; background:#030712; padding:16px; color:white; width:100%;"><div style="text-align:center; border-bottom: 2px solid #ff6b00; padding-bottom:8px; margin-bottom:10px;"><h2>PERFECT STEEL PRO</h2></div><div id="laborExpensesPdfTablePlaceholder"></div></div>
+                     <div id="laborEntriesList" style="max-height:140px; overflow-y:auto; font-size:11px; display:flex; flex-direction:column; gap:6px;"></div>
                 </div>
 
                 <div class="filter-pills-container" id="filterPillsWrapper">
@@ -574,7 +525,7 @@
                         <button class="tab-btn" id="expBtn" onclick="switchTab('expense')">مصروف جديد (-)</button>
                     </div>
                     <div id="inputForm">
-                        <div class="label-group" id="catGroup" style="display:none; margin-bottom: 12px;">
+                        <div class="label-group" id="catGroup" style="display:none; margin-bottom: 10px;">
                              <label>تصنيف المصروف الفوري</label>
                              <div class="icon-selector-grid">
                                   <div class="icon-selector-item selected" id="item-cat-خامات" onclick="selectIconCategory('خامات')">
@@ -593,13 +544,13 @@
                              <input type="hidden" id="expenseCategory" value="خامات">
                          </div>
 
-                        <div class="label-group" id="incomeCatGroup" style="display:none; margin-bottom: 12px;">
+                        <div class="label-group" id="incomeCatGroup" style="display:none; margin-bottom: 10px;">
                              <label>تصنيف حركة الإيراد</label>
-                             <div class="icon-selector-grid" style="grid-template-columns: 1fr 1fr;">
+                             <div class="icon-selector-grid" id="incomeCategoryGridGrid" style="grid-template-columns: 1fr 1fr;">
                                   <div class="icon-selector-item selected" id="item-inc-عام" onclick="selectIconIncomeCategory('عام')">
                                        <i class="fas fa-money-bill-trend-up" style="color:var(--success)"></i><span>إيراد عام للموقع</span>
                                   </div>
-                                  <div class="icon-selector-item" id="item-inc-دفعة_شركة" onclick="selectIconIncomeCategory('دفعة شركة')">
+                                  <div class="icon-selector-item" id="item-inc-دفعة_شركة" onclick="selectIconIncomeCategory('دفعة شركة')" style="display: none;">
                                        <i class="fas fa-building-columns" style="color:var(--info)"></i><span>دفعة شركة مركزية</span>
                                   </div>
                              </div>
@@ -607,7 +558,7 @@
                         </div>
 
                         <div class="label-group">
-                            <label>المبلغ (يدعم العمليات الحسابية المباشرة مثل 2500+450+1200)</label>
+                            <label>المبلغ (يدعم العمليات المباشرة)</label>
                             <input type="text" id="amount" class="input-ui" placeholder="أدخل القيمة المادية هنا..">
                             <div class="quick-chips-row">
                                  <div class="cash-chip" onclick="quickCash(50)">+50</div>
@@ -617,18 +568,18 @@
                             </div>
                         </div>
                         
-                        <div class="label-group" style="margin-top: 12px;">
+                        <div class="label-group" style="margin-top: 10px;">
                             <div class="input-with-voice-holder">
-                                 <input type="text" id="desc" class="input-ui" placeholder="اكتب البيان وسيتصنف ذكياً تلقائياً بناءً على كلماتك..." oninput="handleSmartAutoCat(this.value)">
+                                 <input type="text" id="desc" class="input-ui" placeholder="اكتب البيان وسيتصنف ذكياً تلقائياً...">
                                  <button class="voice-mic-btn" id="micBtn-desc" onclick="startVoiceRecognition('desc')"><i class="fas fa-microphone"></i></button>
                             </div>
                         </div>
-                        <button class="btn-primary" id="transactionSubmitBtn" onclick="handleAdd()" style="margin-top:5px;">حفظ وتقييد العملية الحالية</button>
+                        <button class="btn-primary" id="transactionSubmitBtn" onclick="handleAdd()" style="margin-top:5px;">حفظ العملية الحالية</button>
                     </div>
                 </div>
 
                 <div class="input-with-voice-holder">
-                     <input type="text" id="liveSearchInput" class="input-ui" placeholder="🔍 ابحث بالكلمة عن أي بيان أو قيد مالي بالموقع..." oninput="handleLiveSearch()" style="border-radius:16px; padding-right:42px; padding-left:42px; font-size:13px;">
+                     <input type="text" id="liveSearchInput" class="input-ui" placeholder="🔍 ابحث بالكلمة عن أي بيان أو قيد مالي..." oninput="handleLiveSearch()" style="border-radius:14px; padding-right:42px; padding-left:42px; font-size:13px;">
                      <button class="voice-mic-btn" id="micBtn-search" onclick="startVoiceRecognition('liveSearchInput')"><i class="fas fa-microphone"></i></button>
                 </div>
 
@@ -670,14 +621,67 @@
             const savedTheme = localStorage.getItem("theme") || "dark";
             document.documentElement.setAttribute("data-theme", savedTheme);
             updateHeaderThemeToggleIcon(savedTheme);
-            loadDraftInputs(); autoLoginSession(); listenToGlobalProjectStatuses(); setupDropdownOutsideClickListener(); setupGlobalScreenCloseListeners(); checkAndSyncOfflineTransactions();
+            autoLoginSession(); listenToGlobalProjectStatuses(); setupDropdownOutsideClickListener(); setupGlobalScreenCloseListeners(); checkAndSyncOfflineTransactions();
         });
 
         function triggerHapticFeedback() { if (window.navigator && window.navigator.vibrate) { window.navigator.vibrate(12); } }
         function scrollToTransactionForm() { triggerHapticFeedback(); let form = document.getElementById("mainInputTransactionCard"); if(form) { form.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
 
-        function openProjectIndicatorsEditModal() {
+        // إدارة ذكية لزر البلس العائم لتتغير وظيفته برمجياً
+        function handleFloatingFabClick() {
             triggerHapticFeedback();
+            if (SELECTED_PROJECT === "") {
+                // نحن في صفحة اختيار المشروع
+                if (currentUser === "mostafa") {
+                    createNewProjectModalAction();
+                }
+            } else {
+                // نحن داخل الحسابات
+                scrollToTransactionForm();
+            }
+        }
+
+        // دالة إنشاء مشروع جديد المخصصة لمصطفى فقط
+        function createNewProjectModalAction() {
+            showGlobalAppModal({
+                title: "🏗️ إضافة موقع عمل جديد بالسيرفر",
+                body: "اكتب اسم المشروع الجديد بدقة ليتم تهيئته فوراً:",
+                icon: "fas fa-folder-plus", iconColor: "var(--primary)",
+                showInput: true, inputValue: "", confirmText: "تأسيس موقع العمل", confirmColor: "var(--primary)",
+                onConfirm: function(projName) {
+                    if (projName && projName.trim() !== "") {
+                        let cleanName = projName.trim();
+                        database.ref('project_info').child(cleanName).set({
+                            engineer: "م / مصطفى",
+                            owner: "تحت التأسيس",
+                            labor: "0",
+                            progress: "0",
+                            status: "جاري العمل"
+                        }).then(() => {
+                            triggerHapticFeedback();
+                        });
+                    }
+                }
+            });
+        }
+
+        // تحديث ظهور زر البلس في شاشة المشروع الأولية لمصطفى فقط
+        function updateFabVisibilityState() {
+            let fab = document.getElementById("fastInputFab");
+            if (!fab) return;
+            if (SELECTED_PROJECT === "") {
+                if (currentUser === "mostafa") {
+                    fab.classList.add("visible");
+                } else {
+                    fab.classList.remove("visible");
+                }
+            } else {
+                fab.classList.add("visible");
+            }
+        }
+
+        function openProjectIndicatorsEditModal() {
+            triggerHapticFeedback(); toggleSidebar(false);
             document.getElementById("setupEngName").value = currentProjectLoadedDataSnapshot.engineer || "";
             document.getElementById("setupOwnerName").value = currentProjectLoadedDataSnapshot.owner || "";
             document.getElementById("setupLaborCount").value = currentProjectLoadedDataSnapshot.labor || "0";
@@ -689,8 +693,8 @@
 
             showGlobalAppModal({
                 title: `تحديث بيانات: ${SELECTED_PROJECT}`,
-                body: "برجاء مراجعة وضبط مؤشرات الموقع الحالية للرفع والتحكم المالي الإلكتروني المباشر:",
-                icon: "fas fa-sliders", iconColor: "var(--purple)", confirmText: "حفظ المؤشرات", confirmColor: "var(--purple)",
+                body: "تحديث مؤشرات الموقع الحالية على السيرفر ومزامنتها ميدانياً:",
+                icon: "fas fa-sliders", iconColor: "var(--purple)", confirmText: "حفظ التغييرات", confirmColor: "var(--purple)",
                 onConfirm: function() {
                     database.ref('project_info').child(SELECTED_PROJECT).update({
                         engineer: document.getElementById("setupEngName").value.trim(),
@@ -704,52 +708,25 @@
             document.getElementById("globalModalConfirmBtn").nextElementSibling.onclick = function() { document.getElementById("projectIndicatorsFormContainer").style.display = "none"; closeGlobalAppModal(); };
         }
 
-        /* دالة جراحية لحذف المشروع نهائياً وحذف كافة العمليات المالية واليوميات والعمال المرتبطة به من السيرفر */
         function triggerHardDeleteProject(projectName, event) {
-            if(event) event.stopPropagation(); // منع فتح المشروع عند الضغط على زر الحذف
+            if(event) event.stopPropagation(); 
             triggerHapticFeedback();
 
             showGlobalAppModal({
-                title: "⚠️ تدمير وحذف قيد المشروع نهائياً",
-                body: `هل أنت متأكد من مسح وإزالة موقع (${projectName}) نهائياً؟ هذا الأكشن سيمسح المشروع من الأرشيف، وسيمسح كافة الجداول المالية واليوميات المرتبطة به من السيرفر تماماً ومستحيل استعادتها!`,
-                icon: "fas fa-exclamation-triangle", iconColor: "var(--danger)", confirmText: "نعم، حذف نهائي ومسح داتا السيرفر", confirmColor: "var(--danger)",
+                title: "⚠️ حذف المشروع نهائياً",
+                body: `هل أنت متأكد من مسح وإزالة موقع (${projectName}) نهائياً من السيرفر وجداول الحسابات المالية؟`,
+                icon: "fas fa-exclamation-triangle", iconColor: "var(--danger)", confirmText: "تأكيد مسح السيرفر النهائي", confirmColor: "var(--danger)",
                 onConfirm: function() {
                     showLoad(true);
-                    // 1. مسح مؤشرات المشروع وبياناته العامة
                     database.ref('project_info').child(projectName).remove();
-                    // 2. مسح سحبيات العمالة المؤقتة الخاصة به
                     database.ref('project_labors').child(projectName).remove();
-                    
-                    // 3. مسح جميع العمليات والقيود المالية المرتبطة بالمشروع من السيرفر
                     database.ref('transactions').once('value').then((snapshot) => {
                         let data = snapshot.val();
-                        if(data) {
-                            for(let id in data) {
-                                if(data[id] && data[id].project === projectName) {
-                                    database.ref('transactions').child(id).remove();
-                                }
-                            }
-                        }
-                        showLoad(false);
-                        triggerHapticFeedback();
-                        alert(`✓ تم تدمير ومسح موقع (${projectName}) وجميع سجلاته المالية بنجاح من الـ Firebase.`);
+                        if(data) { for(let id in data) { if(data[id] && data[id].project === projectName) { database.ref('transactions').child(id).remove(); } } }
+                        showLoad(false); triggerHapticFeedback();
                     }).catch(() => showLoad(false));
                 }
             });
-        }
-
-        function handleSmartAutoCat(text) {
-            if(currentMode !== 'expense') return;
-            let val = text.toLowerCase();
-            let steelKeywords = ['حديد', 'صاج', 'زوايا', 'مسمار', 'مسامير', 'سلك', 'اليكترود', 'دهان', 'تنر', 'كمر', 'قطاعات', 'لوح', 'علب'];
-            let laborKeywords = ['يومية', 'يوميات', 'عامل', 'عمال', 'صنايعي', 'مقاول', 'مسحوب', 'مسحوبات', 'غفير'];
-            let shippingKeywords = ['نقل', 'نقلية', 'عربية', 'لوري', 'شحن', 'جرار', 'ونش'];
-            let nethriaKeywords = ['اكل', 'شاي', 'قهوة', 'مصاريف', 'سلكت', 'بنزين', 'زيت', 'فطار'];
-
-            if(steelKeywords.some(keyword => val.includes(keyword))) { selectIconCategory('خامات'); }
-            else if(laborKeywords.some(keyword => val.includes(keyword))) { selectIconCategory('عمالة'); }
-            else if(shippingKeywords.some(keyword => val.includes(keyword))) { selectIconCategory('نقل'); }
-            else if(nethriaKeywords.some(keyword => val.includes(keyword))) { selectIconCategory('نثريات'); }
         }
 
         function parseInlineCalculation(inputStr) {
@@ -765,31 +742,22 @@
         }
 
         function exportToExcelCSVSheet() {
-            if(globalTransactions.length === 0) return alert("لا توجد بيانات لتصديرها لإكسيل حالياً.");
+            toggleSidebar(false);
+            if(globalTransactions.length === 0) return alert("لا توجد بيانات.");
             let csvContent = "\uFEFF"; csvContent += "التاريخ,التصنيف,البيان المالي للعملية,النوع,المبلغ ج.م,المهندس المسؤول\n";
-            globalTransactions.forEach(item => {
-                let typeText = item.type === 'income' ? "إيراد (+)" : "مصروف (-)";
-                let engName = ACCOUNTS_ROLES[item.engineer] ? ACCOUNTS_ROLES[item.engineer].label : item.engineer;
-                csvContent += `${item.date || '-'},${item.category || 'عام'},${item.desc.replace(/,/g, ' ')},${typeText},${item.amount},م / ${engName}\n`;
-            });
+            globalTransactions.forEach(item => { let typeText = item.type === 'income' ? "إيراد (+)" : "مصروف (-)"; csvContent += `${item.date || '-'},${item.category || 'عام'},${item.desc.replace(/,/g, ' ')},${typeText},${item.amount},م / ${ACCOUNTS_ROLES[item.engineer]?.label || ''}\n`; });
             let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }); let url = URL.createObjectURL(blob);
-            let link = document.createElement("a"); link.setAttribute("href", url); link.setAttribute("download", `Perfect_Steel_Report_${SELECTED_PROJECT}.csv`);
-            link.style.visibility = 'hidden'; document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            let link = document.createElement("a"); link.setAttribute("href", url); link.setAttribute("download", `Perfect_Steel_${SELECTED_PROJECT}.csv`);
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
-        function toggleThemeFast() {
-            triggerHapticFeedback(); let current = document.documentElement.getAttribute("data-theme") || "dark"; let next = current === "dark" ? "light" : (current === "light" ? "oled" : "dark");
-            document.documentElement.setAttribute("data-theme", next); localStorage.setItem("theme", next); updateHeaderThemeToggleIcon(next);
-        }
-
-        function updateHeaderThemeToggleIcon(theme) {
-            let btn = document.getElementById("headerThemeBtn"); if(!btn) return;
-            btn.innerHTML = theme === 'light' ? `<i class="fas fa-sun" style="color:#ffaa00;"></i>` : (theme === 'oled' ? `<i class="fas fa-bolt" style="color:#0ea5e9;"></i>` : `<i class="fas fa-moon"></i>`);
-        }
-
+        function toggleThemeFast() { triggerHapticFeedback(); let current = document.documentElement.getAttribute("data-theme") || "dark"; let next = current === "dark" ? "light" : (current === "light" ? "oled" : "dark"); document.documentElement.setAttribute("data-theme", next); localStorage.setItem("theme", next); updateHeaderThemeToggleIcon(next); }
+        function updateHeaderThemeToggleIcon(theme) { let btn = document.getElementById("headerThemeBtn"); if(!btn) return; btn.innerHTML = theme === 'light' ? `<i class="fas fa-sun" style="color:#ffaa00;"></i>` : (theme === 'oled' ? `<i class="fas fa-bolt" style="color:#0ea5e9;"></i>` : `<i class="fas fa-moon"></i>`); }
+        
         function selectIconCategory(cat) { document.querySelectorAll('#catGroup .icon-selector-item').forEach(el => el.classList.remove('selected')); let activeElement = document.getElementById('item-cat-' + cat); if(activeElement) activeElement.classList.add('selected'); document.getElementById('expenseCategory').value = cat; }
         function selectIconIncomeCategory(cat) { document.querySelectorAll('#incomeCatGroup .icon-selector-item').forEach(el => el.classList.remove('selected')); let activeElement = document.getElementById('item-inc-' + cat.replace(' ', '_')); if(activeElement) activeElement.classList.add('selected'); document.getElementById('incomeCategory').value = cat; }
-        function setDynamicGreeting(userLabel) { let currentHour = new Date().getHours(); let greetingWord = currentHour >= 12 ? "مساء الخير" : "صباح الخير"; document.getElementById("dynamicGreeting").innerText = `${greetingWord} يا بشمهندس ${userLabel} ☕`; }
+        
+        function setDynamicGreeting(userLabel) { let currentHour = new Date().getHours(); let greetingWord = currentHour >= 12 ? "مساء الخير" : "صباح الخير"; document.getElementById("dynamicGreeting").innerText = `${greetingWord} م / ${userLabel} ☕`; }
         function toggleCustomDropdown(type) { if(type === 'active') { document.getElementById("customProjectDropdown").classList.toggle("open"); document.getElementById("customArchiveDropdown").classList.remove("open"); } else { document.getElementById("customArchiveDropdown").classList.toggle("open"); document.getElementById("customProjectDropdown").classList.remove("open"); } }
         function toggleLaborSubPanel() { let p = document.getElementById("laborSubPanel"); p.style.display = (p.style.display === 'flex') ? 'none' : 'flex'; }
 
@@ -797,12 +765,10 @@
             database.ref('project_info').on('value', (snap) => {
                 globalProjectStatuses = snap.val() || {}; let serverProjects = Object.keys(globalProjectStatuses);
                 let defaultProjects = ["New Cairo", "Old Cairo", "Helwan", "Ismailia"]; let merged = [...new Set([...defaultProjects, ...serverProjects])];
-                PROJECT_LIST = merged.filter(p => !localStorage.getItem("deleted_proj_" + p));
-                renderCustomDropdownOptions();
+                PROJECT_LIST = merged.filter(p => !localStorage.getItem("deleted_proj_" + p)); renderCustomDropdownOptions();
             });
         }
 
-        /* تعديل: حقن أزرار الحذف النهائي (أيقونة السلة) للمشاريع المكتملة والمؤرشفة فقط داخل قائمة الخيارات */
         function renderCustomDropdownOptions() {
             let activeContainer = document.getElementById("dropdownOptionsList"); let archiveContainer = document.getElementById("archiveDropdownOptionsList");
             let activeHtml = ""; let archiveHtml = "";
@@ -815,7 +781,7 @@
                              <div class="dropdown-item-text-zone" style="color:var(--revenue-color);">
                                   <i class="fas fa-box-archive" style="color:var(--revenue-color); font-size:11px;"></i> ${proj} (مؤرشف)
                              </div>
-                             <i class="fas fa-trash-can project-hard-trash-btn" title="حذف وتدمير داتا المشروع" onclick="triggerHardDeleteProject('${proj}', event)"></i>
+                             <i class="fas fa-trash-can project-hard-trash-btn" onclick="triggerHardDeleteProject('${proj}', event)"></i>
                         </div>`;
                 } else {
                     let dotColor = (statusInfo === "متوقف مؤقتا") ? "var(--danger)" : "var(--success)";
@@ -827,169 +793,158 @@
                         </div>`;
                 }
             });
-
-            activeContainer.innerHTML = activeHtml || `<div style="padding:10px; font-size:12px; color:var(--text-dim);">لا توجد مواقع عمل نشطة..</div>`;
-            archiveContainer.innerHTML = archiveHtml || `<div style="padding:10px; font-size:12px; color:var(--text-dim);">الأرشيف فارغ..</div>`;
+            activeContainer.innerHTML = activeHtml || `<div style="padding:10px; font-size:11px; color:var(--text-dim);">لا توجد مواقع نشطة..</div>`;
+            archiveContainer.innerHTML = archiveHtml || `<div style="padding:10px; font-size:11px; color:var(--text-dim);">الأرشيف فارغ..</div>`;
         }
 
-        function selectCustomProjectOption(proj, type) { 
-            SELECTED_PROJECT = proj; 
-            if(type === 'active') {
-                document.getElementById("dropdownSelectedLabel").innerText = proj; document.getElementById("archiveDropdownSelectedLabel").innerText = "تصفح مشاريع الأرشيف..";
-                document.getElementById("mainInputTransactionCard").style.display = "block";
-            } else {
-                document.getElementById("archiveDropdownSelectedLabel").innerText = proj; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل..";
-                document.getElementById("mainInputTransactionCard").style.display = (currentUser === 'mostafa' || currentUser === 'ahmed') ? "block" : "none";
-            }
-            document.getElementById("customProjectDropdown").classList.remove("open"); document.getElementById("customArchiveDropdown").classList.remove("open");
-            onProjectChange(proj); 
-        }
-
+        function selectCustomProjectOption(proj, type) { SELECTED_PROJECT = proj; if(type === 'active') { document.getElementById("dropdownSelectedLabel").innerText = proj; document.getElementById("archiveDropdownSelectedLabel").innerText = "تصفح مشاريع الأرشيف.."; document.getElementById("mainInputTransactionCard").style.display = "block"; } else { document.getElementById("archiveDropdownSelectedLabel").innerText = proj; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل.."; document.getElementById("mainInputTransactionCard").style.display = (currentUser === 'mostafa' || currentUser === 'ahmed') ? "block" : "none"; } document.getElementById("customProjectDropdown").classList.remove("open"); document.getElementById("customArchiveDropdown").classList.remove("open"); onProjectChange(proj); }
         function setupDropdownOutsideClickListener() { document.addEventListener("click", (e) => { let d1 = document.getElementById("customProjectDropdown"); let d2 = document.getElementById("customArchiveDropdown"); if (d1 && !d1.contains(e.target)) d1.classList.remove("open"); if (d2 && !d2.contains(e.target)) d2.classList.remove("open"); }); }
-
-        function showGlobalAppModal(config) {
-            document.getElementById("globalModalIcon").className = config.icon || "fas fa-info-circle"; document.getElementById("globalModalIcon").style.color = config.iconColor || "var(--primary)";
-            document.getElementById("globalModalTitle").innerText = config.title || "تنبيه النظام"; document.getElementById("globalModalBody").innerText = config.body || "";
-            let inputContainer = document.getElementById("globalModalInputContainer"); let inputField = document.getElementById("globalModalInputField");
-            if(config.showInput) { inputContainer.style.display = "block"; inputField.value = config.inputValue || ""; } else { inputContainer.style.display = "none"; }
-            let confirmBtn = document.getElementById("globalModalConfirmBtn"); confirmBtn.style.background = config.confirmColor || "var(--primary)"; confirmBtn.innerText = config.confirmText || "تأكيد";
-            confirmBtn.onclick = function() { if(config.onConfirm) config.onConfirm(config.showInput ? inputField.value : null); closeGlobalAppModal(); resetAllSwipeCards(); };
+        
+        function showGlobalAppModal(config) { 
+            document.getElementById("globalModalIcon").className = config.icon || "fas fa-info-circle"; 
+            document.getElementById("globalModalIcon").style.color = config.iconColor || "var(--primary)"; 
+            document.getElementById("globalModalTitle").innerText = config.title || "تنبيه النظام"; 
+            document.getElementById("globalModalBody").innerText = config.body || ""; 
+            let inputContainer = document.getElementById("globalModalInputContainer"); 
+            let inputField = document.getElementById("globalModalInputField"); 
+            if(config.showInput) { inputContainer.style.display = "block"; inputField.value = config.inputValue || ""; } else { inputContainer.style.display = "none"; } 
+            let confirmBtn = document.getElementById("globalModalConfirmBtn"); 
+            confirmBtn.style.background = config.confirmColor || "var(--primary)"; 
+            confirmBtn.innerText = config.confirmText || "تأكيد"; 
+            confirmBtn.onclick = function() { if(config.onConfirm) config.onConfirm(config.showInput ? inputField.value : null); closeGlobalAppModal(); resetAllSwipeCards(); }; 
             
-            let modalEl = document.getElementById("globalAppModal"); if(modalEl) modalEl.style.setProperty('display', 'flex', 'important');
+            let modalEl = document.getElementById("globalAppModal"); 
+            if(modalEl) modalEl.style.setProperty('display', 'flex', 'important'); 
         }
         function closeGlobalAppModal() { let modalEl = document.getElementById("globalAppModal"); if(modalEl) modalEl.style.setProperty('display', 'none', 'important'); resetAllSwipeCards(); }
 
         function startVoiceRecognition(targetId) {
             window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; if (!window.SpeechRecognition) return;
-            try {
-                let recognition = new window.SpeechRecognition(); recognition.lang = 'ar-EG';
-                recognition.onresult = function(event) { if (event.results && event.results[0]) { let text = event.results[0][0].transcript; document.getElementById(targetId).value = text; if (targetId === 'liveSearchInput') handleLiveSearch(); else { localStorage.setItem("draft_desc", text); handleSmartAutoCat(text); } } };
-                recognition.start();
-            } catch(e) {}
+            try { let recognition = new window.SpeechRecognition(); recognition.lang = 'ar-EG'; recognition.onresult = function(event) { if (event.results && event.results[0]) { let text = event.results[0][0].transcript; document.getElementById(targetId).value = text; if (targetId === 'liveSearchInput') handleLiveSearch(); } }; recognition.start(); } catch(e) {}
         }
+        function setupGlobalScreenCloseListeners() { document.body.addEventListener("click", (e) => { if(!e.target.closest('.log-item') && !e.target.closest('.swipe-btn')) { resetAllSwipeCards(); } }); }
+        
+        function bindSwipeGesturesToElements() {
+            document.querySelectorAll(".log-item").forEach(card => {
+                let touchStartX = 0; let touchStartY = 0; let isScrollDetected = false;
+                card.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; isScrollDetected = false; }, {passive: true});
+                card.addEventListener("touchmove", (e) => {
+                    if (isScrollDetected) return;
+                    let moveX = e.touches[0].clientX; let moveY = e.touches[0].clientY;
+                    let diffX = touchStartX - moveX; let diffY = touchStartY - moveY;
+                    if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 10) { isScrollDetected = true; card.style.transform = "translateX(0)"; return; }
+                    if(diffX > 15 && diffX < 140) { card.style.transform = `translateX(-${diffX}px)`; }
+                }, {passive: true});
+                card.addEventListener("touchend", (e) => {
+                    if (isScrollDetected) return; let endX = e.changedTouches[0].clientX; let diffX = touchStartX - endX;
+                    if(diffX >= 55) { triggerHapticFeedback(); card.style.transform = `translateX(-120px)`; } 
+                    else { card.style.transform = `translateX(0)`; }
+                });
+            });
+        }
+        function resetAllSwipeCards() { document.querySelectorAll(".log-item").forEach(card => { card.style.transform = "translateX(0)"; }); }
 
-        function setupGlobalScreenCloseListeners() { document.body.addEventListener("click", (e) => { if(!e.target.closest('.log-item')) { resetAllSwipeCards(); } }); }
+        function triggerInlineEditItem(id, currentDesc, currentAmount) {
+            resetAllSwipeCards();
+            showGlobalAppModal({
+                title: "تعديل بيانات البند المالي", body: "صيغة التعديل (البيان | المبلغ):", icon: "fas fa-edit", iconColor: "var(--info)", showInput: true, inputValue: `${currentDesc} | ${currentAmount}`, confirmText: "حفظ التعديل", confirmColor: "var(--info)",
+                onConfirm: function(val) {
+                    if(val && val.includes('|')) {
+                        let parts = val.split('|'); let newDesc = parts[0].trim(); let newAmt = parseFloat(parts[1].trim());
+                        if(newDesc !== "" && !isNaN(newAmt)) { database.ref('transactions').child(id).update({ desc: newDesc, amount: newAmt }); }
+                    }
+                }
+            });
+        }
 
         function listenToProjectLaborData(proj) {
             database.ref('project_labors').child(proj).on('value', (snap) => {
                 currentProjectLaborList = []; let data = snap.val(); let html = "";
-                if(data) {
-                    for(let key in data) {
-                        currentProjectLaborList.push({...data[key], id: key});
-                        html += `
-                            <div style="background:rgba(255,255,255,0.02); padding:6px; border:1px solid var(--border); border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
-                                 <span><b>${data[key].name}</b>: ${parseFloat(data[key].amount).toLocaleString()} ج.م</span>
-                                 <i class="fas fa-trash-can" style="color:var(--danger); cursor:pointer;" onclick="deleteLaborEntry('${key}')"></i>
-                            </div>`;
-                    }
-                }
+                if(data) { for(let key in data) { currentProjectLaborList.push({...data[key], id: key}); html += `<div style="background:rgba(255,255,255,0.02); padding:6px; border:1px solid var(--border); border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><span><b>${data[key].name}</b>: ${parseFloat(data[key].amount).toLocaleString()} ج.م</span><i class="fas fa-trash-can" style="color:var(--danger);" onclick="deleteLaborEntry('${key}')"></i></div>`; } }
                 document.getElementById("laborEntriesList").innerHTML = html || `<div style="color:var(--text-dim); text-align:center; font-size:10px;">لا توجد سحبيات مسجلة للموقع...</div>`;
             });
         }
 
-        function saveLaborEntry() {
-            let name = document.getElementById("labWorkerName").value.trim(); let amountRaw = document.getElementById("labAmount").value.trim(); let amt = parseInlineCalculation(amountRaw);
-            if(!name || isNaN(amt) || amt <= 0) return alert("برجاء إدخال البيانات بشكل صحيح.");
-            database.ref('project_labors').child(SELECTED_PROJECT).push({ name: name, amount: amt, date: new Date().toISOString().split('T')[0] }).then(() => { document.getElementById("labWorkerName").value = ""; document.getElementById("labAmount").value = ""; triggerHapticFeedback(); });
-        }
-        function deleteLaborEntry(key) { if(confirm("هل تريد حذف هذا القيد العمالي؟")) { database.ref('project_labors').child(SELECTED_PROJECT).child(key).remove(); } }
+        function saveLaborEntry() { let name = document.getElementById("labWorkerName").value.trim(); let amountRaw = document.getElementById("labAmount").value.trim(); let amt = parseInlineCalculation(amountRaw); if(!name || isNaN(amt) || amt <= 0) return alert("برجاء إدخال البيانات."); database.ref('project_labors').child(SELECTED_PROJECT).push({ name: name, amount: amt, date: new Date().toISOString().split('T')[0] }).then(() => { document.getElementById("labWorkerName").value = ""; document.getElementById("labAmount").value = ""; triggerHapticFeedback(); }); }
+        function deleteLaborEntry(key) { if(confirm("هل تريد حذف هذا القيد؟")) { database.ref('project_labors').child(SELECTED_PROJECT).child(key).remove(); } }
 
         function transferLaborToExpenses() {
-            if(currentProjectLaborList.length === 0) return alert("لا توجد بنود لترحيلها للمصاريف العامة.");
-            let total = currentProjectLaborList.reduce((sum, item) => sum + parseFloat(item.amount), 0);
-            if(confirm(`ترحيل إجمالي عمالة وقدره (${total.toLocaleString()} ج.م) كبند مصروفات رسمي؟`)) {
-                database.ref('transactions').push({ project: SELECTED_PROJECT, engineer: currentUser, type: 'expense', category: 'عمالة', amount: total, desc: `[ترحيل تلقائي] - إجمالي سحبيات عمال موقع ${SELECTED_PROJECT}`, date: new Date().toISOString().split('T')[0], ts: Date.now() }).then(() => { database.ref('project_labors').child(SELECTED_PROJECT).remove(); document.getElementById("laborSubPanel").style.display = 'none'; triggerHapticFeedback(); showGlobalAppModal({ title: "تم الترحيل", body: "✓ تم مزامنة وقيد المبلغ بنجاح.", icon: "fas fa-check-circle", iconColor: "var(--success)" }); });
-            }
+            if(currentProjectLaborList.length === 0) return alert("لا توجد بنود."); let total = currentProjectLaborList.reduce((sum, item) => sum + parseFloat(item.amount), 0);
+            if(confirm(`ترحيل إجمالي عمالة وقدره (${total.toLocaleString()} ج.م) كبند مصروفات رسمي؟`)) { database.ref('transactions').push({ project: SELECTED_PROJECT, engineer: currentUser, type: 'expense', category: 'عمالة', amount: total, desc: `[ترحيل تلقائي] - إجمالي سحبيات عمال موقع ${SELECTED_PROJECT}`, date: new Date().toISOString().split('T')[0], ts: Date.now() }).then(() => { database.ref('project_labors').child(SELECTED_PROJECT).remove(); document.getElementById("laborSubPanel").style.display = 'none'; triggerHapticFeedback(); }); }
         }
 
         function generateLaborExpensesPDFReport() {
             let registeredLaborExpenses = globalTransactions.filter(item => item && item.type === 'expense' && item.category === 'عمالة'); if(registeredLaborExpenses.length === 0) return;
             let expenseZone = document.getElementById("laborExpensesPdfHiddenArea"); let tablePlaceholder = document.getElementById("laborExpensesPdfTablePlaceholder");
-            document.getElementById("laborExpensesPdfTitleMeta").innerText = `ملخص كشف مصاريف عمالة موقع: ${SELECTED_PROJECT}`;
-            let tableHtml = `<table style="width:100%; border-collapse:collapse; margin-top:15px; color:white;"><thead><tr style="background:#ff6b00; color:black;"><th>التاريخ</th><th>البيان المالي للعملية</th><th>المبلغ</th><th>بواسطة</th></tr></thead><tbody>`;
-            let totalSum = 0; registeredLaborExpenses.forEach(item => { let amtCalculated = parseInlineCalculation(item.amount); totalSum += parseFloat(amtCalculated || 0); tableHtml += `<tr style="border-bottom:1px solid #333; text-align:center;"><td>${item.date || '-'}</td><td>${item.desc || ''}</td><td style="color:#ef4444;">${parseFloat(amtCalculated).toLocaleString()} ج.م</td><td>م / ${ACCOUNTS_ROLES[item.engineer]?.label || ''}</td></tr>`; });
-            tableHtml += `<tr><td colspan="2">الإجمالي الكلي</td><td colspan="2">${totalSum.toLocaleString()} ج.م</td></tr></tbody></table>`;
-            tablePlaceholder.innerHTML = tableHtml; expenseZone.style.display = "flex"; 
-            let opt = { margin: 12, filename: `مصاريف_عمالة_${SELECTED_PROJECT}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
-            html2pdf().set(opt).from(expenseZone).save().then(() => { expenseZone.style.display = "none"; });
+            let tableHtml = `<table style="width:100%; border-collapse:collapse; margin-top:15px; color:white;"><thead><tr style="background:#ff6b00; color:black;"><th>التاريخ</th><th>البيان المالي للعملية</th><th>المبلغ</th></tr></thead><tbody>`;
+            let totalSum = 0; registeredLaborExpenses.forEach(item => { let amtCalculated = parseInlineCalculation(item.amount); totalSum += parseFloat(amtCalculated || 0); tableHtml += `<tr style="border-bottom:1px solid #333; text-align:center;"><td>${item.date || '-'}</td><td>${item.desc || ''}</td><td style="color:#ef4444;">${parseFloat(amtCalculated).toLocaleString()} ج.م</td></tr>`; });
+            tableHtml += `<tr><td>الإجمالي</td><td colspan="2">${totalSum.toLocaleString()} ج.م</td></tr></tbody></table>`; tablePlaceholder.innerHTML = tableHtml; expenseZone.style.display = "flex"; 
+            let opt = { margin: 12, filename: `عمالة_${SELECTED_PROJECT}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }; html2pdf().set(opt).from(expenseZone).save().then(() => { expenseZone.style.display = "none"; });
         }
 
-        function generateProjectPDFReport() {
-            let area = document.getElementById("pdfExportArea"); let logoHeader = document.getElementById("pdfHeaderLogo"); logoHeader.style.display = "block";
-            document.getElementById("pdfProjectMeta").innerText = `موقع العمل: ${SELECTED_PROJECT} | تاريخ التقرير: ${new Date().toLocaleDateString('ar-EG')}`;
-            let opt = { margin: 10, filename: `Perfect_Steel_Report_${SELECTED_PROJECT}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
-            html2pdf().set(opt).from(area).save().then(() => { logoHeader.style.display = "none"; });
+        function generateProjectPDFReport() { 
+            toggleSidebar(false);
+            let area = document.getElementById("pdfExportArea"); let logoHeader = document.getElementById("pdfHeaderLogo"); logoHeader.style.display = "block"; document.getElementById("pdfProjectMeta").innerText = `موقع: ${SELECTED_PROJECT} | تاريخ: ${new Date().toLocaleDateString('ar-EG')}`; let opt = { margin: 10, filename: `Report_${SELECTED_PROJECT}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }; html2pdf().set(opt).from(area).save().then(() => { logoHeader.style.display = "none"; }); 
         }
 
         function handleSecureLogin() {
             let user = document.getElementById("loginUsername").value.trim().toLowerCase(); let pass = document.getElementById("loginPassword").value.trim();
             const LOCAL_MOCK = {"ahmed":"222", "mostafa":"1519", "mohamed":"333", "tawfik":"444"};
             if(LOCAL_MOCK[user] && LOCAL_MOCK[user] === pass) { localStorage.setItem("active_session_user", user); activateUserInterface(user); }
-            else { showGlobalAppModal({ title: "خطأ في الدخول", body: "❌ البيانات غير صحيحة!", icon: "fas fa-times-circle", iconColor: "var(--danger)" }); }
+            else { showGlobalAppModal({ title: "خطأ", body: "❌ البيانات غير صحيحة!", icon: "fas fa-times-circle", iconColor: "var(--danger)" }); }
         }
 
         function autoLoginSession() { let savedUser = localStorage.getItem("active_session_user"); if(savedUser && ACCOUNTS_ROLES[savedUser]) activateUserInterface(savedUser); }
         
-        function activateUserInterface(user) {
-            currentUser = user; let account = ACCOUNTS_ROLES[user]; let displayLabel = (user === "ahmed") ? "أحمد (الإدارة)" : account.label;
-            document.getElementById("headerUserNameSpan").innerText = "م / " + displayLabel; document.getElementById("headerUserBadge").style.display = "flex"; document.getElementById("sidebarUserName").innerText = "م / " + displayLabel;
-            setDynamicGreeting(account.label); document.getElementById("loginBox").style.display = "none"; document.getElementById("menuBtn").classList.add("visible");
-            document.getElementById("mainContent").classList.add("visible"); document.getElementById("appGlobalHeader").classList.add("visible-now"); 
-            document.getElementById("calcTrigger").classList.add("visible"); document.getElementById("headerThemeBtn").classList.add("visible"); document.getElementById("fastInputFab").classList.add("visible");
-            document.getElementById("projectSelectorCard").classList.add("visible-now"); switchTab(currentMode);
+        function activateUserInterface(user) { 
+            currentUser = user; let account = ACCOUNTS_ROLES[user]; 
+            document.getElementById("headerUserNameSpan").innerText = "م / " + account.label; document.getElementById("headerUserBadge").style.display = "flex"; document.getElementById("sidebarUserName").innerText = "م / " + account.label; setDynamicGreeting(account.label); document.getElementById("loginBox").style.display = "none"; document.getElementById("menuBtn").classList.add("visible"); document.getElementById("mainContent").classList.add("visible"); document.getElementById("appGlobalHeader").classList.add("visible-now"); document.getElementById("calcTrigger").classList.add("visible"); document.getElementById("headerThemeBtn").classList.add("visible"); document.getElementById("projectSelectorCard").classList.add("visible-now"); 
+            
+            let companyBtn = document.getElementById("item-inc-دفعة_شركة");
+            if(companyBtn) { companyBtn.style.display = (user === 'ahmed') ? 'flex' : 'none'; }
+            
+            updateFabVisibilityState();
+            switchTab(currentMode); 
         }
 
         function triggerLogOut() {
             showGlobalAppModal({
-                title: "تسجيل الخروج", body: "هل تريد تسجيل الخروج؟", icon: "fas fa-door-open", confirmText: "خروج نهائي", confirmColor: "var(--danger)",
-                onConfirm: function() {
-                    if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off();
-                    localStorage.clear(); toggleSidebar(false);
-                    document.getElementById("appGlobalHeader").classList.remove("visible-now"); document.getElementById("projectSelectorCard").classList.remove("hide-completely", "visible-now");
-                    document.getElementById("calcTrigger").classList.remove("visible"); document.getElementById("calcPanel").style.display = "none";
-                    document.getElementById("headerThemeBtn").classList.remove("visible"); document.getElementById("fastInputFab").classList.remove("visible");
-                    document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("loginBox").style.display = "block";
-                    document.getElementById("menuBtn").classList.remove("visible"); document.getElementById("mainContent").classList.remove("visible");
-                    document.getElementById("financeContent").style.display = "none"; SELECTED_PROJECT = ""; currentUser = null;
-                }
+                title: "تسجيل الخروج", body: "هل تريد الخروج؟", icon: "fas fa-door-open", confirmText: "خروج", confirmColor: "var(--danger)",
+                onConfirm: function() { if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); localStorage.clear(); toggleSidebar(false); document.getElementById("appGlobalHeader").classList.remove("visible-now"); document.getElementById("projectSelectorCard").classList.remove("hide-completely", "visible-now"); document.getElementById("calcTrigger").classList.remove("visible"); document.getElementById("calcPanel").style.display = "none"; document.getElementById("headerThemeBtn").classList.remove("visible"); document.getElementById("fastInputFab").classList.remove("visible"); document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("loginBox").style.display = "block"; document.getElementById("menuBtn").classList.remove("visible"); document.getElementById("mainContent").classList.remove("visible"); document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjectActionsZone").classList.remove("active-now"); SELECTED_PROJECT = ""; currentUser = null; }
             });
         }
 
-        function askDelItem(id, desc) { showGlobalAppModal({ title: "تأكيد حذف البند", body: `هل تريد مسح كارت العملية: (${desc})؟`, icon: "fas fa-trash-alt", confirmText: "حذف نهائي", confirmColor: "var(--danger)", onConfirm: function() { database.ref('transactions').child(id).remove(); } }); }
+        function askDelItem(id, desc) { showGlobalAppModal({ title: "تأكيد الحذف", body: `هل تريد مسح العملية: (${desc})؟`, icon: "fas fa-trash-alt", confirmText: "حذف نهائي", confirmColor: "var(--danger)", onConfirm: function() { database.ref('transactions').child(id).remove(); } }); }
 
         function handleAdd() {
             let amountRaw = document.getElementById("amount").value; let dsc = document.getElementById("desc").value.trim(); let amt = parseInlineCalculation(amountRaw);
-            if(!amt || amt <= 0 || !dsc) return showGlobalAppModal({ title: "بيانات ناقصة", body: "❌ برجاء التأكد من صحة البيانات الحالية.", icon: "fas fa-exclamation-circle" });
-            
+            if(!amt || amt <= 0 || !dsc) return showGlobalAppModal({ title: "بيانات ناقصة", body: "❌ يرجى ملء الحقول أولاً بشكل صحيح.", icon: "fas fa-exclamation-circle" });
             let finalCategory = currentMode === 'expense' ? document.getElementById("expenseCategory").value : document.getElementById("incomeCategory").value;
             let txObject = { project: SELECTED_PROJECT, engineer: currentUser, type: currentMode, category: finalCategory, amount: amt, desc: dsc, date: new Date().toISOString().split('T')[0], ts: Date.now() };
 
             if(navigator.onLine) { database.ref('transactions').push(txObject).then(() => { finishTxSuccessfully(); }); }
-            else {
-                txObject.isOffline = true; txObject.id = 'offline_' + Date.now();
-                let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); offlineList.push(txObject);
-                localStorage.setItem('perfect_steel_offline_txs', JSON.stringify(offlineList));
-                globalTransactions.unshift(txObject); renderUI(globalTransactions); finishTxSuccessfully(); alert("⚠️ تم الحفظ المؤقت أوفلاين!");
-            }
+            else { txObject.isOffline = true; txObject.id = 'offline_' + Date.now(); let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); offlineList.push(txObject); localStorage.setItem('perfect_steel_offline_txs', JSON.stringify(offlineList)); globalTransactions.unshift(txObject); renderUI(globalTransactions); finishTxSuccessfully(); }
         }
 
-        function finishTxSuccessfully() { clearDrafts(); selectIconIncomeCategory('عام'); selectIconCategory('خامات'); triggerHapticFeedback(); }
+        function finishTxSuccessfully() { document.getElementById("amount").value = ""; document.getElementById("desc").value = ""; selectIconIncomeCategory('عام'); selectIconCategory('خامات'); triggerHapticFeedback(); }
+        function loadDraftInputs() { } 
+        function clearDrafts() { document.getElementById("amount").value = ""; document.getElementById("desc").value = ""; }
+        
         function checkAndSyncOfflineTransactions() { if(!navigator.onLine) return; let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); if(offlineList.length === 0) return; showLoad(true); let promises = offlineList.map(tx => { delete tx.isOffline; delete tx.id; return database.ref('transactions').push(tx); }); Promise.all(promises).then(() => { localStorage.removeItem('perfect_steel_offline_txs'); showLoad(false); triggerHapticFeedback(); }).catch(() => showLoad(false)); }
         window.addEventListener('online', checkAndSyncOfflineTransactions);
 
         function onProjectChange(proj) {
-            let account = ACCOUNTS_ROLES[currentUser]; document.getElementById("headerProjName").innerText = proj; document.getElementById("headerProjBadge").style.display = "flex";
-            document.getElementById("projectSelectorCard").classList.add("hide-completely");
+            let account = ACCOUNTS_ROLES[currentUser]; document.getElementById("headerProjName").innerText = proj; document.getElementById("headerProjBadge").style.display = "flex"; document.getElementById("projectSelectorCard").classList.add("hide-completely");
             let financeContent = document.getElementById("financeContent"); financeContent.style.display = "flex"; document.getElementById("sidebarProjInfoBlock").classList.add("visible"); 
+            document.getElementById("sidebarProjectActionsZone").classList.add("active-now");
 
+            updateFabVisibilityState();
             listenToProjectInfo(proj); listenToProjectLaborData(proj); showLoad(true);
             if (firebaseTransactionsRef) firebaseTransactionsRef.off();
-            
             firebaseTransactionsRef = database.ref('transactions');
             firebaseTransactionsRef.on('value', (snap) => {
                 globalTransactions = []; let data = snap.val();
-                let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]');
-                offlineList.forEach(offTx => { if(offTx.project === proj) globalTransactions.push(offTx); });
+                let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); offlineList.forEach(offTx => { if(offTx.project === proj) globalTransactions.push(offTx); });
                 if(data) { for(let id in data) { if(data[id] && data[id].project === proj) { if(account.canSeeAllFinancials || data[id].engineer === currentUser) globalTransactions.push({...data[id], id}); } } }
                 globalTransactions.sort((a,b) => b.ts - a.ts); buildEngineerFilterPills(globalTransactions); renderUI(globalTransactions); showLoad(false);
             }, () => showLoad(false));
@@ -999,52 +954,34 @@
             let engineersInProject = new Set(); items.forEach(i => { if(i.engineer) engineersInProject.add(i.engineer); });
             let wrapper = document.getElementById("engFilterWrapper"); if(engineersInProject.size <= 1) { wrapper.innerHTML = ""; return; }
             let html = `<div class="eng-pill ${activeEngineerFilter==='all'?'active':''}" onclick="filterByEngineer('all')">كل المهندسين</div>`;
-            engineersInProject.forEach(eng => { html += `<div class="eng-pill ${activeEngineerFilter===eng?'active':''}" onclick="filterByEngineer('${eng}')">م / ${(ACCOUNTS_ROLES[eng]?ACCOUNTS_ROLES[eng].label:eng)}</div>`; });
-            wrapper.innerHTML = html;
+            engineersInProject.forEach(eng => { html += `<div class="eng-pill ${activeEngineerFilter===eng?'active':''}" onclick="filterByEngineer('${eng}')">م / ${(ACCOUNTS_ROLES[eng]?ACCOUNTS_ROLES[eng].label:eng)}</div>`; }); wrapper.innerHTML = html;
         }
-
         function filterByEngineer(eng) { triggerHapticFeedback(); activeEngineerFilter = eng; renderUI(globalTransactions); }
 
         function listenToProjectInfo(projectName) {
-            if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); 
-            firebaseProjectInfoRef = database.ref('project_info').child(projectName);
+            if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); firebaseProjectInfoRef = database.ref('project_info').child(projectName);
             firebaseProjectInfoRef.on('value', (snap) => {
                 let info = snap.val() || {}; currentProjectLoadedDataSnapshot = info;
-                let statusText = info.status || "جاري العمل";
-                let dotColor = (statusText === "متوقف مؤقتا") ? "var(--danger)" : (statusText === "مكتمل" ? "var(--revenue-color)" : "var(--success)");
+                let statusText = info.status || "جاري العمل"; let dotColor = (statusText === "متوقف مؤقتا") ? "var(--danger)" : (statusText === "مكتمل" ? "var(--revenue-color)" : "var(--success)");
                 document.getElementById("lblInfStatus").innerHTML = `<span class="status-dot" style="background-color:${dotColor}"></span>` + statusText;
                 document.getElementById("lblInfEng").innerText = info.engineer || "-"; document.getElementById("lblInfOwner").innerText = info.owner || "-";
                 document.getElementById("lblInfLabor").innerText = (info.labor || "0") + " عمال"; document.getElementById("lblInfProgress").innerText = (info.progress || "0") + " %";
             });
         }
 
-        function loadDraftInputs() {
-            document.getElementById("amount").addEventListener("input", (e) => localStorage.setItem("draft_amt", e.target.value));
-            document.getElementById("desc").addEventListener("input", (e) => localStorage.setItem("draft_desc", e.target.value));
-            if(localStorage.getItem("draft_amt")) document.getElementById("amount").value = localStorage.getItem("draft_amt");
-            if(localStorage.getItem("draft_desc")) document.getElementById("desc").value = localStorage.getItem("draft_desc");
-        }
-        function clearDrafts() { localStorage.removeItem("draft_amt"); localStorage.removeItem("draft_desc"); document.getElementById("amount").value = ""; document.getElementById("desc").value = ""; }
-        function quickCash(val) { let input = document.getElementById("amount"); let current = parseInlineCalculation(input.value) || 0; input.value = current + val; localStorage.setItem("draft_amt", input.value); }
+        function quickCash(val) { let input = document.getElementById("amount"); let current = parseInlineCalculation(input.value) || 0; input.value = current + val; }
         function toggleCalc() { let panel = document.getElementById("calcPanel"); panel.style.display = (panel.style.display === "flex") ? "none" : "flex"; }
         function pressCalc(key) { let screen = document.getElementById("calcScreen"); if (key === 'C') { calcExpression = ""; screen.innerText = "0"; } else if (key === 'del') { calcExpression = calcExpression.slice(0, -1); screen.innerText = calcExpression || "0"; } else if (key === '=') { try { let result = eval(calcExpression); screen.innerText = Number(result.toFixed(2)).toLocaleString(); calcExpression = result.toString(); } catch(e) { screen.innerText = "Error"; calcExpression = ""; } } else { if(screen.innerText === "0" || screen.innerText === "خطأ") calcExpression = ""; calcExpression += key; screen.innerText = calcExpression; } }
-        function pushCalcToInput() { let screen = document.getElementById("calcScreen").innerText.replace(/,/g, ''); let val = parseFloat(screen); if (!isNaN(val) && val > 0) { document.getElementById("amount").value = val; localStorage.setItem("draft_amt", val); toggleCalc(); } }
+        function pushCalcToInput() { let screen = document.getElementById("calcScreen").innerText.replace(/,/g, ''); let val = parseFloat(screen); if (!isNaN(val) && val > 0) { document.getElementById("amount").value = val; toggleCalc(); } }
         function toggleSidebar(open) { document.getElementById("sidebarMenu").classList.toggle("open", open); document.getElementById("sidebarOverlay").style.display = open ? "block" : "none"; }
-        function switchDockTab(tab) { if(tab === 'home') resetProjectSelection(); }
 
         function filterLogs(category) { activeFilter = category; document.querySelectorAll('.filter-pills-container .pill-btn').forEach(btn => btn.classList.remove('active')); if(category === 'all') document.getElementById('pill-all').classList.add('active'); else if(category === 'خامات') document.getElementById('pill-materials').classList.add('active'); else if(category === 'عمالة') document.getElementById('pill-labor').classList.add('active'); else if(category === 'نثريات') document.getElementById('pill-nethria').classList.add('active'); else if(category === 'نقل') document.getElementById('pill-shipping').classList.add('active'); renderUI(globalTransactions); }
         function handleLiveSearch() { renderUI(globalTransactions); }
         document.addEventListener('keydown', function(e) { if (e.key === 'Enter' && e.target.id === 'loginPassword') handleSecureLogin(); });
         
-        function resetProjectSelection() { 
-            if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off();
-            document.getElementById("projectSelectorCard").classList.remove("hide-completely"); document.getElementById("projectSelectorCard").classList.add("visible-now"); 
-            document.getElementById("headerProjBadge").style.display = "none"; SELECTED_PROJECT = ""; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل..";
-            document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); filterLogs('all'); 
-            document.getElementById("smartAlertBanner").style.display = "none"; document.getElementById("laborSubPanel").style.display = "none"; activeEngineerFilter = 'all';
-        }
+        function resetProjectSelection() { if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); document.getElementById("projectSelectorCard").classList.remove("hide-completely"); document.getElementById("projectSelectorCard").classList.add("visible-now"); document.getElementById("headerProjBadge").style.display = "none"; SELECTED_PROJECT = ""; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل.."; document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("sidebarProjectActionsZone").classList.remove("active-now"); filterLogs('all'); document.getElementById("smartAlertBanner").style.display = "none"; document.getElementById("laborSubPanel").style.display = "none"; activeEngineerFilter = 'all'; updateFabVisibilityState(); }
+        function showLoad(s) { let loader = document.getElementById("loading"); if(loader) { loader.style.setProperty('display', s ? 'flex' : 'none', s ? 'important' : ''); } }
         
-        function showLoad(s) { document.getElementById("loading").style.display = s?'flex':'none'; }
         function animateValue(obj, start, end, duration) { if (start === end) { obj.innerText = end.toLocaleString(); return; } let range = end - start; let current = start; let increment = end > start ? Math.ceil(range / 15) : Math.floor(range / 15); let timer = setInterval(() => { current += increment; if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) { clearInterval(timer); current = end; } obj.innerText = current.toLocaleString(); }, 20); }
         function switchTab(mode) { currentMode = mode; document.getElementById("incBtn").className = "tab-btn " + (mode==='income'?'active':''); document.getElementById("expBtn").className = "tab-btn " + (mode==='expense'?'active':''); let catGroup = document.getElementById("catGroup"); let incomeCatGroup = document.getElementById("incomeCatGroup"); if(mode === 'expense') { if(catGroup) catGroup.style.display = 'block'; if(incomeCatGroup) incomeCatGroup.style.display = 'none'; } else { if(catGroup) catGroup.style.display = 'none'; if(incomeCatGroup) incomeCatGroup.style.display = 'block'; selectIconIncomeCategory('عام'); } }
 
@@ -1072,22 +1009,22 @@
             
             let netCard = document.getElementById("hudCardNet"); let netBalanceText = document.getElementById("netBalance"); let alertBanner = document.getElementById("smartAlertBanner"); let alertText = document.getElementById("smartAlertText");
             let budgetPercentage = inc > 0 ? (exp / inc) * 100 : 0;
+            
             if(SELECTED_PROJECT !== "") {
-                if(finalNetValue <= 3000 && inc > 0) { if(alertBanner) alertBanner.style.display = "flex"; if(alertText) alertText.innerHTML = `⚠️ <b>سيولة حرجة!</b> الصافي الحالي (${finalNetValue.toLocaleString()} ج.م) غير كافٍ لتغطية الموقع.`; } 
-                else if(budgetPercentage >= 85) { if(alertBanner) alertBanner.style.display = "flex"; if(alertText) alertText.innerHTML = `🚨 <b>تنبيه مالي!</b> إجمالي المصاريف تخطى <b>${Math.round(budgetPercentage)}%</b> من قيمة الدفعات.`; } 
+                if(finalNetValue <= 500 && inc > 0) { if(alertBanner) alertBanner.style.display = "flex"; if(alertText) alertText.innerHTML = `⚠️ <b>سيولة حرجة!</b> الصافي الحالي أقل من 500 جنيه (${finalNetValue.toLocaleString()} ج.م)`; } 
+                else if(budgetPercentage >= 85) { if(alertBanner) alertBanner.style.display = "flex"; if(alertText) alertText.innerHTML = `🚨 <b>تنبيه مالي!</b> المصاريف تخطت <b>${Math.round(budgetPercentage)}%</b>`; } 
                 else { if(alertBanner) alertBanner.style.display = "none"; }
             } else { if(alertBanner) alertBanner.style.display = "none"; }
             
             if(netCard && netBalanceText) {
-                if(finalNetValue <= 5000) { netCard.style.background = "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "var(--danger)"; netBalanceText.style.color = "var(--danger)"; } 
-                else if(finalNetValue <= 15000) { netCard.style.background = "linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "var(--primary)"; netBalanceText.style.color = "var(--primary)"; } 
+                if(finalNetValue <= 500) { netCard.style.background = "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "var(--danger)"; netBalanceText.style.color = "var(--danger)"; } 
+                else if(finalNetValue <= 5000) { netCard.style.background = "linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "var(--primary)"; netBalanceText.style.color = "var(--primary)"; } 
                 else { netCard.style.background = "linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "rgba(16, 185, 129, 0.3)"; netBalanceText.style.color = "var(--success)"; }
             }
 
             let pct = inc > 0 ? (exp / inc) * 100 : 0; if(pct > 100) pct = 100;
             let bar = document.getElementById("hudProgressBar"); if(bar) { bar.style.width = pct + "%"; bar.style.backgroundColor = pct > 85 ? "var(--danger)" : "var(--primary)"; }
-            
-            let countEl = document.getElementById("sideTotalCount"); if(countEl) countEl.innerText = items.length + " عمليات";
+            let countEl = document.getElementById("sideTotalCount"); if(countEl) countEl.innerText = items.length;
 
             filteredItems.forEach(i => {
                 let engLabel = ACCOUNTS_ROLES[i.engineer] ? ACCOUNTS_ROLES[i.engineer].label : (i.engineer || "عام"); 
@@ -1097,16 +1034,30 @@
 
                 html += `
                     <div class="swipe-item-wrapper">
+                        <div class="swipe-actions-container">
+                             <div class="swipe-btn edit" onclick="triggerInlineEditItem('${i.id}', '${i.desc}', '${i.amount}')">
+                                  <i class="fas fa-edit"></i><span>تعديل</span>
+                             </div>
+                             <div class="swipe-btn delete" onclick="askDelItem('${i.id}', '${i.desc}')">
+                                  <i class="fas fa-trash-can"></i><span>حذف</span>
+                             </div>
+                        </div>
+                        
                         <div class="log-item ${i.type || 'expense'}">
                             <div class="log-info"><h5>${i.desc || 'بدون بيان'}</h5><p>${displayCategory || 'عام'} • م / ${engLabel} ${cloudIcon}</p></div>
                             <div class="log-amount-holder">
-                                <div class="log-amount-data"><span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">${i.type==='income'?'+':'-'}${amtVal}</span><span class="date">${i.date || '-'}</span></div>
-                                <i class="fas fa-trash-can" style="color:var(--text-dim); cursor:pointer; font-size:13px; padding:6px; margin-right:8px;" onclick="askDelItem('${i.id}', '${i.desc}')"></i>
+                                <div class="log-amount-data">
+                                     <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">${i.type==='income'?'+':'-'}${amtVal} ج.م</span>
+                                     <span class="date">${i.date || '-'}</span>
+                                </div>
+                                <i class="fas fa-angle-left" style="color:var(--text-dim); font-size:14px; margin-right:6px; padding:4px;"></i>
                             </div>
                         </div>
                     </div>`;
             });
             document.getElementById("logBody").innerHTML = html || `<div style="text-align:center; color:var(--text-dim); font-size:13px; padding:25px;">لا توجد عمليات...</div>`;
+            
+            setTimeout(bindSwipeGesturesToElements, 80);
         }
     </script>
 </body>
