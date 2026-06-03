@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Perfect Steel Pro Mobile Premium v4.8.6</title>
+    <title>Perfect Steel Pro Mobile Premium v4.9.1</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -41,7 +41,6 @@
             --calc-screen: rgba(0, 0, 0, 0.4);
         }
 
-        /* الوضع النهاري الفاخر المطور فائق التباين والوضوح الميداني */
         [data-theme="light"] {
             --bg-body: #F8FAFC;
             --bg-card: #FFFFFF;
@@ -152,7 +151,7 @@
         }
         [data-theme="light"] .sidebar { background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); border-left-color: rgba(15, 23, 42, 0.08); }
         .sidebar.open { right: 0; box-shadow: -15px 0 30px rgba(0,0,0,0.6); }
-        [data-theme="light"] .sidebar.open { box-shadow: -10px 0 25px rgba(15,23,42,0.08); }
+        [data-theme="light"] .sidebar.open { box-shadow: -10px 0 25px rgba(15, 23, 42, 0.08); }
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
         .sidebar-close { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-dim); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
         [data-theme="light"] .sidebar-close { background: #F1F5F9; border-color: transparent; }
@@ -265,38 +264,76 @@
 
         .logs-list { max-height: 360px; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px; }
         
-        .swipe-item-wrapper { position: relative; width: 100%; border-radius: 16px; margin-bottom: 8px; background: #1e293b; overflow: hidden; }
-        [data-theme="light"] .swipe-item-wrapper { background: #E2E8F0; }
+        .swipe-item-wrapper { 
+            position: relative; 
+            width: 100%; 
+            border-radius: 16px; 
+            margin-bottom: 8px; 
+            background: #111827; 
+            overflow: hidden; 
+        }
+        [data-theme="light"] .swipe-item-wrapper { background: #CBD5E1; }
         
         .log-item { 
             background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.00) 100%);
             padding: 12px 14px; border: 1px solid var(--border); width: 100%; border-radius: 16px;
             display: flex; justify-content: space-between; align-items: center; background-color: #0f1322;
-            position: relative; z-index: 10; transition: transform 0.25s cubic-bezier(0.1, 0.8, 0.3, 1);
+            position: relative; 
+            z-index: 10; 
+            transition: transform 0.25s cubic-bezier(0.1, 0.8, 0.3, 1);
         }
         [data-theme="light"] .log-item { background-color: #FFFFFF; background-image: none; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
         .log-item.income { border-right: 4px solid var(--success); }
         .log-item.expense { border-right: 4px solid var(--danger); }
         
         .swipe-actions-container {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: flex-end; align-items: center; z-index: 1; padding-left: 0;
+            position: absolute; 
+            top: 0; 
+            right: 0; 
+            width: 120px; 
+            height: 100%;
+            display: flex; 
+            justify-content: flex-end; 
+            align-items: center; 
+            z-index: 1; 
         }
         .swipe-btn {
-            height: 100%; width: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 14px; color: white; font-weight: bold; cursor: pointer; transition: 0.1s; gap: 4px; box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            height: 100%; 
+            width: 60px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            font-size: 14px; 
+            color: white; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.1s; 
+            gap: 4px;
         }
         .swipe-btn span { font-size: 8px; font-weight: 900; }
         .swipe-btn.edit { background: #0284c7; }
-        .swipe-btn.delete { background: #dc2626; border-top-left-radius: 16px; border-bottom-left-radius: 16px; }
+        .swipe-btn.delete { background: #dc2626; }
 
-        .log-amount-holder { display: flex; align-items: center; gap: 10px; min-width: 90px; justify-content: flex-end; }
+        .log-icon-box-ui {
+            width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+        }
+        [data-theme="light"] .log-icon-box-ui { background: #F1F5F9; }
+
+        .log-info-meta-holder { display: flex; align-items: center; gap: 10px; flex: 1; margin-right: 2px; text-align: right; }
+
+        .log-amount-holder { display: flex; align-items: center; gap: 8px; min-width: 90px; justify-content: flex-end; }
         .log-amount-data { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 2px; }
         .log-amount-data .amt { font-size: 14px; font-weight: 900; text-align: left; line-height: 1.2; display: block; white-space: nowrap; }
         .log-amount-data .date { font-size: 10px; color: var(--text-dim); text-align: left; font-weight: 600; line-height: 1.1; display: block; white-space: nowrap; margin-top: 2px; }
 
         .chart-holder-card { display: flex; align-items: center; justify-content: space-around; gap: 16px; padding: 16px; }
         .chart-container-fixed { position: relative; width: 100px; height: 100px; }
+
+        /* ستايل شريط تقدم الخامات المتطور */
+        .mat-item-row-ui { background: rgba(255,255,255,0.02); padding: 10px; border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; gap: 6px; }
+        .mat-bar-wrapper { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; position: relative; }
+        .mat-bar-fill { height: 100%; width: 0%; transition: width 0.3s; }
 
         .calc-trigger-btn { position: fixed; bottom: 16px; left: 16px; width: 46px; height: 46px; background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; color: white; font-size: 18px; display: none; align-items: center; justify-content: center; z-index: 175; box-shadow: 0 4px 12px var(--glow); cursor: pointer; }
         .calc-trigger-btn.visible { display: flex; }
@@ -545,11 +582,12 @@
                      </div>
                 </div>
 
-                <div style="display:flex; width:100%;">
-                     <button class="btn-primary" onclick="toggleLaborSubPanel()" style="padding:12px; font-size:12px; border-radius:12px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); box-shadow:none;"><i class="fas fa-users-gear"></i> كشوف مسحوبات العمالة الميدانية</button>
+                <div style="display:flex; gap: 8px; width:100%;">
+                     <button class="btn-primary" onclick="toggleLaborSubPanel()" style="flex:1; padding:12px; font-size:11px; border-radius:12px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); box-shadow:none;"><i class="fas fa-users-gear"></i> مسحوبات العمالة</button>
+                     <button class="btn-primary" onclick="toggleMaterialsSubPanel()" style="flex:1; padding:12px; font-size:11px; border-radius:12px; background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); box-shadow:none;"><i class="fas fa-cubes-stacked"></i> خامات المقايسة</button>
                 </div>
 
-                <div class="card" id="laborSubPanel" style="display:none; flex-direction:column; gap:10px; border-color: rgba(2, 132, 199, 0.2);">
+                <div class="card" id="laborSubPanel" style="display:none; flex-direction:column; gap:10px; border-color: rgba(2, 132, 199, 0.2); padding: 14px;">
                      <h4 style="margin:0; font-size:12px; font-weight:900; color:var(--info);"><i class="fas fa-people-carry-box"></i> كشوف مسحوبات عمال الموقع</h4>
                      <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:8px;">
                           <input type="text" id="labWorkerName" class="input-ui" style="padding:10px; font-size:12px;" placeholder="اسم المقاول/العامل..">
@@ -562,6 +600,30 @@
                      <button class="btn-primary" onclick="generateLaborExpensesPDFReport()" style="padding:10px; font-size:12px; border-radius:10px; background:linear-gradient(135deg, #dc2626 0%, #991b1b 100%); box-shadow:none;"><i class="fas fa-file-pdf"></i> ملخص حسابات PDF</button>
                      <div id="laborExpensesPdfHiddenArea" style="display:none; flex-direction:column; background:#030712; padding:16px; color:white; width:100%;"><div style="text-align:center; border-bottom: 2px solid #ff6b00; padding-bottom:8px; margin-bottom:10px;"><h2>PERFECT STEEL PRO</h2></div><div id="laborExpensesPdfTablePlaceholder"></div></div>
                      <div id="laborEntriesList" style="max-height:140px; overflow-y:auto; font-size:11px; display:flex; flex-direction:column; gap:6px;"></div>
+                </div>
+
+                <div class="card" id="materialsSubPanel" style="display:none; flex-direction:column; gap:12px; border-color: rgba(124, 58, 237, 0.3); padding: 14px;">
+                     <h4 style="margin:0; font-size:12px; font-weight:900; color:var(--purple);"><i class="fas fa-boxes-stacked"></i> تتبع خامات المقايسة والتوريد</h4>
+                     
+                     <div style="background: rgba(255,255,255,0.01); border: 1px dashed var(--border); padding: 10px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px;">
+                          <span style="font-size: 10px; font-weight: 900; color: var(--text-dim);">خطوة 1: تأسيس بند في المقايسة الأصلية</span>
+                          <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:6px;">
+                               <input type="text" id="newMatName" class="input-ui" style="padding:8px; font-size:12px;" placeholder="الخامة (حديد، صاج، Cement)؟">
+                               <input type="number" id="newMatTarget" class="input-ui" style="padding:8px; font-size:12px;" placeholder="الكمية المطلوبة؟">
+                          </div>
+                          <button class="btn-primary" onclick="addMaterialTarget()" style="padding:8px; font-size:12px; border-radius:8px; background: var(--purple);"><i class="fas fa-folder-plus"></i> تثبيت بالمقايسة</button>
+                     </div>
+
+                     <div style="background: rgba(255,255,255,0.01); border: 1px dashed var(--border); padding: 10px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px;">
+                          <span style="font-size: 10px; font-weight: 900; color: var(--success);">خطوة 2: قيد كمية توريد وصلت الموقع حالياً</span>
+                          <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:6px;">
+                               <select id="deliveryMatSelect" class="input-ui" style="padding:8px; font-size:12px; background:#0f172a; color:white;"></select>
+                               <input type="number" id="deliveryQty" class="input-ui" style="padding:8px; font-size:12px;" placeholder="الكمية الموردة؟">
+                          </div>
+                          <button class="btn-primary" onclick="logMaterialDelivery()" style="padding:8px; font-size:12px; border-radius:8px; background: var(--success);"><i class="fas fa-truck-loading"></i> إثبات وصول الشحنة</button>
+                     </div>
+
+                     <div id="projectMaterialsDisplayList" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto; padding-top:4px;"></div>
                 </div>
 
                 <div class="filter-pills-container" id="filterPillsWrapper">
@@ -660,7 +722,7 @@
         let currentMode = 'income'; let globalTransactions = []; let activeFilter = 'all'; let activeEngineerFilter = 'all'; let currentUser = null; 
         let PROJECT_LIST = ["New Cairo", "Old Cairo", "Helwan", "Ismailia"]; 
         let SELECTED_PROJECT = ""; let firebaseTransactionsRef = null; let firebaseProjectInfoRef = null;
-        let globalProjectStatuses = {}; let currentProjectLaborList = []; let chartInstance = null; let calcExpression = "";
+        let globalProjectStatuses = {}; let currentProjectLaborList = []; let currentProjectMaterialsMap = {}; let chartInstance = null; let calcExpression = "";
         let currentProjectLoadedDataSnapshot = {}; 
 
         const ACCOUNTS_ROLES = {
@@ -681,51 +743,26 @@
 
         function handleFloatingFabClick() {
             triggerHapticFeedback();
-            if (SELECTED_PROJECT === "") {
-                if (currentUser === "mostafa") {
-                    createNewProjectModalAction();
-                }
-            } else {
-                scrollToTransactionForm();
-            }
+            if (SELECTED_PROJECT === "") { if (currentUser === "mostafa") { createNewProjectModalAction(); } } 
+            else { scrollToTransactionForm(); }
         }
 
         function createNewProjectModalAction() {
             showGlobalAppModal({
-                title: "🏗️ إضافة موقع عمل جديد",
-                body: "اكتب اسم المشروع الجديد بدقة ليتم تهيئته فوراً:",
-                icon: "fas fa-folder-plus", iconColor: "var(--primary)",
-                showInput: true, inputValue: "", confirmText: "تأسيس موقع العمل", confirmColor: "var(--primary)",
+                title: "🏗️ إضافة موقع عمل جديد", body: "اكتب اسم المشروع الجديد بدقة ليتم تهيئته فوراً:", icon: "fas fa-folder-plus", iconColor: "var(--primary)", showInput: true, inputValue: "", confirmText: "تأسيس موقع العمل", confirmColor: "var(--primary)",
                 onConfirm: function(projName) {
                     if (projName && projName.trim() !== "") {
                         let cleanName = projName.trim();
-                        database.ref('project_info').child(cleanName).set({
-                            engineer: "م / مصطفى",
-                            owner: "تحت التأسيس",
-                            labor: "0",
-                            progress: "0",
-                            notes: "",
-                            status: "جاري العمل"
-                        }).then(() => {
-                            triggerHapticFeedback();
-                        });
+                        database.ref('project_info').child(cleanName).set({ engineer: "م / مصطفى", owner: "تحت التأسيس", labor: "0", progress: "0", notes: "", status: "جاري العمل" }).then(() => { triggerHapticFeedback(); });
                     }
                 }
             });
         }
 
         function updateFabVisibilityState() {
-            let fab = document.getElementById("fastInputFab");
-            if (!fab) return;
-            if (SELECTED_PROJECT === "") {
-                if (currentUser === "mostafa") {
-                    fab.classList.add("visible");
-                } else {
-                    fab.classList.remove("visible");
-                }
-            } else {
-                fab.classList.add("visible");
-            }
+            let fab = document.getElementById("fastInputFab"); if (!fab) return;
+            if (SELECTED_PROJECT === "") { if (currentUser === "mostafa") { fab.classList.add("visible"); } else { fab.classList.remove("visible"); } } 
+            else { fab.classList.add("visible"); }
         }
 
         function openProjectIndicatorsEditModal() {
@@ -736,22 +773,13 @@
             document.getElementById("setupProgressPercent").value = currentProjectLoadedDataSnapshot.progress || "0";
             document.getElementById("setupProjectNotes").value = currentProjectLoadedDataSnapshot.notes || "";
             document.getElementById("setupProjectStatusSelect").value = currentProjectLoadedDataSnapshot.status || "جاري العمل";
-
-            document.getElementById("projectIndicatorsFormContainer").style.display = "flex";
-            document.getElementById("globalModalInputContainer").style.display = "none";
+            document.getElementById("projectIndicatorsFormContainer").style.display = "flex"; document.getElementById("globalModalInputContainer").style.display = "none";
 
             showGlobalAppModal({
-                title: `تحديث بيانات: ${SELECTED_PROJECT}`,
-                body: "تحديث مؤشرات وملاحظات الموقع الحالية ومزامنتها ميدانياً على السيرفر:",
-                icon: "fas fa-sliders", iconColor: "var(--purple)", confirmText: "حفظ التغييرات", confirmColor: "var(--purple)",
+                title: `تحديث بيانات: ${SELECTED_PROJECT}`, body: "تحديث مؤشرات وملاحظات الموقع الحالية ومزامنتها ميدانياً على السيرفر:", icon: "fas fa-sliders", iconColor: "var(--purple)", confirmText: "حفظ التغييرات", confirmColor: "var(--purple)",
                 onConfirm: function() {
                     database.ref('project_info').child(SELECTED_PROJECT).update({
-                        engineer: document.getElementById("setupEngName").value.trim(),
-                        owner: document.getElementById("setupOwnerName").value.trim(),
-                        labor: document.getElementById("setupLaborCount").value.trim() || "0",
-                        progress: document.getElementById("setupProgressPercent").value.trim() || "0",
-                        notes: document.getElementById("setupProjectNotes").value.trim(),
-                        status: document.getElementById("setupProjectStatusSelect").value
+                        engineer: document.getElementById("setupEngName").value.trim(), owner: document.getElementById("setupOwnerName").value.trim(), labor: document.getElementById("setupLaborCount").value.trim() || "0", progress: document.getElementById("setupProgressPercent").value.trim() || "0", notes: document.getElementById("setupProjectNotes").value.trim(), status: document.getElementById("setupProjectStatusSelect").value
                     }).then(() => { triggerHapticFeedback(); document.getElementById("projectIndicatorsFormContainer").style.display = "none"; });
                 }
             });
@@ -759,20 +787,13 @@
         }
 
         function triggerHardDeleteProject(projectName, event) {
-            if(event) event.stopPropagation(); 
-            triggerHapticFeedback();
-
+            if(event) event.stopPropagation(); triggerHapticFeedback();
             showGlobalAppModal({
-                title: "⚠️ حذف المشروع نهائياً",
-                body: `هل أنت متأكد من مسح وإزالة موقع (${projectName}) نهائياً من السيرفر وجداول الحسابات المالية؟`,
-                icon: "fas fa-exclamation-triangle", iconColor: "var(--danger)", confirmText: "تأكيد مسح السيرفر النهائي", confirmColor: "var(--danger)",
+                title: "⚠️ حذف المشروع نهائياً", body: `هل أنت متأكد من مسح وإزالة موقع (${projectName}) نهائياً من السيرفر وجداول الحسابات المالية؟`, icon: "fas fa-exclamation-triangle", iconColor: "var(--danger)", confirmText: "تأكيد مسح السيرفر النهائي", confirmColor: "var(--danger)",
                 onConfirm: function() {
-                    showLoad(true);
-                    database.ref('project_info').child(projectName).remove();
-                    database.ref('project_labors').child(projectName).remove();
+                    showLoad(true); database.ref('project_info').child(projectName).remove(); database.ref('project_labors').child(projectName).remove(); database.ref('project_materials').child(projectName).remove();
                     database.ref('transactions').once('value').then((snapshot) => {
-                        let data = snapshot.val();
-                        if(data) { for(let id in data) { if(data[id] && data[id].project === projectName) { database.ref('transactions').child(id).remove(); } } }
+                        let data = snapshot.val(); if(data) { for(let id in data) { if(data[id] && data[id].project === projectName) { database.ref('transactions').child(id).remove(); } } }
                         showLoad(false); triggerHapticFeedback();
                     }).catch(() => showLoad(false));
                 }
@@ -792,8 +813,7 @@
         }
 
         function exportToExcelCSVSheet() {
-            toggleSidebar(false);
-            if(globalTransactions.length === 0) return alert("لا توجد بيانات.");
+            toggleSidebar(false); if(globalTransactions.length === 0) return alert("لا توجد بيانات.");
             let csvContent = "\uFEFF"; csvContent += "التاريخ,التصنيف,البيان المالي للعملية,النوع,المبلغ ج.م,المهندس المسؤول\n";
             globalTransactions.forEach(item => { let typeText = item.type === 'income' ? "إيراد (+)" : "مصروف (-)"; csvContent += `${item.date || '-'},${item.category || 'عام'},${item.desc.replace(/,/g, ' ')},${typeText},${item.amount},م / ${ACCOUNTS_ROLES[item.engineer]?.label || ''}\n`; });
             let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }); let url = URL.createObjectURL(blob);
@@ -802,13 +822,13 @@
         }
 
         function toggleThemeFast() { triggerHapticFeedback(); let current = document.documentElement.getAttribute("data-theme") || "dark"; let next = current === "dark" ? "light" : (current === "light" ? "oled" : "dark"); document.documentElement.setAttribute("data-theme", next); localStorage.setItem("theme", next); }
-        
         function selectIconCategory(cat) { document.querySelectorAll('#catGroup .icon-selector-item').forEach(el => el.classList.remove('selected')); let activeElement = document.getElementById('item-cat-' + cat); if(activeElement) activeElement.classList.add('selected'); document.getElementById('expenseCategory').value = cat; }
         function selectIconIncomeCategory(cat) { document.querySelectorAll('#incomeCatGroup .icon-selector-item').forEach(el => el.classList.remove('selected')); let activeElement = document.getElementById('item-inc-' + cat.replace(' ', '_')); if(activeElement) activeElement.classList.add('selected'); document.getElementById('incomeCategory').value = cat; }
-        
         function setDynamicGreeting(userLabel) { let currentHour = new Date().getHours(); let greetingWord = currentHour >= 12 ? "مساء الخير" : "صباح الخير"; document.getElementById("dynamicGreeting").innerText = `${greetingWord} م / ${userLabel} ☕`; }
         function toggleCustomDropdown(type) { if(type === 'active') { document.getElementById("customProjectDropdown").classList.toggle("open"); document.getElementById("customArchiveDropdown").classList.remove("open"); } else { document.getElementById("customArchiveDropdown").classList.toggle("open"); document.getElementById("customProjectDropdown").classList.remove("open"); } }
-        function toggleLaborSubPanel() { let p = document.getElementById("laborSubPanel"); p.style.display = (p.style.display === 'flex') ? 'none' : 'flex'; }
+        
+        function toggleLaborSubPanel() { let p = document.getElementById("laborSubPanel"); let m = document.getElementById("materialsSubPanel"); p.style.display = (p.style.display === 'flex') ? 'none' : 'flex'; m.style.display = 'none'; }
+        function toggleMaterialsSubPanel() { let m = document.getElementById("materialsSubPanel"); let p = document.getElementById("laborSubPanel"); m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; p.style.display = 'none'; }
 
         function listenToGlobalProjectStatuses() {
             database.ref('project_info').on('value', (snap) => {
@@ -821,25 +841,13 @@
         function renderCustomDropdownOptions() {
             let activeContainer = document.getElementById("dropdownOptionsList"); let archiveContainer = document.getElementById("archiveDropdownOptionsList");
             let activeHtml = ""; let archiveHtml = "";
-
             PROJECT_LIST.forEach(proj => {
                 let statusInfo = globalProjectStatuses[proj] ? globalProjectStatuses[proj].status : "جاري العمل";
                 if(statusInfo === "مكتمل") {
-                    archiveHtml += `
-                        <div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}', 'archive')">
-                             <div class="dropdown-item-text-zone" style="color:var(--revenue-color);">
-                                  <i class="fas fa-box-archive" style="color:var(--revenue-color); font-size:11px;"></i> ${proj} (مؤرشف)
-                             </div>
-                             <i class="fas fa-trash-can project-hard-trash-btn" onclick="triggerHardDeleteProject('${proj}', event)"></i>
-                        </div>`;
+                    archiveHtml += `<div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}', 'archive')"><div class="dropdown-item-text-zone" style="color:var(--revenue-color);"><i class="fas fa-box-archive" style="color:var(--revenue-color); font-size:11px;"></i> ${proj} (مؤرشف)</div><i class="fas fa-trash-can project-hard-trash-btn" onclick="triggerHardDeleteProject('${proj}', event)"></i></div>`;
                 } else {
                     let dotColor = (statusInfo === "متوقف مؤقتا") ? "var(--danger)" : "var(--success)";
-                    activeHtml += `
-                        <div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}', 'active')">
-                             <div class="dropdown-item-text-zone">
-                                  <i class="fas fa-map-location-dot" style="color:${dotColor}; font-size:11px;"></i> ${proj}
-                             </div>
-                        </div>`;
+                    activeHtml += `<div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}', 'active')"><div class="dropdown-item-text-zone"><i class="fas fa-map-location-dot" style="color:${dotColor}; font-size:11px;"></i> ${proj}</div></div>`;
                 }
             });
             activeContainer.innerHTML = activeHtml || `<div style="padding:10px; font-size:11px; color:var(--text-dim);">لا توجد مواقع نشطة..</div>`;
@@ -850,20 +858,11 @@
         function setupDropdownOutsideClickListener() { document.addEventListener("click", (e) => { let d1 = document.getElementById("customProjectDropdown"); let d2 = document.getElementById("customArchiveDropdown"); if (d1 && !d1.contains(e.target)) d1.classList.remove("open"); if (d2 && !d2.contains(e.target)) d2.classList.remove("open"); }); }
         
         function showGlobalAppModal(config) { 
-            document.getElementById("globalModalIcon").className = config.icon || "fas fa-info-circle"; 
-            document.getElementById("globalModalIcon").style.color = config.iconColor || "var(--primary)"; 
-            document.getElementById("globalModalTitle").innerText = config.title || "تنبيه النظام"; 
-            document.getElementById("globalModalBody").innerText = config.body || ""; 
-            let inputContainer = document.getElementById("globalModalInputContainer"); 
-            let inputField = document.getElementById("globalModalInputField"); 
-            if(config.showInput) { inputContainer.style.display = "block"; inputField.value = config.inputValue || ""; } else { inputContainer.style.display = "none"; } 
-            let confirmBtn = document.getElementById("globalModalConfirmBtn"); 
-            confirmBtn.style.background = config.confirmColor || "var(--primary)"; 
-            confirmBtn.innerText = config.confirmText || "تأكيد"; 
+            document.getElementById("globalModalIcon").className = config.icon || "fas fa-info-circle"; document.getElementById("globalModalIcon").style.color = config.iconColor || "var(--primary)"; document.getElementById("globalModalTitle").innerText = config.title || "تنبيه النظام"; document.getElementById("globalModalBody").innerText = config.body || ""; 
+            let inputContainer = document.getElementById("globalModalInputContainer"); let inputField = document.getElementById("globalModalInputField"); if(config.showInput) { inputContainer.style.display = "block"; inputField.value = config.inputValue || ""; } else { inputContainer.style.display = "none"; } 
+            let confirmBtn = document.getElementById("globalModalConfirmBtn"); confirmBtn.style.background = config.confirmColor || "var(--primary)"; confirmBtn.innerText = config.confirmText || "تأكيد"; 
             confirmBtn.onclick = function() { if(config.onConfirm) config.onConfirm(config.showInput ? inputField.value : null); closeGlobalAppModal(); resetAllSwipeCards(); }; 
-            
-            let modalEl = document.getElementById("globalAppModal"); 
-            if(modalEl) modalEl.style.setProperty('display', 'flex', 'important'); 
+            let modalEl = document.getElementById("globalAppModal"); if(modalEl) modalEl.style.setProperty('display', 'flex', 'important'); 
         }
         function closeGlobalAppModal() { let modalEl = document.getElementById("globalAppModal"); if(modalEl) modalEl.style.setProperty('display', 'none', 'important'); resetAllSwipeCards(); }
 
@@ -879,8 +878,7 @@
                 card.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; isScrollDetected = false; }, {passive: true});
                 card.addEventListener("touchmove", (e) => {
                     if (isScrollDetected) return;
-                    let moveX = e.touches[0].clientX; let moveY = e.touches[0].clientY;
-                    let diffX = touchStartX - moveX; let diffY = touchStartY - moveY;
+                    let moveX = e.touches[0].clientX; let moveY = e.touches[0].clientY; let diffX = touchStartX - moveX; let diffY = touchStartY - moveY;
                     if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 10) { isScrollDetected = true; card.style.transform = "translateX(0)"; return; }
                     if(diffX > 15 && diffX < 140) { card.style.transform = `translateX(-${diffX}px)`; }
                 }, {passive: true});
@@ -888,6 +886,15 @@
                     if (isScrollDetected) return; let endX = e.changedTouches[0].clientX; let diffX = touchStartX - endX;
                     if(diffX >= 45) { triggerHapticFeedback(); card.style.transform = `translateX(-120px)`; } 
                     else { card.style.transform = `translateX(0)`; }
+                });
+            });
+
+            document.querySelectorAll(".swipe-btn").forEach(btn => {
+                btn.addEventListener("touchstart", (e) => { e.stopPropagation(); }, {passive: true});
+                btn.addEventListener("touchend", (e) => {
+                    e.preventDefault(); e.stopPropagation(); triggerHapticFeedback();
+                    if (typeof btn.onclick === 'function') { btn.onclick(); }
+                    else if (btn.hasAttribute('onclick')) { eval(btn.getAttribute('onclick')); }
                 });
             });
         }
@@ -915,12 +922,83 @@
         }
 
         function saveLaborEntry() { let name = document.getElementById("labWorkerName").value.trim(); let amountRaw = document.getElementById("labAmount").value.trim(); let amt = parseInlineCalculation(amountRaw); if(!name || isNaN(amt) || amt <= 0) return alert("برجاء إدخال البيانات."); database.ref('project_labors').child(SELECTED_PROJECT).push({ name: name, amount: amt, date: new Date().toISOString().split('T')[0] }).then(() => { document.getElementById("labWorkerName").value = ""; document.getElementById("labAmount").value = ""; triggerHapticFeedback(); }); }
-        function deleteLaborEntry(key) { if(confirm("هل تريد حذف هذا القيد？")) { database.ref('project_labors').child(SELECTED_PROJECT).child(key).remove(); } }
+        function deleteLaborEntry(key) { if(confirm("هل تريد حذف هذا القيد؟")) { database.ref('project_labors').child(SELECTED_PROJECT).child(key).remove(); } }
 
         function transferLaborToExpenses() {
             if(currentProjectLaborList.length === 0) return alert("لا توجد بنود."); let total = currentProjectLaborList.reduce((sum, item) => sum + parseFloat(item.amount), 0);
             if(confirm(`ترحيل إجمالي عمالة وقدره (${total.toLocaleString()} ج.م) كبند مصروفات رسمي؟`)) { database.ref('transactions').push({ project: SELECTED_PROJECT, engineer: currentUser, type: 'expense', category: 'عمالة', amount: total, desc: `[ترحيل تلقائي] - إجمالي سحبيات عمال موقع ${SELECTED_PROJECT}`, date: new Date().toISOString().split('T')[0], ts: Date.now() }).then(() => { database.ref('project_labors').child(SELECTED_PROJECT).remove(); document.getElementById("laborSubPanel").style.display = 'none'; triggerHapticFeedback(); }); }
         }
+
+        /* 🔥 منطق إدارة وتتبع خامات المقايسة الفورية للموقع */
+        function listenToProjectMaterialsData(proj) {
+            database.ref('project_materials').child(proj).on('value', (snap) => {
+                currentProjectMaterialsMap = snap.val() || {};
+                let html = ""; let selectHtml = "";
+                
+                for(let id in currentProjectMaterialsMap) {
+                    let mat = currentProjectMaterialsMap[id];
+                    let target = parseFloat(mat.total_needed) || 0;
+                    let delivered = parseFloat(mat.delivered) || 0;
+                    let remaining = target - delivered; if(remaining < 0) remaining = 0;
+                    let percentage = target > 0 ? Math.min(100, Math.round((delivered / target) * 100)) : 0;
+                    
+                    // تحديد اللون بناءً على نسبة وصول الخامات للموقع
+                    let barColor = percentage >= 100 ? 'var(--success)' : (percentage > 50 ? 'var(--info)' : 'var(--primary)');
+                    
+                    selectHtml += `<option value="${id}">${mat.name}</option>`;
+                    
+                    html += `
+                        <div class="mat-item-row-ui">
+                             <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700;">
+                                  <span><i class="fas fa-cube" style="color:var(--purple)"></i> ${mat.name}</span>
+                                  <i class="fas fa-trash-can" style="color:var(--text-dim); font-size:11px; cursor:pointer;" onclick="deleteMaterialItem('${id}')"></i>
+                             </div>
+                             <div style="display:grid; grid-template-columns: repeat(3, 1fr); font-size:10px; color:var(--text-dim); text-align:center; padding:2px 0;">
+                                  <div>المقايسة: <b style="color:var(--text-main);">${target}</b></div>
+                                  <div>وصل: <b style="color:var(--success);">${delivered}</b></div>
+                                  <div>فاضل: <b style="color:var(--danger);">${remaining}</b></div>
+                             </div>
+                             <div style="display:flex; align-items:center; gap:8px;">
+                                  <div class="mat-bar-wrapper" style="flex:1;"><div class="mat-bar-fill" style="width:${percentage}%; background-color:${barColor};"></div></div>
+                                  <span style="font-size:9px; font-weight:900; color:var(--text-main); min-width:24px; text-align:left;">${percentage}%</span>
+                             </div>
+                        </div>`;
+                }
+                
+                document.getElementById("projectMaterialsDisplayList").innerHTML = html || `<div style="color:var(--text-dim); text-align:center; font-size:10px; padding:10px;">لا توجد خامات مثبتة في مقايسة الموقع الحالي...</div>`;
+                document.getElementById("deliveryMatSelect").innerHTML = selectHtml || `<option value="">(ثبّت خامة أولاً)</option>`;
+            });
+        }
+
+        function addMaterialTarget() {
+            let name = document.getElementById("newMatName").value.trim();
+            let targetQty = parseFloat(document.getElementById("newMatTarget").value);
+            if(!name || isNaN(targetQty) || targetQty <= 0) return alert("يرجى إدخال اسم الخامة والكمية المطلوبة بالمقايسة.");
+            
+            database.ref('project_materials').child(SELECTED_PROJECT).push({
+                name: name, total_needed: targetQty, delivered: 0
+            }).then(() => {
+                document.getElementById("newMatName").value = ""; document.getElementById("newMatTarget").value = ""; triggerHapticFeedback();
+            });
+        }
+
+        function logMaterialDelivery() {
+            let matId = document.getElementById("deliveryMatSelect").value;
+            let qty = parseFloat(document.getElementById("deliveryQty").value);
+            if(!matId || isNaN(qty) || qty <= 0) return alert("يرجى اختيار صنف الخامة وإدخال الشحنة المستلمة.");
+            
+            let currentDelivered = parseFloat(currentProjectMaterialsMap[matId].delivered) || 0;
+            let newDelivered = currentDelivered + qty;
+            
+            database.ref('project_materials').child(SELECTED_PROJECT).child(matId).update({
+                delivered: newDelivered
+            }).then(() => {
+                document.getElementById("deliveryQty").value = ""; triggerHapticFeedback();
+                showGlobalAppModal({ title: "تم التوريد الميداني", body: `✅ تم إثبات وصول كمية قدرها (${qty}) لبند (${currentProjectMaterialsMap[matId].name}) بنجاح.`, icon: "fas fa-truck-moving", iconColor: "var(--success)" });
+            });
+        }
+
+        function deleteMaterialItem(key) { if(confirm("هل تريد حذف هذا البند نهائياً من مقايسة الموقع؟")) { database.ref('project_materials').child(SELECTED_PROJECT).child(key).remove(); } }
 
         function generateLaborExpensesPDFReport() {
             let registeredLaborExpenses = globalTransactions.filter(item => item && item.type === 'expense' && item.category === 'عمالة'); if(registeredLaborExpenses.length === 0) return;
@@ -948,12 +1026,8 @@
         function activateUserInterface(user) { 
             currentUser = user; let account = ACCOUNTS_ROLES[user]; 
             document.getElementById("headerUserNameSpan").innerText = "م / " + account.label; document.getElementById("headerUserBadge").style.display = "flex"; document.getElementById("sidebarUserName").innerText = "م / " + account.label; setDynamicGreeting(account.label); document.getElementById("loginBox").style.display = "none"; document.getElementById("menuBtn").classList.add("visible"); document.getElementById("mainContent").classList.add("visible"); document.getElementById("appGlobalHeader").classList.add("visible-now"); document.getElementById("calcTrigger").classList.add("visible"); document.getElementById("projectSelectorCard").classList.add("visible-now"); 
-            
-            let companyBtn = document.getElementById("item-inc-دفعة_شركة");
-            if(companyBtn) { companyBtn.style.display = (user === 'ahmed') ? 'flex' : 'none'; }
-            
-            updateFabVisibilityState();
-            switchTab(currentMode); 
+            let companyBtn = document.getElementById("item-inc-دفعة_شركة"); if(companyBtn) { companyBtn.style.display = (user === 'ahmed') ? 'flex' : 'none'; }
+            updateFabVisibilityState(); switchTab(currentMode); 
         }
 
         function triggerLogOut() {
@@ -976,7 +1050,6 @@
         }
 
         function finishTxSuccessfully() { document.getElementById("amount").value = ""; document.getElementById("desc").value = ""; selectIconIncomeCategory('عام'); selectIconCategory('خامات'); triggerHapticFeedback(); }
-        
         function checkAndSyncOfflineTransactions() { if(!navigator.onLine) return; let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); if(offlineList.length === 0) return; showLoad(true); let promises = offlineList.map(tx => { delete tx.isOffline; delete tx.id; return database.ref('transactions').push(tx); }); Promise.all(promises).then(() => { localStorage.removeItem('perfect_steel_offline_txs'); showLoad(false); triggerHapticFeedback(); }).catch(() => showLoad(false)); }
         window.addEventListener('online', checkAndSyncOfflineTransactions);
 
@@ -985,8 +1058,7 @@
             let financeContent = document.getElementById("financeContent"); financeContent.style.display = "flex"; document.getElementById("sidebarProjInfoBlock").classList.add("visible"); 
             document.getElementById("sidebarProjectActionsZone").classList.add("active-now");
 
-            updateFabVisibilityState();
-            listenToProjectInfo(proj); listenToProjectLaborData(proj); showLoad(true);
+            updateFabVisibilityState(); listenToProjectInfo(proj); listenToProjectLaborData(proj); listenToProjectMaterialsData(proj); showLoad(true);
             if (firebaseTransactionsRef) firebaseTransactionsRef.off();
             firebaseTransactionsRef = database.ref('transactions');
             firebaseTransactionsRef.on('value', (snap) => {
@@ -1027,7 +1099,7 @@
         function handleLiveSearch() { renderUI(globalTransactions); }
         document.addEventListener('keydown', function(e) { if (e.key === 'Enter' && e.target.id === 'loginPassword') handleSecureLogin(); });
         
-        function resetProjectSelection() { if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); document.getElementById("projectSelectorCard").classList.remove("hide-completely"); document.getElementById("projectSelectorCard").classList.add("visible-now"); document.getElementById("headerProjBadge").style.display = "none"; SELECTED_PROJECT = ""; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل.."; document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("sidebarProjectActionsZone").classList.remove("active-now"); filterLogs('all'); document.getElementById("smartAlertBanner").style.display = "none"; document.getElementById("laborSubPanel").style.display = "none"; activeEngineerFilter = 'all'; updateFabVisibilityState(); }
+        function resetProjectSelection() { if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); document.getElementById("projectSelectorCard").classList.remove("hide-completely"); document.getElementById("projectSelectorCard").classList.add("visible-now"); document.getElementById("headerProjBadge").style.display = "none"; SELECTED_PROJECT = ""; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل.."; document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("sidebarProjectActionsZone").classList.remove("active-now"); filterLogs('all'); document.getElementById("smartAlertBanner").style.display = "none"; document.getElementById("laborSubPanel").style.display = "none"; document.getElementById("materialsSubPanel").style.display = "none"; activeEngineerFilter = 'all'; updateFabVisibilityState(); }
         function showLoad(s) { let loader = document.getElementById("loading"); if(loader) { loader.style.setProperty('display', s ? 'flex' : 'none', s ? 'important' : ''); } }
         
         function animateValue(obj, start, end, duration) { if (start === end) { obj.innerText = end.toLocaleString(); return; } let range = end - start; let current = start; let increment = end > start ? Math.ceil(range / 15) : Math.floor(range / 15); let timer = setInterval(() => { current += increment; if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) { clearInterval(timer); current = end; } obj.innerText = current.toLocaleString(); }, 20); }
@@ -1066,26 +1138,13 @@
             
             if(netCard && netBalanceText) {
                 let currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
-                if(finalNetValue <= 500) { 
-                    netCard.style.background = currentTheme === 'light' ? "#FEE2E2" : "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; 
-                    netCard.style.borderColor = "var(--danger)"; 
-                    netBalanceText.style.color = "var(--danger)"; 
-                } 
-                else if(finalNetValue <= 5000) { 
-                    netCard.style.background = currentTheme === 'light' ? "#FFEDD5" : "linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; 
-                    netCard.style.borderColor = "var(--primary)"; 
-                    netBalanceText.style.color = "var(--primary)"; 
-                } 
-                else { 
-                    netCard.style.background = currentTheme === 'light' ? "#DCFCE7" : "linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(3, 7, 18, 0.4) 100%)"; 
-                    netCard.style.borderColor = "rgba(16, 185, 129, 0.3)"; 
-                    netBalanceText.style.color = "var(--success)"; 
-                }
+                if(finalNetValue <= 500) { netCard.style.background = currentTheme === 'light' ? "#FEE2E2" : "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "var(--danger)"; netBalanceText.style.color = "var(--danger)"; } 
+                else if(finalNetValue <= 5000) { netCard.style.background = currentTheme === 'light' ? "#FFEDD5" : "linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "var(--primary)"; netBalanceText.style.color = "var(--primary)"; } 
+                else { netCard.style.background = currentTheme === 'light' ? "#DCFCE7" : "linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "rgba(16, 185, 129, 0.3)"; netBalanceText.style.color = "var(--success)"; }
             }
 
             let pct = inc > 0 ? (exp / inc) * 100 : 0; if(pct > 100) pct = 100;
             let bar = document.getElementById("hudProgressBar"); if(bar) { bar.style.width = pct + "%"; bar.style.backgroundColor = pct > 85 ? "var(--danger)" : "var(--primary)"; }
-            let countEl = document.getElementById("sideTotalCount"); if(countEl) countEl.innerText = items.length;
 
             filteredItems.forEach(i => {
                 let engLabel = ACCOUNTS_ROLES[i.engineer] ? ACCOUNTS_ROLES[i.engineer].label : (i.engineer || "عام"); 
@@ -1093,31 +1152,39 @@
                 let displayCategory = i.category;
                 let cloudIcon = i.isOffline ? `<i class="fas fa-cloud" style="color:var(--text-dim); margin-right:5px; font-size:11px;"></i>` : `<i class="fas fa-check-circle" style="color:var(--success) !important; margin-right:5px; font-size:11px;"></i>`;
 
+                let finalIconHtml = `<i class="fas fa-layer-group" style="color:var(--primary)"></i>`;
+                if(i.type === 'income') { finalIconHtml = `<i class="fas fa-money-bill-trend-up" style="color:var(--success)"></i>`; } 
+                else {
+                    if(i.category === 'عمالة') finalIconHtml = `<i class="fas fa-user-helmet" style="color:var(--info)"></i>`;
+                    if(i.category === 'نقل') finalIconHtml = `<i class="fas fa-truck-ramp-box" style="color:var(--revenue-color)"></i>`;
+                    if(i.category === 'نثريات') finalIconHtml = `<i class="fas fa-wallet" style="color:var(--danger)"></i>`;
+                }
+
                 html += `
                     <div class="swipe-item-wrapper">
                         <div class="swipe-actions-container">
-                             <div class="swipe-btn edit" onclick="triggerInlineEditItem('${i.id}', '${i.desc}', '${i.amount}')">
-                                  <i class="fas fa-edit"></i><span>تعديل</span>
-                             </div>
-                             <div class="swipe-btn delete" onclick="askDelItem('${i.id}', '${i.desc}')">
-                                  <i class="fas fa-trash-can"></i><span>حذف</span>
-                             </div>
+                             <div class="swipe-btn edit" onclick="triggerInlineEditItem('${i.id}', '${i.desc}', '${i.amount}')"><i class="fas fa-edit"></i><span>تعديل</span></div>
+                             <div class="swipe-btn delete" onclick="askDelItem('${i.id}', '${i.desc}')"><i class="fas fa-trash-can"></i><span>حذف</span></div>
                         </div>
-                        
                         <div class="log-item ${i.type || 'expense'}">
-                            <div class="log-info"><h5 style="margin: 0; font-size: 13px; font-weight: 700;">${i.desc || 'بدون بيان'}</h5><p style="margin: 4px 0 0; font-size: 11px; color: var(--text-dim); font-weight: 600;">${displayCategory || 'عام'} • م / ${engLabel} ${cloudIcon}</p></div>
+                            <div class="log-info-meta-holder">
+                                 <div class="log-icon-box-ui">${finalIconHtml}</div>
+                                 <div class="log-info">
+                                      <h5 style="margin: 0; font-size: 13px; font-weight: 700;">${i.desc || 'بدون بيان'}</h5>
+                                      <p style="margin: 4px 0 0; font-size: 11px; color: var(--text-dim); font-weight: 600;">${displayCategory || 'عام'} • م / ${engLabel} ${cloudIcon}</p>
+                                 </div>
+                            </div>
                             <div class="log-amount-holder">
                                 <div class="log-amount-data">
                                      <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">${i.type==='income'?'+':'-'}${amtVal} ج.م</span>
                                      <span class="date">${i.date || '-'}</span>
                                 </div>
-                                <i class="fas fa-angle-left" style="color:var(--text-dim); font-size:14px; margin-right:6px; padding:4px;"></i>
+                                <i class="fas fa-angle-left" style="color:var(--text-dim); font-size:14px; margin-right:4px; padding:4px;"></i>
                             </div>
                         </div>
                     </div>`;
             });
             document.getElementById("logBody").innerHTML = html || `<div style="text-align:center; color:var(--text-dim); font-size:13px; padding:25px;">لا توجد عمليات...</div>`;
-            
             setTimeout(bindSwipeGesturesToElements, 80);
         }
     </script>
