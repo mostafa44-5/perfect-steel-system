@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Perfect Steel Pro Mobile Premium v4.9.1</title>
+    <title>Perfect Steel Pro Mobile Premium v4.9.2</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -434,6 +434,22 @@
                    </div>
               </div>
 
+              <!-- فورم إضافة مهندس جديد -->
+              <div id="addEngineerFormContainer" style="display:none; flex-direction: column; gap: 10px; margin-top: 12px; text-align: right;">
+                   <div class="label-group">
+                        <label>اسم المستخدم (للدخول)</label>
+                        <input type="text" id="newEngUsername" class="input-ui" placeholder="مثال: khaled (بالإنجليزي)">
+                   </div>
+                   <div class="label-group">
+                        <label>الرقم السري (Password)</label>
+                        <input type="text" id="newEngPassword" class="input-ui" placeholder="أدخل الرقم السري..">
+                   </div>
+                   <div class="label-group">
+                        <label>اسم المهندس (للعرض في السيستم)</label>
+                        <input type="text" id="newEngLabel" class="input-ui" placeholder="مثال: خالد">
+                   </div>
+              </div>
+
               <div id="globalModalInputContainer" style="display:none; margin-top:10px;">
                    <input type="text" id="globalModalInputField" class="input-ui">
               </div>
@@ -452,6 +468,12 @@
             <button class="sidebar-close" onclick="toggleSidebar(false)"><i class="fas fa-times"></i></button>
         </div>
         <div class="sidebar-user-info"><i class="fas fa-user-hard-hat"></i><span id="sidebarUserName">م / اسم المهندس</span></div>
+
+        <!-- زر إضافة مهندس جديد -->
+        <div class="sidebar-link-btn" id="addEngineerBtn" onclick="openAddEngineerModal()" style="display:none; background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.2); color: #34d399; margin-bottom: 5px;">
+            <i class="fas fa-user-plus"></i>
+            <span>إضافة حساب مهندس جديد</span>
+        </div>
 
         <div class="sidebar-link-btn" onclick="toggleThemeFast()" style="background: rgba(255,255,255,0.02); margin-bottom: 5px;">
              <i class="fas fa-adjust" style="color: var(--primary);"></i>
@@ -725,12 +747,25 @@
         let globalProjectStatuses = {}; let currentProjectLaborList = []; let currentProjectMaterialsMap = {}; let chartInstance = null; let calcExpression = "";
         let currentProjectLoadedDataSnapshot = {}; 
 
-        const ACCOUNTS_ROLES = {
+        // بيانات الدخول والتصريحات مع ميزة الـ Firebase Sync
+        let ACCOUNTS_ROLES = {
             "ahmed": { role: "admin", canSeeAllRevenue: true, canSeeAllFinancials: true, label: "أحمد" }, 
-            "mostafa": { role: "admin", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "مصطفى" }, 
+            "mostafa": { role: "admin", canSeeAllRevenue: true, canSeeAllFinancials: true, label: "مصطفى" }, 
             "mohamed": { role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "محمد" },
             "tawfik": { role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: "توفيق" }
         };
+        let LOCAL_MOCK = {"ahmed":"222", "mostafa":"1519", "mohamed":"333", "tawfik":"444"};
+
+        // مزامنة المهندسين المضافين من الـ Firebase
+        database.ref('system_accounts').on('value', (snap) => {
+            let data = snap.val();
+            if(data) {
+                if(data.roles) Object.assign(ACCOUNTS_ROLES, data.roles);
+                if(data.credentials) Object.assign(LOCAL_MOCK, data.credentials);
+            } else {
+                database.ref('system_accounts').set({ roles: ACCOUNTS_ROLES, credentials: LOCAL_MOCK });
+            }
+        });
 
         window.addEventListener('DOMContentLoaded', () => { 
             const savedTheme = localStorage.getItem("theme") || "dark";
@@ -743,7 +778,7 @@
 
         function handleFloatingFabClick() {
             triggerHapticFeedback();
-            if (SELECTED_PROJECT === "") { if (currentUser === "mostafa") { createNewProjectModalAction(); } } 
+            if (SELECTED_PROJECT === "") { if (ACCOUNTS_ROLES[currentUser] && ACCOUNTS_ROLES[currentUser].role === 'admin') { createNewProjectModalAction(); } } 
             else { scrollToTransactionForm(); }
         }
 
@@ -753,7 +788,7 @@
                 onConfirm: function(projName) {
                     if (projName && projName.trim() !== "") {
                         let cleanName = projName.trim();
-                        database.ref('project_info').child(cleanName).set({ engineer: "م / مصطفى", owner: "تحت التأسيس", labor: "0", progress: "0", notes: "", status: "جاري العمل" }).then(() => { triggerHapticFeedback(); });
+                        database.ref('project_info').child(cleanName).set({ engineer: "م / "+ACCOUNTS_ROLES[currentUser].label, owner: "تحت التأسيس", labor: "0", progress: "0", notes: "", status: "جاري العمل" }).then(() => { triggerHapticFeedback(); });
                     }
                 }
             });
@@ -761,8 +796,65 @@
 
         function updateFabVisibilityState() {
             let fab = document.getElementById("fastInputFab"); if (!fab) return;
-            if (SELECTED_PROJECT === "") { if (currentUser === "mostafa") { fab.classList.add("visible"); } else { fab.classList.remove("visible"); } } 
+            if (SELECTED_PROJECT === "") { if (ACCOUNTS_ROLES[currentUser] && ACCOUNTS_ROLES[currentUser].role === 'admin') { fab.classList.add("visible"); } else { fab.classList.remove("visible"); } } 
             else { fab.classList.add("visible"); }
+        }
+
+        function openAddEngineerModal() {
+            triggerHapticFeedback();
+            toggleSidebar(false);
+            
+            document.getElementById("newEngUsername").value = "";
+            document.getElementById("newEngPassword").value = "";
+            document.getElementById("newEngLabel").value = "";
+            
+            document.getElementById("addEngineerFormContainer").style.display = "flex";
+            let pidContainer = document.getElementById("projectIndicatorsFormContainer");
+            if(pidContainer) pidContainer.style.display = "none";
+            document.getElementById("globalModalInputContainer").style.display = "none";
+
+            showGlobalAppModal({
+                title: "إضافة حساب مهندس جديد", 
+                body: "سجل بيانات المهندس الجديد ليتمكن من الدخول وإدارة مشاريع الموقع:", 
+                icon: "fas fa-user-plus", 
+                iconColor: "var(--success)", 
+                confirmText: "حفظ وتفعيل الحساب", 
+                confirmColor: "var(--success)",
+                onConfirm: function() {
+                    let newUser = document.getElementById("newEngUsername").value.trim().toLowerCase();
+                    let newPass = document.getElementById("newEngPassword").value.trim();
+                    let newLabel = document.getElementById("newEngLabel").value.trim();
+
+                    if(!newUser || !newPass || !newLabel) {
+                        alert("يرجى ملء جميع الحقول!");
+                        return;
+                    }
+                    if(LOCAL_MOCK[newUser]) {
+                        alert("اسم المستخدم موجود بالفعل! اختر اسماً آخر.");
+                        return;
+                    }
+
+                    LOCAL_MOCK[newUser] = newPass;
+                    ACCOUNTS_ROLES[newUser] = { role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: newLabel };
+
+                    database.ref('system_accounts/credentials/' + newUser).set(newPass);
+                    database.ref('system_accounts/roles/' + newUser).set(ACCOUNTS_ROLES[newUser]).then(() => {
+                        triggerHapticFeedback();
+                        document.getElementById("addEngineerFormContainer").style.display = "none";
+                        showGlobalAppModal({ 
+                            title: "تم بنجاح", 
+                            body: `تمت إضافة وتفعيل حساب (م/ ${newLabel}) بنجاح!`, 
+                            icon: "fas fa-check-circle", 
+                            iconColor: "var(--success)" 
+                        });
+                    });
+                }
+            });
+
+            document.getElementById("globalModalConfirmBtn").nextElementSibling.onclick = function() { 
+                document.getElementById("addEngineerFormContainer").style.display = "none"; 
+                closeGlobalAppModal(); 
+            };
         }
 
         function openProjectIndicatorsEditModal() {
@@ -773,7 +865,11 @@
             document.getElementById("setupProgressPercent").value = currentProjectLoadedDataSnapshot.progress || "0";
             document.getElementById("setupProjectNotes").value = currentProjectLoadedDataSnapshot.notes || "";
             document.getElementById("setupProjectStatusSelect").value = currentProjectLoadedDataSnapshot.status || "جاري العمل";
-            document.getElementById("projectIndicatorsFormContainer").style.display = "flex"; document.getElementById("globalModalInputContainer").style.display = "none";
+            
+            document.getElementById("projectIndicatorsFormContainer").style.display = "flex"; 
+            let addEngForm = document.getElementById("addEngineerFormContainer");
+            if(addEngForm) addEngForm.style.display = "none";
+            document.getElementById("globalModalInputContainer").style.display = "none";
 
             showGlobalAppModal({
                 title: `تحديث بيانات: ${SELECTED_PROJECT}`, body: "تحديث مؤشرات وملاحظات الموقع الحالية ومزامنتها ميدانياً على السيرفر:", icon: "fas fa-sliders", iconColor: "var(--purple)", confirmText: "حفظ التغييرات", confirmColor: "var(--purple)",
@@ -854,7 +950,7 @@
             archiveContainer.innerHTML = archiveHtml || `<div style="padding:10px; font-size:11px; color:var(--text-dim);">الأرشيف فارغ..</div>`;
         }
 
-        function selectCustomProjectOption(proj, type) { SELECTED_PROJECT = proj; if(type === 'active') { document.getElementById("dropdownSelectedLabel").innerText = proj; document.getElementById("archiveDropdownSelectedLabel").innerText = "تصفح مشاريع الأرشيف.."; document.getElementById("mainInputTransactionCard").style.display = "block"; } else { document.getElementById("archiveDropdownSelectedLabel").innerText = proj; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل.."; document.getElementById("mainInputTransactionCard").style.display = (currentUser === 'mostafa' || currentUser === 'ahmed') ? "block" : "none"; } document.getElementById("customProjectDropdown").classList.remove("open"); document.getElementById("customArchiveDropdown").classList.remove("open"); onProjectChange(proj); }
+        function selectCustomProjectOption(proj, type) { SELECTED_PROJECT = proj; if(type === 'active') { document.getElementById("dropdownSelectedLabel").innerText = proj; document.getElementById("archiveDropdownSelectedLabel").innerText = "تصفح مشاريع الأرشيف.."; document.getElementById("mainInputTransactionCard").style.display = "block"; } else { document.getElementById("archiveDropdownSelectedLabel").innerText = proj; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل.."; document.getElementById("mainInputTransactionCard").style.display = (ACCOUNTS_ROLES[currentUser] && ACCOUNTS_ROLES[currentUser].role === 'admin') ? "block" : "none"; } document.getElementById("customProjectDropdown").classList.remove("open"); document.getElementById("customArchiveDropdown").classList.remove("open"); onProjectChange(proj); }
         function setupDropdownOutsideClickListener() { document.addEventListener("click", (e) => { let d1 = document.getElementById("customProjectDropdown"); let d2 = document.getElementById("customArchiveDropdown"); if (d1 && !d1.contains(e.target)) d1.classList.remove("open"); if (d2 && !d2.contains(e.target)) d2.classList.remove("open"); }); }
         
         function showGlobalAppModal(config) { 
@@ -864,7 +960,14 @@
             confirmBtn.onclick = function() { if(config.onConfirm) config.onConfirm(config.showInput ? inputField.value : null); closeGlobalAppModal(); resetAllSwipeCards(); }; 
             let modalEl = document.getElementById("globalAppModal"); if(modalEl) modalEl.style.setProperty('display', 'flex', 'important'); 
         }
-        function closeGlobalAppModal() { let modalEl = document.getElementById("globalAppModal"); if(modalEl) modalEl.style.setProperty('display', 'none', 'important'); resetAllSwipeCards(); }
+        
+        function closeGlobalAppModal() { 
+            let modalEl = document.getElementById("globalAppModal"); 
+            if(modalEl) modalEl.style.setProperty('display', 'none', 'important'); 
+            let addEng = document.getElementById("addEngineerFormContainer"); if(addEng) addEng.style.display="none";
+            let projInd = document.getElementById("projectIndicatorsFormContainer"); if(projInd) projInd.style.display="none";
+            resetAllSwipeCards(); 
+        }
 
         function startVoiceRecognition(targetId) {
             window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; if (!window.SpeechRecognition) return;
@@ -929,7 +1032,6 @@
             if(confirm(`ترحيل إجمالي عمالة وقدره (${total.toLocaleString()} ج.م) كبند مصروفات رسمي؟`)) { database.ref('transactions').push({ project: SELECTED_PROJECT, engineer: currentUser, type: 'expense', category: 'عمالة', amount: total, desc: `[ترحيل تلقائي] - إجمالي سحبيات عمال موقع ${SELECTED_PROJECT}`, date: new Date().toISOString().split('T')[0], ts: Date.now() }).then(() => { database.ref('project_labors').child(SELECTED_PROJECT).remove(); document.getElementById("laborSubPanel").style.display = 'none'; triggerHapticFeedback(); }); }
         }
 
-        /* 🔥 منطق إدارة وتتبع خامات المقايسة الفورية للموقع */
         function listenToProjectMaterialsData(proj) {
             database.ref('project_materials').child(proj).on('value', (snap) => {
                 currentProjectMaterialsMap = snap.val() || {};
@@ -942,7 +1044,6 @@
                     let remaining = target - delivered; if(remaining < 0) remaining = 0;
                     let percentage = target > 0 ? Math.min(100, Math.round((delivered / target) * 100)) : 0;
                     
-                    // تحديد اللون بناءً على نسبة وصول الخامات للموقع
                     let barColor = percentage >= 100 ? 'var(--success)' : (percentage > 50 ? 'var(--info)' : 'var(--primary)');
                     
                     selectHtml += `<option value="${id}">${mat.name}</option>`;
@@ -1016,7 +1117,6 @@
 
         function handleSecureLogin() {
             let user = document.getElementById("loginUsername").value.trim().toLowerCase(); let pass = document.getElementById("loginPassword").value.trim();
-            const LOCAL_MOCK = {"ahmed":"222", "mostafa":"1519", "mohamed":"333", "tawfik":"444"};
             if(LOCAL_MOCK[user] && LOCAL_MOCK[user] === pass) { localStorage.setItem("active_session_user", user); activateUserInterface(user); }
             else { showGlobalAppModal({ title: "خطأ", body: "❌ البيانات غير صحيحة!", icon: "fas fa-times-circle", iconColor: "var(--danger)" }); }
         }
@@ -1027,6 +1127,13 @@
             currentUser = user; let account = ACCOUNTS_ROLES[user]; 
             document.getElementById("headerUserNameSpan").innerText = "م / " + account.label; document.getElementById("headerUserBadge").style.display = "flex"; document.getElementById("sidebarUserName").innerText = "م / " + account.label; setDynamicGreeting(account.label); document.getElementById("loginBox").style.display = "none"; document.getElementById("menuBtn").classList.add("visible"); document.getElementById("mainContent").classList.add("visible"); document.getElementById("appGlobalHeader").classList.add("visible-now"); document.getElementById("calcTrigger").classList.add("visible"); document.getElementById("projectSelectorCard").classList.add("visible-now"); 
             let companyBtn = document.getElementById("item-inc-دفعة_شركة"); if(companyBtn) { companyBtn.style.display = (user === 'ahmed') ? 'flex' : 'none'; }
+            
+            // إظهار زر إضافة مهندس للمديرين فقط
+            let addEngBtn = document.getElementById("addEngineerBtn");
+            if(addEngBtn) {
+                addEngBtn.style.display = (account.role === 'admin') ? 'flex' : 'none';
+            }
+
             updateFabVisibilityState(); switchTab(currentMode); 
         }
 
