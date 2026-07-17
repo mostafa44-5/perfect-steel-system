@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Perfect Steel Pro Mobile Premium v4.9.2</title>
+    <title>Perfect Steel Pro Mobile Premium v6.0.0</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -14,445 +14,275 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <!-- مكتبات التقارير والرسومات -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- روابط Firebase الرسمية والمستقرة والمحدثة -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
     <style>
         :root {
-            --bg-body: #030712; 
-            --bg-card: rgba(17, 24, 39, 0.6);
+            --bg-body: #0F172A; 
+            --bg-card: rgba(30, 41, 59, 0.7);
             --text-main: #F9FAFB;
             --text-dim: #9CA3AF;
             --primary: #FF6B00; 
             --primary-dark: #E66000;
+            --gradient-primary: linear-gradient(135deg, #FF6B00 0%, #E66000 100%);
             --success: #10B981;
             --danger: #EF4444;
             --info: #0EA5E9;
             --purple: #8B5CF6;
-            --purple-dark: #6D28D9;
-            --border: rgba(255, 255, 255, 0.08);
-            --radius: 20px;
             --revenue-color: #FBBF24;
-            --overlay-bg: rgba(3, 7, 18, 0.9);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+            --overlay-bg: rgba(15, 23, 42, 0.9);
             --glow: rgba(255, 107, 0, 0.25);
-            --card-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            --card-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
             --calc-bg: rgba(15, 23, 42, 0.95);
             --calc-btn: rgba(255, 255, 255, 0.04);
             --calc-screen: rgba(0, 0, 0, 0.4);
         }
 
         [data-theme="light"] {
-            --bg-body: #F8FAFC;
-            --bg-card: #FFFFFF;
-            --text-main: #0F172A;
-            --text-dim: #475569;
-            --border: rgba(15, 23, 42, 0.08);
-            --overlay-bg: rgba(248, 250, 252, 0.95);
-            --glow: rgba(255, 107, 0, 0.15);
-            --primary: #FF5500;
-            --primary-dark: #CC4400;
-            --card-glow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
-            --calc-bg: rgba(255, 255, 255, 0.98);
-            --calc-btn: #F1F5F9;
-            --calc-screen: #E2E8F0;
+            --bg-body: #F8FAFC; --bg-card: rgba(255, 255, 255, 0.8); --text-main: #0F172A; --text-dim: #475569;
+            --glass-border: 1px solid rgba(15, 23, 42, 0.08); --overlay-bg: rgba(248, 250, 252, 0.95);
+            --glow: rgba(255, 107, 0, 0.15); --primary: #FF5500; --primary-dark: #CC4400;
+            --card-glow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+            --calc-bg: rgba(255, 255, 255, 0.98); --calc-btn: #F1F5F9; --calc-screen: #E2E8F0;
         }
 
         [data-theme="oled"] {
-            --bg-body: #000000;
-            --bg-card: rgba(15, 15, 15, 0.7);
-            --text-main: #FFFFFF;
-            --text-dim: #A1A1AA;
-            --border: rgba(255, 255, 255, 0.05);
-            --overlay-bg: rgba(0, 0, 0, 0.95);
+            --bg-body: #000000; --bg-card: rgba(15, 15, 15, 0.7); --text-main: #FFFFFF;
+            --text-dim: #A1A1AA; --glass-border: 1px solid rgba(255, 255, 255, 0.05); --overlay-bg: rgba(0, 0, 0, 0.95);
         }
 
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            touch-action: manipulation; 
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 
         body {
-            font-family: 'Noto Kufi Arabic', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            margin: 0; padding: 0;
-            overflow-x: hidden; min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Noto Kufi Arabic', sans-serif; background-color: var(--bg-body); color: var(--text-main);
+            margin: 0; padding: 0; overflow-x: hidden; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center; -webkit-font-smoothing: antialiased;
             padding-top: env(safe-area-inset-top);
         }
 
         .bg-fixed {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; 
-            background-image: linear-gradient(var(--overlay-bg), var(--overlay-bg)), 
-            url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200');
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; 
+            background-image: linear-gradient(var(--overlay-bg), var(--overlay-bg)), url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1200');
             background-size: cover; background-position: center;
         }
 
         header {
-            display: none; width: 100%; padding: 0 16px;
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-            background: rgba(3, 7, 18, 0.4); z-index: 150;
-            justify-content: space-between; align-items: center;
-            height: 70px; position: sticky; top: 0;
+            display: none; width: 100%; padding: 0 16px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: var(--glass-border); background: rgba(15, 23, 42, 0.4); z-index: 150;
+            justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0;
         }
-        [data-theme="light"] header { background: rgba(255, 255, 255, 0.8); border-bottom-color: rgba(15, 23, 42, 0.08); }
+        [data-theme="light"] header { background: rgba(255, 255, 255, 0.8); }
         header.visible-now { display: flex !important; }
         
         .logo h1 { color: var(--primary); font-size: 15px; margin: 0; font-weight: 900; text-shadow: 0 0 10px var(--glow); }
-        
-        .menu-trigger { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-main); font-size: 18px; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; }
+        .menu-trigger { background: rgba(255,255,255,0.05); border: var(--glass-border); color: var(--text-main); font-size: 18px; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; }
         [data-theme="light"] .menu-trigger { background: #F1F5F9; color: #0F172A; }
         .menu-trigger.visible { opacity: 1; pointer-events: auto; }
 
         .user-site-column { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
         .header-greet { font-size: 10px; color: var(--text-dim); font-weight: 600; }
-
-        .header-user-badge {
-            display: none; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: var(--text-main); 
-            background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 10px; border: 1px solid var(--border);
-        }
+        .header-user-badge { display: none; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: var(--text-main); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 10px; border: var(--glass-border); }
         [data-theme="light"] .header-user-badge { background: #F1F5F9; color: #0F172A; }
         .header-user-badge i { color: var(--primary); }
 
-        .header-project-badge {
-            display: none; padding: 5px 12px; border-radius: 12px; font-size: 10px; font-weight: 700; color: #fff; 
-            background: linear-gradient(135deg, rgba(255, 107, 0, 0.3) 0%, rgba(255, 107, 0, 0.1) 100%);
-            border: 1px solid var(--primary); cursor: pointer;
-        }
-        [data-theme="light"] .header-project-badge { color: var(--primary); background: rgba(255, 107, 0, 0.1); }
+        .header-project-badge { display: none; padding: 5px 12px; border-radius: 12px; font-size: 10px; font-weight: 700; color: #fff; background: var(--gradient-primary); border: none; cursor: pointer; box-shadow: 0 2px 10px var(--glow); }
 
-        .custom-modal-overlay { 
-            display: none !important; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(3, 7, 18, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); 
-            z-index: 999999 !important; justify-content: center; align-items: center; padding: 16px;
-        }
-        [data-theme="light"] .custom-modal-overlay { background: rgba(15, 23, 42, 0.4); }
-        
-        .custom-modal { 
-            background: #0f172a; border: 1px solid var(--border); border-radius: var(--radius); 
-            padding: 20px; width: 100%; max-width: 380px; text-align: center; 
-            box-shadow: var(--card-glow); 
-        }
-        [data-theme="light"] .custom-modal { background: #FFFFFF; border-color: rgba(15, 23, 42, 0.08); }
+        .custom-modal-overlay { display: none !important; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 999999 !important; justify-content: center; align-items: center; padding: 16px; }
+        .custom-modal { background: var(--bg-card); backdrop-filter: blur(16px); border: var(--glass-border); border-radius: 24px; padding: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: var(--card-glow); max-height: 90vh; overflow-y: auto; }
         .modal-btns { display: flex; gap: 10px; margin-top: 16px; width: 100%; }
-        .btn-modal-confirm { flex: 1; padding: 14px; border: none; border-radius: 12px; color: white; font-weight: bold; font-size: 14px; cursor: pointer; }
-        .btn-modal-cancel { flex: 1; padding: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; color: var(--text-dim); font-weight: bold; font-size: 14px; cursor: pointer; }
+        .btn-modal-confirm { flex: 1; padding: 14px; background: var(--gradient-primary); border: none; border-radius: 16px; color: white; font-weight: bold; font-size: 14px; cursor: pointer; }
+        .btn-modal-cancel { flex: 1; padding: 14px; background: rgba(255,255,255,0.05); border: var(--glass-border); border-radius: 16px; color: var(--text-dim); font-weight: bold; font-size: 14px; cursor: pointer; }
         [data-theme="light"] .btn-modal-cancel { background: #F1F5F9; border-color: transparent; }
 
-        .sidebar {
-            position: fixed; top: 0; right: -310px; width: 290px; height: 100%;
-            background: linear-gradient(180deg, #090d1a 0%, #030712 100%); border-left: 1px solid var(--border);
-            z-index: 200; padding: 24px 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto;
-            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(20px);
-        }
-        [data-theme="light"] .sidebar { background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); border-left-color: rgba(15, 23, 42, 0.08); }
-        .sidebar.open { right: 0; box-shadow: -15px 0 30px rgba(0,0,0,0.6); }
-        [data-theme="light"] .sidebar.open { box-shadow: -10px 0 25px rgba(15, 23, 42, 0.08); }
-        .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .sidebar-close { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: var(--text-dim); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        [data-theme="light"] .sidebar-close { background: #F1F5F9; border-color: transparent; }
-        .sidebar-user-info { background: rgba(255,255,255,0.02); padding: 10px; border-radius: 12px; border: 1px solid var(--border); text-align: center; font-weight: bold; font-size: 12px; }
-        [data-theme="light"] .sidebar-user-info { background: #F8FAFC; border-color: rgba(15, 23, 42, 0.06); }
+        .sidebar { position: fixed; top: 0; right: -310px; width: 290px; height: 100%; background: var(--bg-card); border-left: var(--glass-border); z-index: 200; padding: 24px 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(20px); box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
+        .sidebar.open { right: 0; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: var(--glass-border); padding-bottom: 10px; }
+        .sidebar-close { background: rgba(255,255,255,0.03); border: var(--glass-border); color: var(--text-dim); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor:pointer; }
+        .sidebar-user-info { background: rgba(255,255,255,0.02); padding: 10px; border-radius: 16px; border: var(--glass-border); text-align: center; font-weight: bold; font-size: 12px; }
         .sidebar-user-info i { color: var(--primary); font-size: 16px; margin-bottom: 4px; display: block; }
-
-        .sidebar-link-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; color: var(--text-main); font-weight: 700; font-size: 12px; text-decoration: none; cursor: pointer; }
-        [data-theme="light"] .sidebar-link-btn { background: #F1F5F9; border-color: transparent; }
-        .sidebar-link-btn i { font-size: 14px; }
-        
-        .sidebar-project-actions-zone { display: none; flex-direction: column; gap: 8px; border-top: 1px dashed var(--border); padding-top: 10px; }
+        .sidebar-link-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.03); border: var(--glass-border); border-radius: 16px; color: var(--text-main); font-weight: 700; font-size: 12px; cursor: pointer; transition: 0.3s; }
+        .sidebar-project-actions-zone { display: none; flex-direction: column; gap: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; }
         .sidebar-project-actions-zone.active-now { display: flex; }
-
-        .proj-info-sidebar-block { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); padding: 12px; border-radius: 14px; display: none; flex-direction: column; gap: 8px; }
-        [data-theme="light"] .proj-info-sidebar-block { background: #F8FAFC; border-color: rgba(15, 23, 42, 0.06); }
+        .proj-info-sidebar-block { background: rgba(255,255,255,0.02); border: var(--glass-border); padding: 12px; border-radius: 16px; display: none; flex-direction: column; gap: 8px; }
         .proj-info-sidebar-block.visible { display: flex; }
         .info-row-item { display: flex; justify-content: space-between; font-size: 11px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 4px; }
-        [data-theme="light"] .info-row-item { border-bottom-color: rgba(15, 23, 42, 0.04); }
-        
         .status-dot { inline-size: 8px; block-size: 8px; border-radius: 50%; margin-inline-start: 6px; display: inline-block; vertical-align: middle; }
-        .btn-logout { margin-top: auto; width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 12px; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
-        
+        .btn-logout { margin-top: auto; width: 100%; padding: 14px; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.15); border-radius: 16px; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 190; display: none; }
 
         .app-container { width: 100%; max-width: 480px; padding: 16px 14px 60px; z-index: 5; display: flex; flex-direction: column; gap: 16px; position: relative; }
-
-        .card { background: var(--bg-card); border-radius: var(--radius); padding: 18px; border: 1px solid var(--border); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: var(--card-glow); }
-
-        .system-smart-alert-banner { background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(255, 107, 0, 0.08) 100%); border: 1px solid var(--danger); padding: 12px; border-radius: 14px; font-size: 11px; font-weight: bold; color: #fca5a5; display: none; align-items: center; gap: 8px; }
-        [data-theme="light"] .system-smart-alert-banner { color: #991b1b; background: #fee2e2; border-color: #fca5a5; }
-
-        .login-box { background: var(--bg-card); border-radius: var(--radius); padding: 24px 16px; border: 1px solid var(--border); width: 100%; margin-top: 20px; }
         
+        /* Glassmorphism Cards */
+        .card, .sub-panel { background: var(--bg-card); backdrop-filter: blur(16px); border: var(--glass-border); border-radius: 24px; padding: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); transition: transform 0.2s ease; }
+        
+        .system-smart-alert-banner { background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(255, 107, 0, 0.08) 100%); border: 1px solid var(--danger); padding: 12px; border-radius: 16px; font-size: 11px; font-weight: bold; color: #fca5a5; display: none; align-items: center; gap: 8px; }
+
+        .login-box { width: 100%; margin-top: 20px; }
         .project-selector-card { display: none; }
         .project-selector-card.visible-now { display: block !important; }
         .project-selector-card.hide-completely { display: none !important; }
-        
         .main-content { display: none; opacity: 0; transition: opacity 0.3s ease; width: 100%; }
         .main-content.visible { display: flex !important; flex-direction: column; gap: 16px; opacity: 1; }
 
         .label-group label { display: block; margin-bottom: 6px; font-size: 11px; color: var(--text-dim); font-weight: bold; }
         
-        .input-ui { width: 100%; background-color: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); border-radius: 14px; padding: 14px; color: var(--text-main); font-size: 14px; font-family: inherit; outline: none; -webkit-appearance: none; }
-        [data-theme="light"] .input-ui { background-color: #F8FAFC; color: #0F172A; }
-        .input-ui:focus { border-color: var(--primary); background-color: rgba(255,255,255,0.06); }
-        [data-theme="light"] .input-ui:focus { background-color: #FFFFFF; border-color: var(--primary); }
-        
+        /* Modern Inputs */
+        .input-ui { width: 100%; background-color: rgba(0,0,0,0.2); border: var(--glass-border); border-radius: 16px; padding: 16px; color: var(--text-main); font-size: 14px; font-family: inherit; outline: none; transition: 0.3s; }
+        .input-ui:focus { border-color: var(--primary); background-color: rgba(0,0,0,0.4); }
         .input-with-voice-holder { position: relative; width: 100%; display: flex; align-items: center; }
         .voice-mic-btn { position: absolute; left: 12px; background: none; border: none; color: var(--text-dim); font-size: 18px; padding: 6px; z-index: 10; cursor: pointer; }
 
         .custom-dropdown-box { position: relative; width: 100%; }
-        .dropdown-selected-trigger { width: 100%; padding: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; color: var(--primary); font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        [data-theme="light"] .dropdown-selected-trigger { background: #F8FAFC; }
-
-        .dropdown-options-list { position: absolute; top: calc(100% + 5px); left: 0; width: 100%; max-height: 220px; overflow-y: auto; background: #090d1a; border: 1px solid var(--border); border-radius: 14px; z-index: 100; display: none; flex-direction: column; padding: 6px; backdrop-filter: blur(20px); }
-        [data-theme="light"] .dropdown-options-list { background: #FFFFFF; box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .dropdown-selected-trigger { width: 100%; padding: 14px; background: rgba(0,0,0,0.3); border: var(--glass-border); border-radius: 16px; color: var(--primary); font-weight: 700; font-size: 14px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .dropdown-options-list { position: absolute; top: calc(100% + 5px); left: 0; width: 100%; max-height: 220px; overflow-y: auto; background: var(--bg-card); border: var(--glass-border); border-radius: 16px; z-index: 100; display: none; flex-direction: column; padding: 6px; backdrop-filter: blur(20px); }
         .custom-dropdown-box.open .dropdown-options-list { display: flex; }
-        
-        .dropdown-option-item { padding: 12px; font-size: 13px; font-weight: bold; color: var(--text-main); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        [data-theme="light"] .dropdown-option-item:hover { background: #F1F5F9; }
+        .dropdown-option-item { padding: 12px; font-size: 13px; font-weight: bold; color: var(--text-main); border-radius: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .dropdown-item-text-zone { display: flex; align-items: center; gap: 8px; flex: 1; }
         .project-hard-trash-btn { color: var(--text-dim); padding: 6px 10px; border-radius: 8px; font-size: 14px; cursor: pointer; }
-        .project-hard-trash-btn:hover { color: var(--danger) !important; background: rgba(239, 68, 68, 0.1); }
 
         .quick-chips-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-        .cash-chip { background: rgba(255,255,255,0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 8px 14px; border-radius: 10px; font-size: 11px; color: var(--text-main); font-weight: bold; cursor: pointer; }
-        [data-theme="light"] .cash-chip { background: #F1F5F9; border-color: #E2E8F0; }
+        .cash-chip { background: rgba(255,255,255,0.04); border: var(--glass-border); padding: 8px 14px; border-radius: 12px; font-size: 11px; color: var(--text-main); font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .cash-chip:active { background: var(--primary); border-color: var(--primary); color: white; }
 
         .stats-hud-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; }
-        .hud-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); padding: 12px 4px; border-radius: 14px; text-align: center; }
-        [data-theme="light"] .hud-box { background: #F8FAFC; }
-        .hud-box.prime { border-color: rgba(16, 185, 129, 0.2); background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(3, 7, 18, 0.2) 100%); }
-        [data-theme="light"] .hud-box.prime { background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 100%); }
+        .hud-box { background: rgba(0,0,0,0.2); border: var(--glass-border); padding: 12px 4px; border-radius: 16px; text-align: center; }
+        .hud-box.prime { border-color: rgba(16, 185, 129, 0.3); background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(0,0,0,0.2) 100%); }
         .hud-box h4 { margin: 0; font-size: 9px; color: var(--text-dim); font-weight: 700; }
-        .hud-box .val { margin: 4px 0 0; font-size: 13px; font-weight: 900; }
-
-        .hud-progress-wrapper { width: 100%; background: rgba(255,255,255,0.04); height: 5px; border-radius: 6px; overflow: hidden; margin-top: -4px; border: 1px solid var(--border); }
-        [data-theme="light"] .hud-progress-wrapper { background: #E2E8F0; }
-        .hud-progress-bar { width: 0%; height: 100%; background: var(--primary); }
+        .hud-box .val { margin: 4px 0 0; font-size: 13px; font-weight: 900; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .hud-progress-wrapper { width: 100%; background: rgba(255,255,255,0.04); height: 5px; border-radius: 6px; overflow: hidden; margin-top: -4px; border: var(--glass-border); }
+        .hud-progress-bar { width: 0%; height: 100%; background: var(--primary); transition: width 0.5s; }
 
         .filter-pills-container { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0; width: 100%; -webkit-overflow-scrolling: touch; }
         .filter-pills-container::-webkit-scrollbar { display: none; }
-        .pill-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 10px 16px; border-radius: 20px; color: var(--text-dim); font-size: 11px; font-weight: 700; white-space: nowrap; cursor: pointer; }
-        [data-theme="light"] .pill-btn { background: #FFFFFF; border-color: #E2E8F0; }
-        .pill-btn.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: transparent; }
-
-        .eng-filter-wrapper { display: flex; gap: 5px; overflow-x: auto; padding: 2px 0 6px; width: 100%; -webkit-overflow-scrolling: touch; border-bottom: 1px solid var(--border); }
+        .pill-btn { background: rgba(0,0,0,0.3); border: var(--glass-border); padding: 10px 16px; border-radius: 20px; color: var(--text-dim); font-size: 11px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: 0.3s; }
+        .pill-btn.active { background: var(--gradient-primary); color: white; border-color: transparent; }
+        .eng-filter-wrapper { display: flex; gap: 5px; overflow-x: auto; padding: 2px 0 6px; width: 100%; -webkit-overflow-scrolling: touch; border-bottom: var(--glass-border); }
         .eng-filter-wrapper::-webkit-scrollbar { display: none; }
-        .eng-pill { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 6px 12px; border-radius: 12px; color: var(--text-dim); font-size: 10px; font-weight: bold; white-space: nowrap; cursor: pointer; }
-        [data-theme="light"] .eng-pill { background: #FFFFFF; border-color: #E2E8F0; }
+        .eng-pill { background: rgba(0,0,0,0.2); border: var(--glass-border); padding: 6px 12px; border-radius: 12px; color: var(--text-dim); font-size: 10px; font-weight: bold; white-space: nowrap; cursor: pointer; }
         .eng-pill.active { background: rgba(14, 165, 233, 0.15); color: var(--info); border-color: var(--info); }
-        [data-theme="light"] .eng-pill.active { background: #E0F2FE; border-color: var(--info); }
 
-        .tabs { display: flex; background: rgba(0,0,0,0.2); padding: 4px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 14px; }
-        [data-theme="light"] .tabs { background: #F1F5F9; }
-        .tab-btn { flex: 1; padding: 10px; border: none; background: none; color: var(--text-dim); font-weight: 700; font-size: 12px; border-radius: 10px; cursor: pointer; }
-        .tab-btn.active { background: rgba(255, 255, 255, 0.06); color: var(--primary); }
-        [data-theme="light"] .tab-btn.active { background: #FFFFFF; box-shadow: 0 2px 4px rgba(0,0,0,0.05); color: var(--primary); }
+        .tabs { display: flex; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 16px; margin-bottom: 14px; border: var(--glass-border); }
+        .tab-btn { flex: 1; padding: 12px; border: none; background: none; color: var(--text-dim); font-weight: 700; font-size: 12px; border-radius: 12px; cursor: pointer; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: white; }
 
         .icon-selector-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; width: 100%; }
-        .icon-selector-item { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 14px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--text-dim); cursor: pointer; }
-        [data-theme="light"] .icon-selector-item { background: #F8FAFC; }
+        .icon-selector-item { background: rgba(0,0,0,0.2); border: var(--glass-border); border-radius: 16px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: var(--text-dim); cursor: pointer; transition: 0.3s; }
         .icon-selector-item i { font-size: 18px; }
         .icon-selector-item span { font-size: 9px; font-weight: 700; }
-        .icon-selector-item.selected { background: linear-gradient(135deg, rgba(255, 107, 0, 0.12) 0%, rgba(255, 107, 0, 0.02) 100%); border-color: var(--primary); color: var(--primary); }
-        [data-theme="light"] .icon-selector-item.selected { background: #FFF7ED; border-color: var(--primary); }
+        .icon-selector-item.selected { background: linear-gradient(135deg, rgba(255,107,0,0.2) 0%, rgba(255,107,0,0.05) 100%); border-color: var(--primary); color: var(--primary); }
 
-        .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 14px; font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; box-shadow: 0 4px 12px var(--glow); cursor: pointer; }
+        .btn-primary { width: 100%; padding: 16px; background: var(--gradient-primary); color: white; border: none; border-radius: 16px; font-size: 14px; font-weight: 900; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; box-shadow: 0 4px 15px var(--glow); cursor: pointer; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-primary:active { transform: scale(0.97); }
 
-        .logs-list { max-height: 360px; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px; }
-        
-        .swipe-item-wrapper { 
-            position: relative; 
-            width: 100%; 
-            border-radius: 16px; 
-            margin-bottom: 8px; 
-            background: #111827; 
-            overflow: hidden; 
-        }
-        [data-theme="light"] .swipe-item-wrapper { background: #CBD5E1; }
-        
-        .log-item { 
-            background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.00) 100%);
-            padding: 12px 14px; border: 1px solid var(--border); width: 100%; border-radius: 16px;
-            display: flex; justify-content: space-between; align-items: center; background-color: #0f1322;
-            position: relative; 
-            z-index: 10; 
-            transition: transform 0.25s cubic-bezier(0.1, 0.8, 0.3, 1);
-        }
-        [data-theme="light"] .log-item { background-color: #FFFFFF; background-image: none; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .logs-list { max-height: 400px; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 2px; }
+        .swipe-item-wrapper { position: relative; width: 100%; border-radius: 16px; margin-bottom: 10px; background: #111827; overflow: hidden; }
+        .log-item { background: var(--bg-card); padding: 14px; border: var(--glass-border); width: 100%; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 10; transition: transform 0.25s cubic-bezier(0.1, 0.8, 0.3, 1); backdrop-filter: blur(10px); }
         .log-item.income { border-right: 4px solid var(--success); }
         .log-item.expense { border-right: 4px solid var(--danger); }
-        
-        .swipe-actions-container {
-            position: absolute; 
-            top: 0; 
-            right: 0; 
-            width: 120px; 
-            height: 100%;
-            display: flex; 
-            justify-content: flex-end; 
-            align-items: center; 
-            z-index: 1; 
-        }
-        .swipe-btn {
-            height: 100%; 
-            width: 60px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            font-size: 14px; 
-            color: white; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.1s; 
-            gap: 4px;
-        }
+        .swipe-actions-container { position: absolute; top: 0; right: 0; width: 120px; height: 100%; display: flex; justify-content: flex-end; align-items: center; z-index: 1; }
+        .swipe-btn { height: 100%; width: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 14px; color: white; font-weight: bold; cursor: pointer; gap: 4px; }
         .swipe-btn span { font-size: 8px; font-weight: 900; }
         .swipe-btn.edit { background: #0284c7; }
         .swipe-btn.delete { background: #dc2626; }
 
-        .log-icon-box-ui {
-            width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-        }
-        [data-theme="light"] .log-icon-box-ui { background: #F1F5F9; }
-
+        .log-icon-box-ui { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 16px; background: rgba(0,0,0,0.3); border: var(--glass-border); }
         .log-info-meta-holder { display: flex; align-items: center; gap: 10px; flex: 1; margin-right: 2px; text-align: right; }
-
         .log-amount-holder { display: flex; align-items: center; gap: 8px; min-width: 90px; justify-content: flex-end; }
         .log-amount-data { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 2px; }
         .log-amount-data .amt { font-size: 14px; font-weight: 900; text-align: left; line-height: 1.2; display: block; white-space: nowrap; }
         .log-amount-data .date { font-size: 10px; color: var(--text-dim); text-align: left; font-weight: 600; line-height: 1.1; display: block; white-space: nowrap; margin-top: 2px; }
 
         .chart-holder-card { display: flex; align-items: center; justify-content: space-around; gap: 16px; padding: 16px; }
-        .chart-container-fixed { position: relative; width: 100px; height: 100px; }
+        .chart-container-fixed { position: relative; width: 110px; height: 110px; }
 
-        /* ستايل شريط تقدم الخامات المتطور */
-        .mat-item-row-ui { background: rgba(255,255,255,0.02); padding: 10px; border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; gap: 6px; }
+        .mat-item-row-ui { background: rgba(0,0,0,0.2); padding: 12px; border: var(--glass-border); border-radius: 16px; display: flex; flex-direction: column; gap: 6px; }
         .mat-bar-wrapper { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; position: relative; }
-        .mat-bar-fill { height: 100%; width: 0%; transition: width 0.3s; }
+        .mat-bar-fill { height: 100%; width: 0%; transition: width 0.5s; }
 
-        .calc-trigger-btn { position: fixed; bottom: 16px; left: 16px; width: 46px; height: 46px; background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; color: white; font-size: 18px; display: none; align-items: center; justify-content: center; z-index: 175; box-shadow: 0 4px 12px var(--glow); cursor: pointer; }
-        .calc-trigger-btn.visible { display: flex; }
+        .calc-trigger-btn { position: fixed; bottom: 16px; left: 16px; width: 50px; height: 50px; background: var(--gradient-primary); border: none; border-radius: 50%; color: white; font-size: 20px; display: none; align-items: center; justify-content: center; z-index: 175; box-shadow: 0 4px 15px var(--glow); cursor: pointer; transition: 0.3s; }
+        .calc-trigger-btn:active { transform: scale(0.9); }
+        .calc-panel { position: fixed; bottom: 74px; left: 16px; width: 250px; background: var(--calc-bg); backdrop-filter: blur(25px); border: var(--glass-border); border-radius: 20px; z-index: 176; display: none; flex-direction: column; padding: 16px; box-shadow: var(--card-glow); }
+        .calc-screen { width: 100%; background: rgba(0,0,0,0.5); border: var(--glass-border); border-radius: 12px; padding: 12px; color: var(--primary); text-align: left; font-size: 20px; font-weight: 900; font-family: monospace; overflow-x: auto; margin-bottom: 12px; white-space: nowrap; direction: ltr; }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .calc-btn { background: rgba(255,255,255,0.05); border: var(--glass-border); border-radius: 12px; padding: 14px 0; color: white; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.2s; }
+        .calc-btn:active { background: rgba(255,255,255,0.1); transform: scale(0.95); }
         
-        .calc-panel { position: fixed; bottom: 74px; left: 16px; width: 240px; background: var(--calc-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--border); border-radius: 18px; z-index: 176; display: none; flex-direction: column; padding: 12px; box-shadow: var(--card-glow); }
-        .calc-screen { width: 100%; background: var(--calc-screen); border: 1px solid var(--border); border-radius: 10px; padding: 10px; color: var(--primary); text-align: left; font-size: 18px; font-weight: 900; font-family: monospace; overflow-x: auto; margin-bottom: 10px; white-space: nowrap; direction: ltr; }
-        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-        .calc-btn { background: var(--calc-btn); border: 1px solid var(--border); border-radius: 8px; padding: 12px 0; color: var(--text-main); font-weight: 700; font-size: 14px; font-family: inherit; cursor: pointer; transition: 0.1s; }
-        .calc-btn:active { background: rgba(15, 23, 42, 0.05); }
-        
-        .loading-shimmer { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: var(--bg-body); opacity: 0.95; display: none !important; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; }
+        .loading-shimmer { position: fixed; top: 0; left:0; width: 100%; height: 100%; background: rgba(15,23,42,0.95); backdrop-filter: blur(10px); display: none !important; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; }
+        .floating-action-fab { position: fixed; bottom: 16px; right: 16px; width: 56px; height: 56px; background: var(--gradient-primary); border: none; border-radius: 50%; color: white; font-size: 22px; display: none; align-items: center; justify-content: center; box-shadow: 0 6px 20px var(--glow); z-index: 180 !important; cursor: pointer; transition: 0.3s; }
+        .floating-action-fab:active { transform: scale(0.9); }
 
-        .floating-action-fab { position: fixed; bottom: 16px; right: 16px; width: 54px; height: 54px; background: linear-gradient(135deg, var(--primary) 0%, #ff4500 100%); border: none; border-radius: 50%; color: white; font-size: 20px; display: none; align-items: center; justify-content: center; box-shadow: 0 6px 16px var(--glow); z-index: 180 !important; cursor: pointer; }
-        .floating-action-fab.visible { display: flex !important; }
+        .grid-buttons-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; margin-bottom: 10px; }
+        .sub-panel { display:none; flex-direction:column; gap:12px; padding: 16px; border-radius: 20px; border: var(--glass-border); background: rgba(0,0,0,0.2); box-shadow: none; margin-bottom: 16px; }
+        .attendance-toggle { display: flex; gap: 4px; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 16px; }
+        .attendance-btn { flex: 1; padding: 8px; font-size: 11px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; color: var(--text-dim); background: transparent; transition: 0.3s; }
+        .attendance-btn.present.active { background: var(--success); color: white; }
+        .attendance-btn.half.active { background: var(--revenue-color); color: black; }
+        .attendance-btn.absent.active { background: var(--danger); color: white; }
     </style>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
 
     <div class="bg-fixed"></div>
-
-    <div class="loading-shimmer" id="loading">
-        <i class="fas fa-cog fa-spin" style="font-size: 36px; color: var(--primary);"></i>
-        <p style="margin-top: 12px; font-weight: bold; font-size: 13px;">جاري التحميل... ⚡</p>
-    </div>
-
+    <div class="loading-shimmer" id="loading"><i class="fas fa-circle-notch fa-spin" style="font-size: 40px; color: var(--primary);"></i><p style="margin-top: 12px; font-weight: bold; font-size: 14px;">جاري المعالجة...</p></div>
     <div class="floating-action-fab" id="fastInputFab" onclick="handleFloatingFabClick()"><i class="fas fa-plus"></i></div>
     <div class="calc-trigger-btn" id="calcTrigger" onclick="toggleCalc()"><i class="fas fa-calculator"></i></div>
     
     <div class="calc-panel" id="calcPanel">
          <div class="calc-screen" id="calcScreen">0</div>
          <div class="calc-grid">
-              <button class="calc-btn" style="background:rgba(239,68,68,0.15); color:var(--danger); border-color: rgba(239,68,68,0.2);" onclick="pressCalc('C')">C</button>
+              <button class="calc-btn" style="background:rgba(239,68,68,0.2); color:var(--danger);" onclick="pressCalc('C')">C</button>
               <button class="calc-btn" style="color: var(--primary);" onclick="pressCalc('/')">/</button>
               <button class="calc-btn" style="color: var(--primary);" onclick="pressCalc('*')">×</button>
-              <button class="calc-btn" style="background:rgba(0,0,0,0.03); color:var(--text-dim);" onclick="pressCalc('del')"><i class="fas fa-backspace"></i></button>
-              
-              <button class="calc-btn" onclick="pressCalc('7')">7</button>
-              <button class="calc-btn" onclick="pressCalc('8')">8</button>
-              <button class="calc-btn" onclick="pressCalc('9')">9</button>
+              <button class="calc-btn" style="background:rgba(0,0,0,0.3); color:var(--text-dim);" onclick="pressCalc('del')"><i class="fas fa-backspace"></i></button>
+              <button class="calc-btn" onclick="pressCalc('7')">7</button><button class="calc-btn" onclick="pressCalc('8')">8</button><button class="calc-btn" onclick="pressCalc('9')">9</button>
               <button class="calc-btn" style="color: var(--primary);" onclick="pressCalc('-')">-</button>
-              
-              <button class="calc-btn" onclick="pressCalc('4')">4</button>
-              <button class="calc-btn" onclick="pressCalc('5')">5</button>
-              <button class="calc-btn" onclick="pressCalc('6')">6</button>
+              <button class="calc-btn" onclick="pressCalc('4')">4</button><button class="calc-btn" onclick="pressCalc('5')">5</button><button class="calc-btn" onclick="pressCalc('6')">6</button>
               <button class="calc-btn" style="color: var(--primary);" onclick="pressCalc('+')">+</button>
-              
-              <button class="calc-btn" onclick="pressCalc('1')">1</button>
-              <button class="calc-btn" onclick="pressCalc('2')">2</button>
-              <button class="calc-btn" onclick="pressCalc('3')">3</button>
-              <button class="calc-btn" style="background:var(--primary); color:white; grid-row: span 2; height: calc(100% + 6px);" onclick="pressCalc('=')">=</button>
-              
-              <button class="calc-btn" style="grid-column: span 2;" onclick="pressCalc('0')">0</button>
-              <button class="calc-btn" onclick="pressCalc('.')">.</button>
-              
-              <button class="calc-btn" style="font-size:11px; color:black; background:var(--revenue-color); grid-column: span 4; margin-top: 6px; font-weight: 900; border: none;" onclick="pushCalcToInput()"><i class="fas fa-download"></i> تنزيل لخانة المبلغ</button>
+              <button class="calc-btn" onclick="pressCalc('1')">1</button><button class="calc-btn" onclick="pressCalc('2')">2</button><button class="calc-btn" onclick="pressCalc('3')">3</button>
+              <button class="calc-btn" style="background:var(--gradient-primary); color:white; grid-row: span 2; height: calc(100% + 8px);" onclick="pressCalc('=')">=</button>
+              <button class="calc-btn" style="grid-column: span 2;" onclick="pressCalc('0')">0</button><button class="calc-btn" onclick="pressCalc('.')">.</button>
+              <button class="calc-btn" style="font-size:12px; color:black; background:var(--revenue-color); grid-column: span 4; margin-top: 8px; font-weight: 900; border: none;" onclick="pushCalcToInput()"><i class="fas fa-download"></i> تنزيل لخانة المبلغ</button>
          </div>
     </div>
 
     <div class="custom-modal-overlay" id="globalAppModal">
          <div class="custom-modal" id="globalAppModalCard">
-              <i id="globalModalIcon" class="fas fa-info-circle" style="font-size: 26px; margin-bottom: 8px; color: var(--primary);"></i>
-              <h4 id="globalModalTitle" style="margin: 0 0 6px; font-weight: 900; font-size: 15px;">تنبيه النظام</h4>
-              <p id="globalModalBody" style="margin: 0; font-size: 12px; color: var(--text-dim);">الرسالة...</p>
+              <i id="globalModalIcon" class="fas fa-info-circle" style="font-size: 30px; margin-bottom: 12px; color: var(--primary);"></i>
+              <h4 id="globalModalTitle" style="margin: 0 0 8px; font-weight: 900; font-size: 16px;">تنبيه</h4>
+              <p id="globalModalBody" style="margin: 0; font-size: 13px; color: var(--text-dim);">الرسالة...</p>
               
-              <div id="projectIndicatorsFormContainer" class="project-indicators-edit-grid" style="display:none; flex-direction: column; gap: 10px; margin-top: 12px; text-align: right;">
-                   <div class="label-group">
-                        <label>اسم المهندس المسؤول</label>
-                        <input type="text" id="setupEngName" class="input-ui" placeholder="م / اسم المهندس">
-                   </div>
-                   <div class="label-group">
-                        <label>صاحب المشروع (المالك)</label>
-                        <input type="text" id="setupOwnerName" class="input-ui" placeholder="اسم العميل أو الشركة">
-                   </div>
+              <div id="projectIndicatorsFormContainer" class="project-indicators-edit-grid" style="display:none; flex-direction: column; gap: 12px; margin-top: 16px; text-align: right;">
+                   <div class="label-group"><label>المهندس المسؤول</label><input type="text" id="setupEngName" class="input-ui" placeholder="م / اسم المهندس"></div>
+                   <div class="label-group"><label>المالك / الشركة</label><input type="text" id="setupOwnerName" class="input-ui" placeholder="اسم العميل"></div>
                    <div class="label-group" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                        <div>
-                             <label>عدد العمال بالموقع</label>
-                             <input type="number" id="setupLaborCount" class="input-ui" placeholder="0">
-                        </div>
-                        <div>
-                             <label>نسبة التقدم (%)</label>
-                             <input type="number" id="setupProgressPercent" class="input-ui" placeholder="%">
-                        </div>
+                        <div><label>عمال الموقع</label><input type="number" id="setupLaborCount" class="input-ui" placeholder="0"></div>
+                        <div><label>الإنجاز (%)</label><input type="number" id="setupProgressPercent" class="input-ui" placeholder="%"></div>
                    </div>
+                   <div class="label-group"><label>ملاحظات إضافية</label><input type="text" id="setupProjectNotes" class="input-ui" placeholder="ملاحظة تخص الموقع.."></div>
                    <div class="label-group">
-                        <label>ملاحظات إضافية للموقع</label>
-                        <input type="text" id="setupProjectNotes" class="input-ui" placeholder="اكتب أي ملاحظة تخص موقع العمل هنا..">
-                   </div>
-                   <div class="label-group">
-                        <label>حالة موقع العمل النشط</label>
-                        <select id="setupProjectStatusSelect" class="input-ui" style="background:#090d1a; color: white;">
-                             <option value="جاري العمل">جاري العمل ونشط</option>
-                             <option value="متوقف مؤقتا">متوقف مؤقتاً</option>
-                             <option value="مكتمل">مكتمل ومؤرشف</option>
+                        <label>حالة الموقع</label>
+                        <select id="setupProjectStatusSelect" class="input-ui" style="background:rgba(0,0,0,0.5);">
+                             <option value="جاري العمل">جاري العمل ونشط</option><option value="متوقف مؤقتا">متوقف مؤقتاً</option><option value="مكتمل">مكتمل ومؤرشف</option>
                         </select>
                    </div>
               </div>
 
-              <!-- فورم إضافة مهندس جديد -->
-              <div id="addEngineerFormContainer" style="display:none; flex-direction: column; gap: 10px; margin-top: 12px; text-align: right;">
-                   <div class="label-group">
-                        <label>اسم المستخدم (للدخول)</label>
-                        <input type="text" id="newEngUsername" class="input-ui" placeholder="مثال: khaled (بالإنجليزي)">
-                   </div>
-                   <div class="label-group">
-                        <label>الرقم السري (Password)</label>
-                        <input type="text" id="newEngPassword" class="input-ui" placeholder="أدخل الرقم السري..">
-                   </div>
-                   <div class="label-group">
-                        <label>اسم المهندس (للعرض في السيستم)</label>
-                        <input type="text" id="newEngLabel" class="input-ui" placeholder="مثال: خالد">
-                   </div>
+              <div id="addEngineerFormContainer" style="display:none; flex-direction: column; gap: 12px; margin-top: 16px; text-align: right;">
+                   <div class="label-group"><label>اسم المستخدم (Login)</label><input type="text" id="newEngUsername" class="input-ui" placeholder="مثال: khaled"></div>
+                   <div class="label-group"><label>كلمة المرور</label><input type="text" id="newEngPassword" class="input-ui" placeholder="••••"></div>
+                   <div class="label-group"><label>اسم العرض (م / ..)</label><input type="text" id="newEngLabel" class="input-ui" placeholder="مثال: خالد"></div>
               </div>
 
-              <div id="globalModalInputContainer" style="display:none; margin-top:10px;">
-                   <input type="text" id="globalModalInputField" class="input-ui">
-              </div>
+              <div id="globalModalInputContainer" style="display:none; margin-top:16px;"><input type="text" id="globalModalInputField" class="input-ui"></div>
               <div class="modal-btns">
                    <button class="btn-modal-confirm" id="globalModalConfirmBtn">تأكيد</button>
                    <button class="btn-modal-cancel" onclick="closeGlobalAppModal()">إلغاء</button>
@@ -461,60 +291,43 @@
     </div>
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
-
     <div class="sidebar" id="sidebarMenu">
-        <div class="sidebar-header" style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-            <span style="font-weight: 900; color: var(--primary); font-size: 14px;">إدارة اللوحة</span>
+        <div class="sidebar-header">
+            <span style="font-weight: 900; color: var(--primary); font-size: 16px;">إدارة اللوحة</span>
             <button class="sidebar-close" onclick="toggleSidebar(false)"><i class="fas fa-times"></i></button>
         </div>
         <div class="sidebar-user-info"><i class="fas fa-user-hard-hat"></i><span id="sidebarUserName">م / اسم المهندس</span></div>
 
-        <!-- زر إضافة مهندس جديد -->
-        <div class="sidebar-link-btn" id="addEngineerBtn" onclick="openAddEngineerModal()" style="display:none; background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.2); color: #34d399; margin-bottom: 5px;">
-            <i class="fas fa-user-plus"></i>
-            <span>إضافة حساب مهندس جديد</span>
+        <div class="sidebar-link-btn" id="adminGlobalDashboardBtn" onclick="openAdminGlobalDashboard()" style="display:none; background: var(--gradient-primary); border:none; color: white; margin-bottom: 5px;">
+            <i class="fas fa-chart-pie"></i><span>الخزينة العامة للشركة</span>
         </div>
 
-        <div class="sidebar-link-btn" onclick="toggleThemeFast()" style="background: rgba(255,255,255,0.02); margin-bottom: 5px;">
-             <i class="fas fa-adjust" style="color: var(--primary);"></i>
-             <span>تبديل الوضع (نهاري / ليلي / OLED)</span>
+        <div class="sidebar-link-btn" id="addEngineerBtn" onclick="openAddEngineerModal()" style="display:none; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3); color: #34d399; margin-bottom: 5px;">
+            <i class="fas fa-user-plus"></i><span>إضافة مهندس للسيستم</span>
         </div>
 
-        <a class="sidebar-link-btn" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank">
-            <i class="fas fa-money-bill-wave" style="color: var(--success);"></i>
-            <span>كشف مرتبات الإدارة</span>
-        </a>
-        <a class="sidebar-link-btn" href="https://docs.google.com/spreadsheets/d/1k5KcOhR8XTzS0kAi-SWM7OJE0oCLvoKuAK9RfE4EmAg/edit" target="_blank">
-            <i class="fas fa-calendar-check" style="color: var(--info);"></i>
-            <span>كشف حضور وانصراف العمال</span>
-        </a>
+        <div class="sidebar-link-btn" onclick="toggleThemeFast()" style="background: rgba(0,0,0,0.3); margin-bottom: 5px;">
+             <i class="fas fa-adjust" style="color: var(--primary);"></i><span>تبديل الوضع (Night / Day)</span>
+        </div>
 
         <div class="sidebar-project-actions-zone" id="sidebarProjectActionsZone">
-             <div style="font-size: 11px; font-weight: 900; color: var(--primary); padding-bottom: 4px; margin-bottom: 2px;"><i class="fas fa-sliders-h"></i> عمليات المشروع الحالي:</div>
-             <div class="sidebar-link-btn" onclick="generateProjectPDFReport()" style="background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.2); color: #f87171;">
-                  <i class="fas fa-file-pdf"></i><span>طباعة مستخلص PDF</span>
-             </div>
-             <div class="sidebar-link-btn" onclick="exportToExcelCSVSheet()" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.2); color: #34d399;">
-                  <i class="fas fa-file-excel"></i><span>توريد شيت إكسيل</span>
-             </div>
-             <div class="sidebar-link-btn" onclick="openProjectIndicatorsEditModal()" style="background: rgba(139, 92, 246, 0.08); border-color: rgba(139, 92, 246, 0.2); color: #c084fc;">
-                  <i class="fas fa-sliders"></i><span>تعديل مؤشرات وملاحظات الموقع</span>
-             </div>
+             <div style="font-size: 11px; font-weight: 900; color: var(--primary); padding-bottom: 4px; margin-bottom: 4px;"><i class="fas fa-sliders-h"></i> خيارات المشروع:</div>
+             <div class="sidebar-link-btn" onclick="generateProjectPDFReport()" style="background: rgba(239, 68, 68, 0.1); color: #fca5a5;"><i class="fas fa-file-pdf"></i><span>طباعة مستخلص مالي (PDF)</span></div>
+             <div class="sidebar-link-btn" onclick="exportToExcelCSVSheet()" style="background: rgba(16, 185, 129, 0.1); color: #6ee7b7;"><i class="fas fa-file-excel"></i><span>تصدير إكسيل (Excel)</span></div>
+             <div class="sidebar-link-btn" onclick="openProjectIndicatorsEditModal()" style="background: rgba(139, 92, 246, 0.1); color: #c4b5fd;"><i class="fas fa-sliders"></i><span>تحديث بيانات ومؤشرات الموقع</span></div>
         </div>
 
         <div class="proj-info-sidebar-block" id="sidebarProjInfoBlock">
-             <div style="font-size: 11px; font-weight: 900; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 6px;">
-                  <span><i class="fas fa-circle-info"></i> مؤشرات وبيانات الموقع</span>
-             </div>
-             <div class="info-row-item"><span>حالة الموقع:</span><b id="lblInfStatus">-</b></div>
+             <div style="font-size: 11px; font-weight: 900; color: var(--primary); border-bottom: var(--glass-border); padding-bottom: 8px; margin-bottom: 8px;"><span><i class="fas fa-circle-info"></i> مؤشرات حية</span></div>
+             <div class="info-row-item"><span>الحالة:</span><b id="lblInfStatus">-</b></div>
              <div class="info-row-item"><span>المهندس:</span><b id="lblInfEng">-</b></div>
              <div class="info-row-item"><span>المالك:</span><b id="lblInfOwner">-</b></div>
-             <div class="info-row-item"><span>العمال الحالية:</span><b id="lblInfLabor">- عمال</b></div>
-             <div class="info-row-item"><span>نسبة الإنجاز:</span><b id="lblInfProgress">-</b></div>
-             <div class="info-row-item"><span>ملاحظات:</span><b id="lblInfNotes" style="max-width: 140px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">-</b></div>
+             <div class="info-row-item"><span>قوة العمال:</span><b id="lblInfLabor">-</b></div>
+             <div class="info-row-item"><span>الإنجاز:</span><b id="lblInfProgress">-</b></div>
+             <div class="info-row-item"><span>ملاحظات:</span><b id="lblInfNotes" style="max-width: 130px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">-</b></div>
         </div>
 
-        <button class="btn-logout" onclick="triggerLogOut()"><i class="fas fa-door-open"></i> تسجيل الخروج</button>
+        <button class="btn-logout" onclick="triggerLogOut()"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
     </div>
 
     <header id="appGlobalHeader">
@@ -523,7 +336,7 @@
         <div class="header-left-holder">
              <div class="user-site-column">
                   <span class="header-greet" id="dynamicGreeting"></span>
-                  <div class="header-user-badge" id="headerUserBadge"><i class="fas fa-user-hard-hat"></i><span id="headerUserNameSpan">م / اسم المهندس</span></div>
+                  <div class="header-user-badge" id="headerUserBadge"><i class="fas fa-user-hard-hat"></i><span id="headerUserNameSpan">م / ..</span></div>
                   <div class="header-project-badge" id="headerProjBadge" onclick="resetProjectSelection()"><i class="fas fa-map-marker-alt"></i><span id="headerProjName">الموقع</span></div>
              </div>
         </div>
@@ -531,44 +344,50 @@
 
     <div class="app-container" id="ptrTouchContainer">
         
-        <div class="login-box" id="loginBox">
-            <div style="text-align: center; margin-bottom: 16px;">
-                 <i class="fas fa-user-shield" style="color: var(--primary); font-size: 28px; text-shadow: 0 0 10px var(--glow);"></i>
-                 <h3 style="margin: 6px 0 0; font-weight: 900; font-size: 14px;">بوابة المهندسين والموقع</h3>
+        <div class="login-box card" id="loginBox">
+            <div style="text-align: center; margin-bottom: 24px;">
+                 <i class="fas fa-shield-alt" style="color: var(--primary); font-size: 36px; text-shadow: 0 0 15px var(--glow);"></i>
+                 <h3 style="margin: 10px 0 0; font-weight: 900; font-size: 16px;">بوابة الدخول الموحدة</h3>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-                 <input type="text" id="loginUsername" class="input-ui" placeholder="اسم المستخدم..">
-                 <input type="password" id="loginPassword" class="input-ui" placeholder="••••">
-                 <button class="btn-primary" id="loginSubmitBtn" onclick="handleSecureLogin()">تسجيل الدخول</button>
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+                 <input type="text" id="loginUsername" class="input-ui" placeholder="اسم المستخدم (Login ID)">
+                 <input type="password" id="loginPassword" class="input-ui" placeholder="كلمة المرور (Password)">
+                 <button class="btn-primary" id="loginSubmitBtn" onclick="handleSecureLogin()" style="margin-top: 10px;">تسجيل الدخول <i class="fas fa-arrow-left"></i></button>
             </div>
+        </div>
+
+        <div id="adminGlobalDashboardView" style="display:none; flex-direction: column; gap: 16px; width: 100%;">
+             <div class="card" style="border:1px solid var(--primary);">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+                       <h3 style="margin:0; font-size:15px; font-weight:900; color:var(--primary);"><i class="fas fa-building-columns"></i> الخزينة المجمعة</h3>
+                       <button class="btn-modal-cancel" style="padding:8px 14px; font-size:12px; flex:none;" onclick="resetProjectSelection()"><i class="fas fa-arrow-right"></i> رجوع</button>
+                  </div>
+                  <div class="stats-grid stats-hud-row">
+                      <div class="hud-box prime"><h4>صافي الخزينة العام</h4><div class="val" id="globalNetVal" style="color: var(--success); font-size:16px;">0</div></div>
+                      <div class="hud-box"><h4>الإيرادات</h4><div class="val" id="globalIncVal" style="color: var(--success);">0</div></div>
+                      <div class="hud-box"><h4>المنصرف</h4><div class="val" id="globalExpVal" style="color: var(--danger);">0</div></div>
+                  </div>
+             </div>
+             <h4 style="margin:0 4px; font-size:13px; font-weight:bold; color:var(--text-main);"><i class="fas fa-list-check" style="color:var(--primary)"></i> حالة المواقع الميدانية:</h4>
+             <div id="globalProjectsList" style="display:flex; flex-direction:column; gap:10px;"></div>
         </div>
 
         <div class="main-content" id="mainContent">
             
-            <div class="system-smart-alert-banner" id="smartAlertBanner" style="display: none;">
-                 <i class="fas fa-triangle-exclamation"></i>
-                 <span id="smartAlertText">تحذير السيولة...</span>
-            </div>
+            <div class="system-smart-alert-banner" id="smartAlertBanner" style="display: none;"><i class="fas fa-triangle-exclamation"></i><span id="smartAlertText">تحذير السيولة...</span></div>
 
             <div class="card project-selector-card" id="projectSelectorCard">
                 <div class="label-group">
-                    <label><i class="fas fa-cubes" style="color: var(--primary);"></i> اختيار موقع العمل النشط</label>
+                    <label><i class="fas fa-cubes" style="color: var(--primary);"></i> الدخول لموقع عمل نشط</label>
                     <div class="custom-dropdown-box" id="customProjectDropdown">
-                         <div class="dropdown-selected-trigger" onclick="toggleCustomDropdown('active')">
-                              <span id="dropdownSelectedLabel">اختر موقع العمل الشغال..</span>
-                              <i class="fas fa-chevron-down"></i>
-                         </div>
+                         <div class="dropdown-selected-trigger" onclick="toggleCustomDropdown('active')"><span id="dropdownSelectedLabel">اختر موقع العمل..</span><i class="fas fa-chevron-down"></i></div>
                          <div class="dropdown-options-list" id="dropdownOptionsList"></div>
                     </div>
                 </div>
-
-                <div class="label-group" style="margin-top: 14px;">
-                    <label><i class="fas fa-archive" style="color: var(--revenue-color);"></i> أرشيف المواقع المغلقة</label>
+                <div class="label-group" style="margin-top: 16px;">
+                    <label><i class="fas fa-archive" style="color: var(--text-dim);"></i> أرشيف المواقع المكتملة</label>
                     <div class="custom-dropdown-box" id="customArchiveDropdown">
-                         <div class="dropdown-selected-trigger" style="color: var(--revenue-color); border-color: rgba(255,204,0,0.15);" onclick="toggleCustomDropdown('archive')">
-                              <span id="archiveDropdownSelectedLabel">تصفح مشاريع الأرشيف..</span>
-                              <i class="fas fa-chevron-down"></i>
-                         </div>
+                         <div class="dropdown-selected-trigger" style="color: var(--text-dim); border-color: rgba(255,255,255,0.1);" onclick="toggleCustomDropdown('archive')"><span id="archiveDropdownSelectedLabel">تصفح مشاريع الأرشيف..</span><i class="fas fa-chevron-down"></i></div>
                          <div class="dropdown-options-list" id="archiveDropdownOptionsList"></div>
                     </div>
                 </div>
@@ -576,83 +395,120 @@
 
             <div class="hidden-element" id="financeContent" style="display: none; flex-direction: column; gap: 16px;">
                 
-                <div id="pdfExportArea" style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                <div id="pdfExportArea" style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
                     <div style="display:none; text-align:center; padding:10px 0; color: #ff6b00;" id="pdfHeaderLogo">
-                        <h2 style="margin:0; font-weight:900; font-size:18px;">PERFECT STEEL PRO REPORT</h2>
-                        <p style="margin:2px 0 0; font-size:11px; color:#666;" id="pdfProjectMeta">كشف تدفق حركة المستخلص الميداني</p>
+                        <h2 style="margin:0; font-weight:900; font-size:22px;">PERFECT STEEL</h2>
+                        <p style="margin:4px 0 0; font-size:12px; color:#555;" id="pdfProjectMeta">كشف تدفقات المستخلص المالي</p>
                     </div>
-
                     <div class="stats-grid stats-hud-row">
-                        <div class="hud-box prime" id="hudCardNet"><h4>الصافي المتبقي</h4><div class="val" id="netBalance" style="color: var(--success);">0</div></div>
-                        <div class="hud-box"><h4>الإيرادات (+)</h4><div class="val" id="totalIncome" style="color: var(--success);">0</div></div>
+                        <div class="hud-box prime" id="hudCardNet"><h4>رصيد العهدة الحالي</h4><div class="val" id="netBalance" style="color: var(--success); font-size: 16px;">0</div></div>
+                        <div class="hud-box"><h4>التمويل (+)</h4><div class="val" id="totalIncome" style="color: var(--success);">0</div></div>
                         <div class="hud-box"><h4>المصروفات (-)</h4><div class="val" id="totalExpense" style="color: var(--danger);">0</div></div>
                     </div>
                     <div class="hud-progress-wrapper"><div class="hud-progress-bar" id="hudProgressBar"></div></div>
                 </div>
 
                 <div class="card chart-holder-card" id="analyticsChartCard">
-                     <div class="chart-container-fixed">
-                          <canvas id="perfectSteelPieChart"></canvas>
-                     </div>
-                     <div class="chart-legends-wrap" style="flex:1; padding-right:10px;">
-                          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-weight:700; font-size:10px;">
-                               <span style="color:var(--primary)">■ خامات</span>
-                               <span style="color:var(--info)">■ عمالة</span>
-                               <span style="color:var(--revenue-color)">■ نقل</span>
-                               <span style="color:var(--danger)">■ نثريات</span>
+                     <div class="chart-container-fixed"><canvas id="perfectSteelPieChart"></canvas></div>
+                     <div class="chart-legends-wrap" style="flex:1; padding-right:12px;">
+                          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-weight:700; font-size:11px;">
+                               <span style="color:var(--primary)">■ خامات</span><span style="color:var(--info)">■ عمالة</span><span style="color:var(--revenue-color)">■ نقل</span><span style="color:var(--danger)">■ نثريات</span>
                           </div>
                      </div>
                 </div>
 
-                <div style="display:flex; gap: 8px; width:100%;">
-                     <button class="btn-primary" onclick="toggleLaborSubPanel()" style="flex:1; padding:12px; font-size:11px; border-radius:12px; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); box-shadow:none;"><i class="fas fa-users-gear"></i> مسحوبات العمالة</button>
-                     <button class="btn-primary" onclick="toggleMaterialsSubPanel()" style="flex:1; padding:12px; font-size:11px; border-radius:12px; background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); box-shadow:none;"><i class="fas fa-cubes-stacked"></i> خامات المقايسة</button>
+                <div class="grid-buttons-row">
+                     <button class="btn-primary" onclick="togglePanel('laborSubPanel')" style="padding:12px; font-size:12px; background: rgba(2, 132, 199, 0.2); border: 1px solid rgba(2, 132, 199, 0.4); color: #bae6fd; box-shadow:none;"><i class="fas fa-users-gear"></i> سحبيات مقاولين</button>
+                     <button class="btn-primary" onclick="togglePanel('materialsSubPanel')" style="padding:12px; font-size:12px; background: rgba(124, 58, 237, 0.2); border: 1px solid rgba(124, 58, 237, 0.4); color: #ddd6fe; box-shadow:none;"><i class="fas fa-cubes-stacked"></i> خامات ومقايسة</button>
+                </div>
+                <div class="grid-buttons-row">
+                     <button class="btn-primary" onclick="togglePanel('suppliersSubPanel')" style="padding:12px; font-size:12px; background: rgba(180, 83, 9, 0.2); border: 1px solid rgba(180, 83, 9, 0.4); color: #fde68a; box-shadow:none;"><i class="fas fa-file-invoice-dollar"></i> حسابات الموردين</button>
+                     <button class="btn-primary" onclick="togglePanel('attendanceSubPanel')" style="padding:12px; font-size:12px; background: rgba(5, 150, 105, 0.2); border: 1px solid rgba(5, 150, 105, 0.4); color: #a7f3d0; box-shadow:none;"><i class="fas fa-clipboard-user"></i> دفتر يوميات العمال</button>
                 </div>
 
-                <div class="card" id="laborSubPanel" style="display:none; flex-direction:column; gap:10px; border-color: rgba(2, 132, 199, 0.2); padding: 14px;">
-                     <h4 style="margin:0; font-size:12px; font-weight:900; color:var(--info);"><i class="fas fa-people-carry-box"></i> كشوف مسحوبات عمال الموقع</h4>
+                <!-- مسحوبات المقاولين -->
+                <div class="sub-panel" id="laborSubPanel">
+                     <h4 style="margin:0; font-size:13px; font-weight:900; color:var(--info);"><i class="fas fa-people-carry-box"></i> كشوف مسحوبات المقاولين</h4>
                      <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:8px;">
-                          <input type="text" id="labWorkerName" class="input-ui" style="padding:10px; font-size:12px;" placeholder="اسم المقاول/العامل..">
-                          <input type="text" id="labAmount" class="input-ui" style="padding:10px; font-size:12px;" placeholder="المبلغ..">
+                          <input type="text" id="labWorkerName" class="input-ui" style="margin:0; padding:12px; font-size:13px;" placeholder="اسم المقاول..">
+                          <input type="number" id="labAmount" class="input-ui" style="margin:0; padding:12px; font-size:13px;" placeholder="المبلغ..">
                      </div>
                      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                          <button class="btn-primary" onclick="saveLaborEntry()" style="padding:10px; font-size:12px; border-radius:10px;"><i class="fas fa-plus"></i> قيد السحب</button>
-                          <button class="btn-primary" onclick="transferLaborToExpenses()" style="padding:10px; font-size:12px; border-radius:10px; background:var(--success);"><i class="fas fa-share-from-square"></i> ترحيل للمصاريف</button>
+                          <button class="btn-primary" onclick="saveLaborEntry()" style="padding:12px; font-size:13px; border-radius:12px; background:var(--info);"><i class="fas fa-plus"></i> إضافة سحب</button>
+                          <button class="btn-primary" onclick="transferLaborToExpenses()" style="padding:12px; font-size:13px; border-radius:12px; background:var(--success);"><i class="fas fa-share-from-square"></i> ترحيل لمصاريف</button>
                      </div>
-                     <button class="btn-primary" onclick="generateLaborExpensesPDFReport()" style="padding:10px; font-size:12px; border-radius:10px; background:linear-gradient(135deg, #dc2626 0%, #991b1b 100%); box-shadow:none;"><i class="fas fa-file-pdf"></i> ملخص حسابات PDF</button>
-                     <div id="laborExpensesPdfHiddenArea" style="display:none; flex-direction:column; background:#030712; padding:16px; color:white; width:100%;"><div style="text-align:center; border-bottom: 2px solid #ff6b00; padding-bottom:8px; margin-bottom:10px;"><h2>PERFECT STEEL PRO</h2></div><div id="laborExpensesPdfTablePlaceholder"></div></div>
-                     <div id="laborEntriesList" style="max-height:140px; overflow-y:auto; font-size:11px; display:flex; flex-direction:column; gap:6px;"></div>
+                     <button class="btn-primary" onclick="generateLaborExpensesPDFReport()" style="padding:12px; font-size:13px; border-radius:12px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; box-shadow:none;"><i class="fas fa-file-pdf text-danger"></i> طباعة كشف مسحوبات (PDF)</button>
+                     <div id="laborExpensesPdfHiddenArea" style="display:none; flex-direction:column; background:#ffffff; padding:20px; color:black; width:100%;">
+                         <div style="text-align:center; border-bottom: 2px solid #0284c7; padding-bottom:10px; margin-bottom:15px;">
+                             <h2 style="color:#0284c7; margin:0; font-family: 'Cairo', sans-serif;">كشف مسحوبات المقاولين والعمال</h2>
+                             <p id="laborPdfMeta" style="font-size:13px; color:#555; margin-top:5px;"></p>
+                         </div>
+                         <div id="laborExpensesPdfTablePlaceholder"></div>
+                     </div>
+                     <div id="laborEntriesList" style="max-height:160px; overflow-y:auto; font-size:12px; display:flex; flex-direction:column; gap:8px; margin-top:8px;"></div>
                 </div>
 
-                <div class="card" id="materialsSubPanel" style="display:none; flex-direction:column; gap:12px; border-color: rgba(124, 58, 237, 0.3); padding: 14px;">
-                     <h4 style="margin:0; font-size:12px; font-weight:900; color:var(--purple);"><i class="fas fa-boxes-stacked"></i> تتبع خامات المقايسة والتوريد</h4>
-                     
-                     <div style="background: rgba(255,255,255,0.01); border: 1px dashed var(--border); padding: 10px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px;">
-                          <span style="font-size: 10px; font-weight: 900; color: var(--text-dim);">خطوة 1: تأسيس بند في المقايسة الأصلية</span>
-                          <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:6px;">
-                               <input type="text" id="newMatName" class="input-ui" style="padding:8px; font-size:12px;" placeholder="الخامة (حديد، صاج، Cement)؟">
-                               <input type="number" id="newMatTarget" class="input-ui" style="padding:8px; font-size:12px;" placeholder="الكمية المطلوبة؟">
-                          </div>
-                          <button class="btn-primary" onclick="addMaterialTarget()" style="padding:8px; font-size:12px; border-radius:8px; background: var(--purple);"><i class="fas fa-folder-plus"></i> تثبيت بالمقايسة</button>
+                <!-- خامات المقايسة -->
+                <div class="sub-panel" id="materialsSubPanel">
+                     <h4 style="margin:0; font-size:13px; font-weight:900; color:var(--purple);"><i class="fas fa-boxes-stacked"></i> تتبع خامات المقايسة</h4>
+                     <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:8px;">
+                          <input type="text" id="newMatName" class="input-ui" style="margin:0; padding:12px; font-size:13px;" placeholder="اسم الخامة؟">
+                          <input type="number" id="newMatTarget" class="input-ui" style="margin:0; padding:12px; font-size:13px;" placeholder="الكمية المطلوبة؟">
                      </div>
-
-                     <div style="background: rgba(255,255,255,0.01); border: 1px dashed var(--border); padding: 10px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px;">
-                          <span style="font-size: 10px; font-weight: 900; color: var(--success);">خطوة 2: قيد كمية توريد وصلت الموقع حالياً</span>
-                          <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:6px;">
-                               <select id="deliveryMatSelect" class="input-ui" style="padding:8px; font-size:12px; background:#0f172a; color:white;"></select>
-                               <input type="number" id="deliveryQty" class="input-ui" style="padding:8px; font-size:12px;" placeholder="الكمية الموردة؟">
-                          </div>
-                          <button class="btn-primary" onclick="logMaterialDelivery()" style="padding:8px; font-size:12px; border-radius:8px; background: var(--success);"><i class="fas fa-truck-loading"></i> إثبات وصول الشحنة</button>
+                     <button class="btn-primary" onclick="addMaterialTarget()" style="padding:12px; font-size:13px; border-radius:12px; background: var(--purple);"><i class="fas fa-folder-plus"></i> تثبيت بالمقايسة</button>
+                     <div style="border-top: 1px dashed rgba(255,255,255,0.1); margin: 10px 0;"></div>
+                     <div style="display:grid; grid-template-columns: 1.2fr 1fr; gap:8px;">
+                          <select id="deliveryMatSelect" class="input-ui" style="margin:0; padding:12px; font-size:13px; background:rgba(0,0,0,0.5); color:white;"></select>
+                          <input type="number" id="deliveryQty" class="input-ui" style="margin:0; padding:12px; font-size:13px;" placeholder="الكمية الموردة؟">
                      </div>
+                     <button class="btn-primary" onclick="logMaterialDelivery()" style="padding:12px; font-size:13px; border-radius:12px; background: var(--success);"><i class="fas fa-truck-loading"></i> إثبات وصول شحنة</button>
+                     <div id="projectMaterialsDisplayList" style="display:flex; flex-direction:column; gap:10px; max-height:220px; overflow-y:auto; margin-top:10px;"></div>
+                </div>
 
-                     <div id="projectMaterialsDisplayList" style="display:flex; flex-direction:column; gap:8px; max-height:200px; overflow-y:auto; padding-top:4px;"></div>
+                <!-- حسابات الموردين -->
+                <div class="sub-panel" id="suppliersSubPanel">
+                     <h4 style="margin:0; font-size:13px; font-weight:900; color:#fbbf24;"><i class="fas fa-file-invoice-dollar"></i> دفتر حسابات الموردين</h4>
+                     <input type="text" id="supName" class="input-ui" style="padding:12px; font-size:13px; margin-bottom:8px;" placeholder="اسم المورد أو الشركة..">
+                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                          <input type="number" id="supInvoice" class="input-ui" style="margin:0; padding:12px; font-size:13px;" placeholder="إجمالي الفاتورة..">
+                          <input type="number" id="supPaid" class="input-ui" style="margin:0; padding:12px; font-size:13px;" placeholder="المبلغ المدفوع..">
+                     </div>
+                     <button class="btn-primary" onclick="saveSupplierInvoice()" style="padding:12px; font-size:13px; border-radius:12px; background: #d97706; margin-top:8px;"><i class="fas fa-save"></i> تسجيل فاتورة أو دفعة</button>
+                     <div id="suppliersList" style="max-height:180px; overflow-y:auto; font-size:12px; display:flex; flex-direction:column; gap:8px; margin-top:12px;"></div>
+                </div>
+
+                <!-- دفتر الحضور -->
+                <div class="sub-panel" id="attendanceSubPanel">
+                     <h4 style="margin:0; font-size:13px; font-weight:900; color:var(--success);"><i class="fas fa-clipboard-user"></i> دفتر الحضور واليوميات</h4>
+                     <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:8px;">
+                          <input type="text" id="attWorker" class="input-ui" style="margin:0; padding:12px; font-size:13px;" placeholder="اسم العامل..">
+                          <input type="number" id="attRate" class="input-ui" style="margin:0; padding:12px; font-size:13px;" placeholder="قيمة اليومية..">
+                     </div>
+                     <div class="attendance-toggle" id="attStatusToggle">
+                          <button class="attendance-btn present active" onclick="setAttStatus('present', this)">حاضر (يومية)</button>
+                          <button class="attendance-btn half" onclick="setAttStatus('half', this)">نص يومية</button>
+                          <button class="attendance-btn absent" onclick="setAttStatus('absent', this)">غائب</button>
+                     </div>
+                     <input type="hidden" id="attStatusVal" value="present">
+                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;">
+                          <button class="btn-primary" onclick="saveAttendance()" style="padding:12px; font-size:13px; border-radius:12px; background: var(--success);"><i class="fas fa-check"></i> حفظ</button>
+                          <button class="btn-primary" onclick="generateAttendancePDFReport()" style="padding:12px; font-size:13px; border-radius:12px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:white; box-shadow:none;"><i class="fas fa-print"></i> طباعة كشف</button>
+                     </div>
+                     <div id="attendancePdfHiddenArea" style="display:none; flex-direction:column; background:#ffffff; padding:20px; color:black; width:100%;">
+                         <div style="text-align:center; border-bottom: 2px solid #059669; padding-bottom:10px; margin-bottom:15px;">
+                             <h2 style="color:#059669; margin:0; font-family: 'Cairo', sans-serif;">ملخص حضور وانصراف العمال</h2>
+                             <p id="attPdfMeta" style="font-size:13px; color:#555; margin-top:5px;"></p>
+                         </div>
+                         <div id="attendancePdfTablePlaceholder"></div>
+                     </div>
+                     <div id="attendanceList" style="max-height:180px; overflow-y:auto; font-size:12px; display:flex; flex-direction:column; gap:8px; margin-top:12px;"></div>
                 </div>
 
                 <div class="filter-pills-container" id="filterPillsWrapper">
-                     <button class="pill-btn active" id="pill-all" onclick="filterLogs('all')">كل البنود</button>
-                     <button class="pill-btn" id="pill-materials" onclick="filterLogs('خامات')">خامات Steel</button>
-                     <button class="pill-btn" id="pill-labor" onclick="filterLogs('عمالة')">يوميات وعمالة</button>
-                     <button class="pill-btn" id="pill-nethria" onclick="filterLogs('نثريات')">نثريات موقع</button>
+                     <button class="pill-btn active" id="pill-all" onclick="filterLogs('all')">الكل</button>
+                     <button class="pill-btn" id="pill-materials" onclick="filterLogs('خامات')">خامات</button>
+                     <button class="pill-btn" id="pill-labor" onclick="filterLogs('عمالة')">عمالة</button>
+                     <button class="pill-btn" id="pill-nethria" onclick="filterLogs('نثريات')">نثريات</button>
                      <button class="pill-btn" id="pill-shipping" onclick="filterLogs('نقل')">نقل وتوريد</button>
                 </div>
 
@@ -662,61 +518,54 @@
                         <button class="tab-btn" id="expBtn" onclick="switchTab('expense')">مصروف جديد (-)</button>
                     </div>
                     <div id="inputForm">
-                        <div class="label-group" id="catGroup" style="display:none; margin-bottom: 10px;">
-                             <label>تصنيف المصروف الفوري</label>
+                        <div class="label-group" id="catGroup" style="display:none; margin-bottom: 12px;">
+                             <label>تصنيف المصروف</label>
                              <div class="icon-selector-grid">
-                                  <div class="icon-selector-item selected" id="item-cat-خامات" onclick="selectIconCategory('خامات')">
-                                       <i class="fas fa-layer-group" style="color:var(--primary)"></i><span>خامات Steel</span>
-                                  </div>
-                                  <div class="icon-selector-item" id="item-cat-عمالة" onclick="selectIconCategory('عمالة')">
-                                       <i class="fas fa-user-helmet" style="color:var(--info)"></i><span>يوميات عمال</span>
-                                  </div>
-                                  <div class="icon-selector-item" id="item-cat-نقل" onclick="selectIconCategory('نقل')">
-                                       <i class="fas fa-truck-ramp-box" style="color:var(--revenue-color)"></i><span>نقل وتوريد</span>
-                                  </div>
-                                  <div class="icon-selector-item" id="item-cat-نثريات" onclick="selectIconCategory('نثريات')">
-                                       <i class="fas fa-wallet" style="color:var(--danger)"></i><span>نثريات موقع</span>
-                                  </div>
+                                  <div class="icon-selector-item selected" id="item-cat-خامات" onclick="selectIconCategory('خامات')"><i class="fas fa-layer-group" style="color:var(--primary)"></i><span>خامات</span></div>
+                                  <div class="icon-selector-item" id="item-cat-عمالة" onclick="selectIconCategory('عمالة')"><i class="fas fa-user-helmet" style="color:var(--info)"></i><span>يوميات</span></div>
+                                  <div class="icon-selector-item" id="item-cat-نقل" onclick="selectIconCategory('نقل')"><i class="fas fa-truck-ramp-box" style="color:var(--revenue-color)"></i><span>نقل</span></div>
+                                  <div class="icon-selector-item" id="item-cat-نثريات" onclick="selectIconCategory('نثريات')"><i class="fas fa-wallet" style="color:var(--danger)"></i><span>نثريات</span></div>
                              </div>
                              <input type="hidden" id="expenseCategory" value="خامات">
                          </div>
 
-                        <div class="label-group" id="incomeCatGroup" style="display:none; margin-bottom: 10px;">
-                             <label>تصنيف حركة الإيراد</label>
+                        <div class="label-group" id="incomeCatGroup" style="display:none; margin-bottom: 12px;">
+                             <label>مصدر الإيراد</label>
                              <div class="icon-selector-grid" id="incomeCategoryGridGrid" style="grid-template-columns: 1fr 1fr;">
-                                  <div class="icon-selector-item selected" id="item-inc-عام" onclick="selectIconIncomeCategory('عام')">
-                                       <i class="fas fa-money-bill-trend-up" style="color:var(--success)"></i><span>إيراد عام للموقع</span>
-                                  </div>
-                                  <div class="icon-selector-item" id="item-inc-دفعة_شركة" onclick="selectIconIncomeCategory('دفعة شركة')" style="display: none;">
-                                       <i class="fas fa-building-columns" style="color:var(--info)"></i><span>دفعة شركة مركزية</span>
-                                  </div>
+                                  <div class="icon-selector-item selected" id="item-inc-عام" onclick="selectIconIncomeCategory('عام')"><i class="fas fa-money-bill-trend-up" style="color:var(--success)"></i><span>إيراد عام للموقع</span></div>
+                                  <div class="icon-selector-item" id="item-inc-دفعة_شركة" onclick="selectIconIncomeCategory('دفعة شركة')" style="display: none;"><i class="fas fa-building-columns" style="color:var(--info)"></i><span>دفعة مركزية</span></div>
                              </div>
                              <input type="hidden" id="incomeCategory" value="عام">
                         </div>
 
                         <div class="label-group">
-                            <label>المبلغ (يدعم العمليات المباشرة)</label>
-                            <input type="text" id="amount" class="input-ui" placeholder="أدخل القيمة المادية هنا..">
+                            <label>المبلغ المطلوب إثباته</label>
+                            <input type="text" id="amount" class="input-ui" placeholder="أدخل القيمة هنا.. (يدعم العمليات الحسابية)">
                             <div class="quick-chips-row">
-                                 <div class="cash-chip" onclick="quickCash(50)">+50</div>
-                                 <div class="cash-chip" onclick="quickCash(100)">+100</div>
-                                 <div class="cash-chip" onclick="quickCash(500)">+500</div>
-                                 <div class="cash-chip" onclick="quickCash(1000)">+1,000</div>
+                                 <div class="cash-chip" onclick="quickCash(100)">+100</div><div class="cash-chip" onclick="quickCash(500)">+500</div>
+                                 <div class="cash-chip" onclick="quickCash(1000)">+1,000</div><div class="cash-chip" onclick="quickCash(5000)">+5,000</div>
                             </div>
                         </div>
                         
-                        <div class="label-group" style="margin-top: 10px;">
+                        <div class="label-group" id="receiptUploadGroup" style="display:none; margin-top: 16px;">
+                             <input type="file" id="receiptImage" accept="image/*" capture="environment" style="display:none;" onchange="updateReceiptLabel()">
+                             <label for="receiptImage" class="input-ui" style="display:flex; justify-content:center; align-items:center; gap:10px; cursor:pointer; background:rgba(255,107,0,0.05); border: 1px dashed var(--primary); color:var(--primary); padding: 14px; border-radius: 16px; transition:0.3s;">
+                                  <i class="fas fa-camera" style="font-size:18px;"></i> <span id="receiptLabelText" style="font-weight:bold;">تصوير وإرفاق الفاتورة للضمان</span>
+                             </label>
+                        </div>
+
+                        <div class="label-group" style="margin-top: 14px;">
                             <div class="input-with-voice-holder">
-                                 <input type="text" id="desc" class="input-ui" placeholder="اكتب البيان وسيتصنف ذكياً تلقائياً...">
+                                 <input type="text" id="desc" class="input-ui" style="margin:0; padding-right:45px;" placeholder="اكتب البيان التفصيلي...">
                                  <button class="voice-mic-btn" id="micBtn-desc" onclick="startVoiceRecognition('desc')"><i class="fas fa-microphone"></i></button>
                             </div>
                         </div>
-                        <button class="btn-primary" id="transactionSubmitBtn" onclick="handleAdd()" style="margin-top:5px;">حفظ العملية</button>
+                        <button class="btn-primary" id="transactionSubmitBtn" onclick="handleAdd()" style="margin-top:16px;">حفظ وتقييد العملية</button>
                     </div>
                 </div>
 
                 <div class="input-with-voice-holder">
-                     <input type="text" id="liveSearchInput" class="input-ui" placeholder="🔍 ابحث بالكلمة عن أي بيان أو قيد مالي..." oninput="handleLiveSearch()" style="border-radius:14px; padding-right:42px; padding-left:42px; font-size:13px;">
+                     <input type="text" id="liveSearchInput" class="input-ui" placeholder="🔍 ابحث في السجلات القديمة..." oninput="handleLiveSearch()" style="border-radius:20px; padding-right:42px; padding-left:42px; font-size:14px; background:var(--bg-card); backdrop-filter:blur(10px);">
                      <button class="voice-mic-btn" id="micBtn-search" onclick="startVoiceRecognition('liveSearchInput')"><i class="fas fa-microphone"></i></button>
                 </div>
 
@@ -727,27 +576,31 @@
     </div>
 
     <script>
+        // ======= إعدادات Firebase الحقيقية والمربوطة بنجاح =======
         const firebaseConfig = {
-            apiKey: "AIzaSyD02QWlxSjgHXLH9pZoPkXnIv5oLCsqEjk",
+            apiKey: "AIzaSyD02QWlXsJgHXLH9pZoPkXnIv5oLCsqEjk",
             authDomain: "perfect-steel.firebaseapp.com",
-            databaseURL: "https://perfect-steel-default-rtdb.firebaseio.com/", 
+            databaseURL: "https://perfect-steel-default-rtdb.firebaseio.com",
             projectId: "perfect-steel",
-            storageBucket: "perfect-steel.appspot.com",
+            storageBucket: "perfect-steel.firebasestorage.app",
             messagingSenderId: "971478055068",
             appId: "1:971478055068:web:ec9317054c6e7553f29559",
             measurementId: "G-GQLCKE4S7M"
         };
+        // =======================================================
 
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+        const storage = firebase.storage();
 
         let currentMode = 'income'; let globalTransactions = []; let activeFilter = 'all'; let activeEngineerFilter = 'all'; let currentUser = null; 
         let PROJECT_LIST = ["New Cairo", "Old Cairo", "Helwan", "Ismailia"]; 
         let SELECTED_PROJECT = ""; let firebaseTransactionsRef = null; let firebaseProjectInfoRef = null;
         let globalProjectStatuses = {}; let currentProjectLaborList = []; let currentProjectMaterialsMap = {}; let chartInstance = null; let calcExpression = "";
         let currentProjectLoadedDataSnapshot = {}; 
+        let allSystemTransactionsCache = []; 
+        let currentAttendanceList = [];
 
-        // بيانات الدخول والتصريحات مع ميزة الـ Firebase Sync
         let ACCOUNTS_ROLES = {
             "ahmed": { role: "admin", canSeeAllRevenue: true, canSeeAllFinancials: true, label: "أحمد" }, 
             "mostafa": { role: "admin", canSeeAllRevenue: true, canSeeAllFinancials: true, label: "مصطفى" }, 
@@ -756,39 +609,81 @@
         };
         let LOCAL_MOCK = {"ahmed":"222", "mostafa":"1519", "mohamed":"333", "tawfik":"444"};
 
-        // مزامنة المهندسين المضافين من الـ Firebase
         database.ref('system_accounts').on('value', (snap) => {
             let data = snap.val();
-            if(data) {
-                if(data.roles) Object.assign(ACCOUNTS_ROLES, data.roles);
-                if(data.credentials) Object.assign(LOCAL_MOCK, data.credentials);
-            } else {
-                database.ref('system_accounts').set({ roles: ACCOUNTS_ROLES, credentials: LOCAL_MOCK });
-            }
+            if(data) { if(data.roles) Object.assign(ACCOUNTS_ROLES, data.roles); if(data.credentials) Object.assign(LOCAL_MOCK, data.credentials); } 
+            else { database.ref('system_accounts').set({ roles: ACCOUNTS_ROLES, credentials: LOCAL_MOCK }); }
         });
 
         window.addEventListener('DOMContentLoaded', () => { 
-            const savedTheme = localStorage.getItem("theme") || "dark";
-            document.documentElement.setAttribute("data-theme", savedTheme);
+            const savedTheme = localStorage.getItem("theme") || "dark"; document.documentElement.setAttribute("data-theme", savedTheme);
             autoLoginSession(); listenToGlobalProjectStatuses(); setupDropdownOutsideClickListener(); setupGlobalScreenCloseListeners(); checkAndSyncOfflineTransactions();
+            fetchAllTransactionsForAdmin();
         });
 
-        function triggerHapticFeedback() { if (window.navigator && window.navigator.vibrate) { window.navigator.vibrate(12); } }
+        function triggerHapticFeedback() { if (window.navigator && window.navigator.vibrate) window.navigator.vibrate(20); }
         function scrollToTransactionForm() { triggerHapticFeedback(); let form = document.getElementById("mainInputTransactionCard"); if(form) { form.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }
+
+        function togglePanel(panelId) {
+            triggerHapticFeedback();
+            let panels = ['laborSubPanel', 'materialsSubPanel', 'suppliersSubPanel', 'attendanceSubPanel'];
+            panels.forEach(p => { 
+                let el = document.getElementById(p); 
+                if(p === panelId) { el.style.display = el.style.display === 'flex' ? 'none' : 'flex'; }
+                else { el.style.display = 'none'; }
+            });
+        }
+
+        function fetchAllTransactionsForAdmin() {
+            database.ref('transactions').on('value', snap => {
+                let data = snap.val(); allSystemTransactionsCache = [];
+                if(data) { for(let id in data) { allSystemTransactionsCache.push(data[id]); } }
+            });
+        }
+
+        function openAdminGlobalDashboard() {
+            triggerHapticFeedback(); toggleSidebar(false); resetProjectSelection();
+            document.getElementById("projectSelectorCard").classList.add("hide-completely");
+            document.getElementById("adminGlobalDashboardView").style.display = "flex";
+            document.getElementById("appGlobalHeader").style.display = "none";
+            
+            let totalInc = 0, totalExp = 0; let projectStats = {};
+            allSystemTransactionsCache.forEach(tx => {
+                let amt = parseInlineCalculation(tx.amount) || 0;
+                if(!projectStats[tx.project]) projectStats[tx.project] = { inc: 0, exp: 0 };
+                if(tx.type === 'income') { totalInc += amt; projectStats[tx.project].inc += amt; }
+                else { totalExp += amt; projectStats[tx.project].exp += amt; }
+            });
+
+            document.getElementById("globalIncVal").innerText = totalInc.toLocaleString();
+            document.getElementById("globalExpVal").innerText = totalExp.toLocaleString();
+            document.getElementById("globalNetVal").innerText = (totalInc - totalExp).toLocaleString();
+
+            let projHtml = "";
+            for(let p in projectStats) {
+                let net = projectStats[p].inc - projectStats[p].exp;
+                let color = net < 0 ? "var(--danger)" : "var(--success)";
+                projHtml += `<div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:14px; display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+                    <div style="font-weight:bold; font-size:13px;"><i class="fas fa-building" style="color:var(--info); margin-left:6px;"></i> ${p}</div>
+                    <div style="font-size:14px; font-weight:900; color:${color};" dir="ltr">${net.toLocaleString()} EGP</div>
+                </div>`;
+            }
+            document.getElementById("globalProjectsList").innerHTML = projHtml || "<div style='font-size:12px; color:gray; text-align:center;'>لا توجد بيانات مشاريع.</div>";
+        }
 
         function handleFloatingFabClick() {
             triggerHapticFeedback();
-            if (SELECTED_PROJECT === "") { if (ACCOUNTS_ROLES[currentUser] && ACCOUNTS_ROLES[currentUser].role === 'admin') { createNewProjectModalAction(); } } 
+            if (SELECTED_PROJECT === "") { if (ACCOUNTS_ROLES[currentUser] && ACCOUNTS_ROLES[currentUser].role === 'admin') createNewProjectModalAction(); } 
             else { scrollToTransactionForm(); }
         }
 
         function createNewProjectModalAction() {
             showGlobalAppModal({
-                title: "🏗️ إضافة موقع عمل جديد", body: "اكتب اسم المشروع الجديد بدقة ليتم تهيئته فوراً:", icon: "fas fa-folder-plus", iconColor: "var(--primary)", showInput: true, inputValue: "", confirmText: "تأسيس موقع العمل", confirmColor: "var(--primary)",
+                title: "🏗️ موقع عمل جديد", body: "اكتب اسم المشروع الجديد:", icon: "fas fa-folder-plus", iconColor: "var(--primary)", showInput: true, inputValue: "", confirmText: "تأسيس المشروع", confirmColor: "var(--primary)",
                 onConfirm: function(projName) {
                     if (projName && projName.trim() !== "") {
                         let cleanName = projName.trim();
-                        database.ref('project_info').child(cleanName).set({ engineer: "م / "+ACCOUNTS_ROLES[currentUser].label, owner: "تحت التأسيس", labor: "0", progress: "0", notes: "", status: "جاري العمل" }).then(() => { triggerHapticFeedback(); });
+                        database.ref('project_info').child(cleanName).set({ engineer: "م / "+ACCOUNTS_ROLES[currentUser].label, owner: "المالك", labor: "0", progress: "0", notes: "", status: "جاري العمل" }).then(() => triggerHapticFeedback());
                     }
                 }
             });
@@ -796,136 +691,210 @@
 
         function updateFabVisibilityState() {
             let fab = document.getElementById("fastInputFab"); if (!fab) return;
-            if (SELECTED_PROJECT === "") { if (ACCOUNTS_ROLES[currentUser] && ACCOUNTS_ROLES[currentUser].role === 'admin') { fab.classList.add("visible"); } else { fab.classList.remove("visible"); } } 
+            if (SELECTED_PROJECT === "") { if (ACCOUNTS_ROLES[currentUser] && ACCOUNTS_ROLES[currentUser].role === 'admin') fab.classList.add("visible"); else fab.classList.remove("visible"); } 
             else { fab.classList.add("visible"); }
         }
 
         function openAddEngineerModal() {
-            triggerHapticFeedback();
-            toggleSidebar(false);
-            
-            document.getElementById("newEngUsername").value = "";
-            document.getElementById("newEngPassword").value = "";
-            document.getElementById("newEngLabel").value = "";
-            
             document.getElementById("addEngineerFormContainer").style.display = "flex";
-            let pidContainer = document.getElementById("projectIndicatorsFormContainer");
-            if(pidContainer) pidContainer.style.display = "none";
-            document.getElementById("globalModalInputContainer").style.display = "none";
-
-            showGlobalAppModal({
-                title: "إضافة حساب مهندس جديد", 
-                body: "سجل بيانات المهندس الجديد ليتمكن من الدخول وإدارة مشاريع الموقع:", 
-                icon: "fas fa-user-plus", 
-                iconColor: "var(--success)", 
-                confirmText: "حفظ وتفعيل الحساب", 
-                confirmColor: "var(--success)",
-                onConfirm: function() {
-                    let newUser = document.getElementById("newEngUsername").value.trim().toLowerCase();
-                    let newPass = document.getElementById("newEngPassword").value.trim();
-                    let newLabel = document.getElementById("newEngLabel").value.trim();
-
-                    if(!newUser || !newPass || !newLabel) {
-                        alert("يرجى ملء جميع الحقول!");
-                        return;
-                    }
-                    if(LOCAL_MOCK[newUser]) {
-                        alert("اسم المستخدم موجود بالفعل! اختر اسماً آخر.");
-                        return;
-                    }
-
-                    LOCAL_MOCK[newUser] = newPass;
-                    ACCOUNTS_ROLES[newUser] = { role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: newLabel };
-
-                    database.ref('system_accounts/credentials/' + newUser).set(newPass);
-                    database.ref('system_accounts/roles/' + newUser).set(ACCOUNTS_ROLES[newUser]).then(() => {
-                        triggerHapticFeedback();
-                        document.getElementById("addEngineerFormContainer").style.display = "none";
-                        showGlobalAppModal({ 
-                            title: "تم بنجاح", 
-                            body: `تمت إضافة وتفعيل حساب (م/ ${newLabel}) بنجاح!`, 
-                            icon: "fas fa-check-circle", 
-                            iconColor: "var(--success)" 
-                        });
-                    });
-                }
-            });
-
-            document.getElementById("globalModalConfirmBtn").nextElementSibling.onclick = function() { 
-                document.getElementById("addEngineerFormContainer").style.display = "none"; 
-                closeGlobalAppModal(); 
-            };
+            showGlobalAppModal({ title: "👤 إضافة مهندس", body: "بيانات المهندس الجديد:", icon: "fas fa-user-plus", confirmText: "حفظ الحساب", confirmColor: "#10B981", onConfirm: function() { let user = document.getElementById("newEngUsername").value.trim().toLowerCase(); let pass = document.getElementById("newEngPassword").value.trim(); let label = document.getElementById("newEngLabel").value.trim(); if(user && pass && label) { ACCOUNTS_ROLES[user] = { role: "engineer", canSeeAllRevenue: false, canSeeAllFinancials: false, label: label }; LOCAL_MOCK[user] = pass; database.ref('system_accounts').set({ roles: ACCOUNTS_ROLES, credentials: LOCAL_MOCK }); alert("تمت إضافة المهندس!"); } else { alert("يرجى إكمال الحقول."); } } });
         }
 
         function openProjectIndicatorsEditModal() {
-            triggerHapticFeedback(); toggleSidebar(false);
+            document.getElementById("projectIndicatorsFormContainer").style.display = "flex";
             document.getElementById("setupEngName").value = currentProjectLoadedDataSnapshot.engineer || "";
             document.getElementById("setupOwnerName").value = currentProjectLoadedDataSnapshot.owner || "";
-            document.getElementById("setupLaborCount").value = currentProjectLoadedDataSnapshot.labor || "0";
-            document.getElementById("setupProgressPercent").value = currentProjectLoadedDataSnapshot.progress || "0";
+            document.getElementById("setupLaborCount").value = currentProjectLoadedDataSnapshot.labor || "";
+            document.getElementById("setupProgressPercent").value = currentProjectLoadedDataSnapshot.progress || "";
             document.getElementById("setupProjectNotes").value = currentProjectLoadedDataSnapshot.notes || "";
             document.getElementById("setupProjectStatusSelect").value = currentProjectLoadedDataSnapshot.status || "جاري العمل";
             
-            document.getElementById("projectIndicatorsFormContainer").style.display = "flex"; 
-            let addEngForm = document.getElementById("addEngineerFormContainer");
-            if(addEngForm) addEngForm.style.display = "none";
-            document.getElementById("globalModalInputContainer").style.display = "none";
-
-            showGlobalAppModal({
-                title: `تحديث بيانات: ${SELECTED_PROJECT}`, body: "تحديث مؤشرات وملاحظات الموقع الحالية ومزامنتها ميدانياً على السيرفر:", icon: "fas fa-sliders", iconColor: "var(--purple)", confirmText: "حفظ التغييرات", confirmColor: "var(--purple)",
-                onConfirm: function() {
-                    database.ref('project_info').child(SELECTED_PROJECT).update({
-                        engineer: document.getElementById("setupEngName").value.trim(), owner: document.getElementById("setupOwnerName").value.trim(), labor: document.getElementById("setupLaborCount").value.trim() || "0", progress: document.getElementById("setupProgressPercent").value.trim() || "0", notes: document.getElementById("setupProjectNotes").value.trim(), status: document.getElementById("setupProjectStatusSelect").value
-                    }).then(() => { triggerHapticFeedback(); document.getElementById("projectIndicatorsFormContainer").style.display = "none"; });
-                }
-            });
-            document.getElementById("globalModalConfirmBtn").nextElementSibling.onclick = function() { document.getElementById("projectIndicatorsFormContainer").style.display = "none"; closeGlobalAppModal(); };
+            showGlobalAppModal({ title: "⚙️ إعدادات الموقع", body: "تحديث مؤشرات وبيانات المشروع:", icon: "fas fa-sliders-h", confirmText: "حفظ التعديلات", confirmColor: "var(--primary)", onConfirm: function() { let eng = document.getElementById("setupEngName").value; let owner = document.getElementById("setupOwnerName").value; let lab = document.getElementById("setupLaborCount").value; let prog = document.getElementById("setupProgressPercent").value; let notes = document.getElementById("setupProjectNotes").value; let stat = document.getElementById("setupProjectStatusSelect").value; database.ref('project_info').child(SELECTED_PROJECT).update({ engineer: eng, owner: owner, labor: lab, progress: prog, notes: notes, status: stat }).then(() => triggerHapticFeedback()); } });
         }
 
         function triggerHardDeleteProject(projectName, event) {
-            if(event) event.stopPropagation(); triggerHapticFeedback();
-            showGlobalAppModal({
-                title: "⚠️ حذف المشروع نهائياً", body: `هل أنت متأكد من مسح وإزالة موقع (${projectName}) نهائياً من السيرفر وجداول الحسابات المالية؟`, icon: "fas fa-exclamation-triangle", iconColor: "var(--danger)", confirmText: "تأكيد مسح السيرفر النهائي", confirmColor: "var(--danger)",
-                onConfirm: function() {
-                    showLoad(true); database.ref('project_info').child(projectName).remove(); database.ref('project_labors').child(projectName).remove(); database.ref('project_materials').child(projectName).remove();
-                    database.ref('transactions').once('value').then((snapshot) => {
-                        let data = snapshot.val(); if(data) { for(let id in data) { if(data[id] && data[id].project === projectName) { database.ref('transactions').child(id).remove(); } } }
-                        showLoad(false); triggerHapticFeedback();
-                    }).catch(() => showLoad(false));
+            event.stopPropagation();
+            if (confirm("⚠️ تحذير: حذف موقع [" + projectName + "] نهائياً؟")) { localStorage.setItem("deleted_proj_" + projectName, "true"); listenToGlobalProjectStatuses(); alert("تم الإخفاء."); }
+        }
+        
+        function parseInlineCalculation(inputStr) {
+            if (!inputStr) return 0; let cleanStr = String(inputStr).replace(/[^0-9+\-*/.]/g, ''); if (!cleanStr) return 0;
+            try { return parseFloat(eval(cleanStr).toFixed(2)); } catch(e) { return parseFloat(cleanStr) || 0; }
+        }
+
+        function saveLaborEntry() {
+            let name = document.getElementById("labWorkerName").value; let amt = parseFloat(document.getElementById("labAmount").value)||0;
+            if(!name || amt===0) return alert("الاسم والمبلغ مطلوبين.");
+            database.ref('project_labor').child(SELECTED_PROJECT).push({ name:name, amount:amt, date: new Date().toISOString().split('T')[0] }).then(()=>{ document.getElementById("labWorkerName").value=""; document.getElementById("labAmount").value=""; triggerHapticFeedback(); });
+        }
+
+        function listenToProjectLaborData(proj) {
+            database.ref('project_labor').child(proj).on('value', snap => {
+                currentProjectLaborList = []; let data = snap.val(); let html = "";
+                if(data) {
+                    for(let k in data) {
+                        currentProjectLaborList.push({...data[k], key:k});
+                        html += `<div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-weight:bold;">${data[k].name}</span><span style="color:var(--danger); font-weight:900;">${data[k].amount} ج</span>
+                        </div>`;
+                    }
                 }
+                document.getElementById("laborEntriesList").innerHTML = html || "<div style='font-size:11px; color:gray; text-align:center;'>الدفتر فارغ..</div>";
             });
         }
 
-        function parseInlineCalculation(inputStr) {
-            if (!inputStr) return 0; let cleanStr = String(inputStr).replace(/[^0-9+\-*/.]/g, ''); if (!cleanStr) return 0;
-            try {
-                let numbers = cleanStr.split(/([+\-*/])/); let total = parseFloat(numbers[0]) || 0;
-                for (let i = 1; i < numbers.length; i += 2) {
-                    let operator = numbers[i]; let nextValue = parseFloat(numbers[i + 1]) || 0;
-                    if (operator === '+') total += nextValue; if (operator === '-') total -= nextValue; if (operator === '*') total *= nextValue; if (operator === '/') total = nextValue !== 0 ? total / nextValue : total;
-                }
-                return isNaN(total) || !isFinite(total) ? 0 : parseFloat(total.toFixed(2));
-            } catch(e) { return parseFloat(cleanStr) || 0; }
+        function transferLaborToExpenses() {
+            if(currentProjectLaborList.length === 0) return alert("لا توجد مسحوبات.");
+            if(confirm("ترحيل كل المسحوبات لمصروفات الموقع?")) {
+                currentProjectLaborList.forEach(item => {
+                    database.ref('transactions').push({ project: SELECTED_PROJECT, engineer: currentUser, type: 'expense', category: 'عمالة', amount: item.amount, desc: "مسحوبات مقاول: " + item.name, date: new Date().toISOString().split('T')[0], ts: Date.now() });
+                    database.ref('project_labor').child(SELECTED_PROJECT).child(item.key).remove();
+                });
+                triggerHapticFeedback();
+            }
         }
 
-        function exportToExcelCSVSheet() {
-            toggleSidebar(false); if(globalTransactions.length === 0) return alert("لا توجد بيانات.");
-            let csvContent = "\uFEFF"; csvContent += "التاريخ,التصنيف,البيان المالي للعملية,النوع,المبلغ ج.م,المهندس المسؤول\n";
-            globalTransactions.forEach(item => { let typeText = item.type === 'income' ? "إيراد (+)" : "مصروف (-)"; csvContent += `${item.date || '-'},${item.category || 'عام'},${item.desc.replace(/,/g, ' ')},${typeText},${item.amount},م / ${ACCOUNTS_ROLES[item.engineer]?.label || ''}\n`; });
-            let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' }); let url = URL.createObjectURL(blob);
-            let link = document.createElement("a"); link.setAttribute("href", url); link.setAttribute("download", `Perfect_Steel_${SELECTED_PROJECT}.csv`);
-            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        function addMaterialTarget() {
+            let name = document.getElementById("newMatName").value; let qty = parseFloat(document.getElementById("newMatTarget").value)||0;
+            if(!name || qty===0) return alert("البيانات غير مكتملة.");
+            database.ref('project_materials').child(SELECTED_PROJECT).push({ name:name, target:qty, delivered:0 }).then(()=>{ document.getElementById("newMatName").value=""; document.getElementById("newMatTarget").value=""; });
+        }
+
+        function listenToProjectMaterialsData(proj) {
+            database.ref('project_materials').child(proj).on('value', snap => {
+                let data = snap.val(); let html = ""; let options = "<option value=''>اختر الخامة..</option>";
+                if(data) {
+                    for(let k in data) {
+                        let pct = Math.min(100, (data[k].delivered / data[k].target) * 100);
+                        html += `<div class="mat-item-row-ui">
+                            <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:bold; margin-bottom:4px;"><span>${data[k].name}</span><span>${data[k].delivered} / ${data[k].target}</span></div>
+                            <div class="mat-bar-wrapper"><div class="mat-bar-fill" style="width:${pct}%; background:${pct>=100?'var(--success)':'var(--purple)'}"></div></div>
+                        </div>`;
+                        options += `<option value="${k}">${data[k].name}</option>`;
+                    }
+                }
+                document.getElementById("projectMaterialsDisplayList").innerHTML = html || "<div style='font-size:11px; color:gray; text-align:center;'>لم يتم تسجيل مقايسات..</div>";
+                document.getElementById("deliveryMatSelect").innerHTML = options;
+            });
+        }
+
+        function logMaterialDelivery() {
+            let matKey = document.getElementById("deliveryMatSelect").value; let qty = parseFloat(document.getElementById("deliveryQty").value)||0;
+            if(!matKey || qty===0) return alert("اختر الخامة والكمية.");
+            database.ref('project_materials').child(SELECTED_PROJECT).child(matKey).child('delivered').transaction(current => (current||0) + qty).then(()=>{ document.getElementById("deliveryQty").value=""; triggerHapticFeedback(); });
+        }
+
+        function listenToSuppliers(proj) {
+            database.ref('project_suppliers').child(proj).on('value', snap => {
+                let data = snap.val(); let html = "";
+                if(data) {
+                    for(let k in data) {
+                        let remain = data[k].invoice - data[k].paid;
+                        html += `<div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:12px; border-radius:16px;">
+                            <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:13px; margin-bottom:6px;"><span style="color:#fbbf24;">${data[k].name}</span><i class="fas fa-trash-can" style="color:var(--text-dim);" onclick="deleteSupplier('${k}')"></i></div>
+                            <div style="display:flex; justify-content:space-between; font-size:11px;"><span>فاتورة: ${data[k].invoice}</span><span style="color:var(--success);">مُسدد: ${data[k].paid}</span><span style="color:var(--danger); font-weight:bold;">باقي: ${remain}</span></div>
+                        </div>`;
+                    }
+                }
+                document.getElementById("suppliersList").innerHTML = html || "<div style='font-size:11px; color:gray; text-align:center;'>لا يوجد موردين..</div>";
+            });
+        }
+
+        function saveSupplierInvoice() {
+            let name = document.getElementById("supName").value; let inv = parseFloat(document.getElementById("supInvoice").value)||0; let paid = parseFloat(document.getElementById("supPaid").value)||0;
+            if(!name || inv===0) return alert("أدخل اسم المورد والفاتورة.");
+            database.ref('project_suppliers').child(SELECTED_PROJECT).push({ name:name, invoice:inv, paid:paid, date: new Date().toISOString().split('T')[0] }).then(()=>{ document.getElementById("supName").value=""; document.getElementById("supInvoice").value=""; document.getElementById("supPaid").value=""; triggerHapticFeedback(); });
+        }
+        function deleteSupplier(key) { if(confirm("مسح حساب المورد؟")) database.ref('project_suppliers').child(SELECTED_PROJECT).child(key).remove(); }
+
+        function setAttStatus(status, btn) {
+            document.querySelectorAll('.attendance-btn').forEach(b => b.classList.remove('active', 'border-white'));
+            btn.classList.add('active'); document.getElementById("attStatusVal").value = status;
+            triggerHapticFeedback();
+        }
+
+        function listenToAttendance(proj) {
+            database.ref('project_attendance').child(proj).on('value', snap => {
+                currentAttendanceList = []; let data = snap.val(); let html = "";
+                if(data) {
+                    for(let k in data) {
+                        currentAttendanceList.push({...data[k], id: k});
+                        let sText = data[k].status === 'present' ? '<span style="color:var(--success); background:rgba(16,185,129,0.1); padding:2px 6px; border-radius:6px;">يوم كامل</span>' : (data[k].status === 'half' ? '<span style="color:var(--revenue-color); background:rgba(251,191,36,0.1); padding:2px 6px; border-radius:6px;">نص يوم</span>' : '<span style="color:var(--danger); background:rgba(239,68,68,0.1); padding:2px 6px; border-radius:6px;">غائب</span>');
+                        let eAmt = data[k].status === 'present' ? data[k].rate : (data[k].status === 'half' ? data[k].rate/2 : 0);
+                        html += `<div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:10px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-weight:bold;">${data[k].name} <small style="color:var(--text-dim); font-weight:normal;">(${data[k].date})</small></span> <span>${sText} = <b style="font-size:13px;">${eAmt}</b> ج</span><i class="fas fa-trash-can" style="color:var(--danger);" onclick="deleteAttendance('${k}')"></i>
+                        </div>`;
+                    }
+                }
+                document.getElementById("attendanceList").innerHTML = html || "<div style='font-size:11px; color:gray; text-align:center;'>دفتر اليومية فارغ..</div>";
+            });
+        }
+
+        function saveAttendance() {
+            let name = document.getElementById("attWorker").value; let rate = parseFloat(document.getElementById("attRate").value)||0; let status = document.getElementById("attStatusVal").value;
+            if(!name || rate===0) return alert("أدخل البيانات صحيحة.");
+            database.ref('project_attendance').child(SELECTED_PROJECT).push({ name:name, rate:rate, status:status, date: new Date().toISOString().split('T')[0] }).then(()=>{ document.getElementById("attWorker").value=""; triggerHapticFeedback(); });
+        }
+        function deleteAttendance(key) { if(confirm("مسح اليومية؟")) database.ref('project_attendance').child(SELECTED_PROJECT).child(key).remove(); }
+
+        function generateAttendancePDFReport() {
+            if(currentAttendanceList.length === 0) return alert("لا توجد يوميات لطباعتها.");
+            let pdfArea = document.getElementById("attendancePdfHiddenArea"); 
+            let tablePlaceholder = document.getElementById("attendancePdfTablePlaceholder");
+            document.getElementById("attPdfMeta").innerText = `موقع: ${SELECTED_PROJECT} | تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}`;
+            
+            let tableHtml = `<table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:13px; text-align:center;" border="1">
+            <thead><tr style="background:#059669; color:white;"><th>التاريخ</th><th>اسم العامل</th><th>الحالة</th><th>المستحق</th></tr></thead><tbody>`;
+            
+            let totalAmt = 0;
+            currentAttendanceList.forEach(item => {
+                let eAmt = item.status === 'present' ? parseFloat(item.rate) : (item.status === 'half' ? parseFloat(item.rate)/2 : 0);
+                totalAmt += eAmt;
+                let sText = item.status === 'present' ? 'يوم كامل' : (item.status === 'half' ? 'نصف يوم' : 'غائب');
+                tableHtml += `<tr><td style="padding:8px;">${item.date}</td><td style="padding:8px;">${item.name}</td><td style="padding:8px;">${sText}</td><td style="padding:8px; font-weight:bold;">${eAmt} ج.م</td></tr>`;
+            });
+            tableHtml += `<tr style="font-weight:bold; background:#f1f5f9;"><td colspan="3" style="padding:10px;">إجمالي مستحقات العمال</td><td style="padding:10px; color:#059669; font-size:15px;">${totalAmt} ج.م</td></tr></tbody></table>`;
+            
+            tablePlaceholder.innerHTML = tableHtml;
+            pdfArea.style.display = "flex";
+            
+            let opt = { margin: 10, filename: `حضور_عمال_${SELECTED_PROJECT}.pdf`, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+            html2pdf().set(opt).from(pdfArea).save().then(() => { pdfArea.style.display = "none"; });
+        }
+
+        function generateLaborExpensesPDFReport() {
+            let registeredLaborExpenses = globalTransactions.filter(item => item && item.type === 'expense' && item.category === 'عمالة'); 
+            if(registeredLaborExpenses.length === 0) return alert("لا توجد مسحوبات مرحلة في المصروفات.");
+            
+            let expenseZone = document.getElementById("laborExpensesPdfHiddenArea"); 
+            let tablePlaceholder = document.getElementById("laborExpensesPdfTablePlaceholder");
+            document.getElementById("laborPdfMeta").innerText = `موقع: ${SELECTED_PROJECT} | تاريخ: ${new Date().toLocaleDateString('ar-EG')}`;
+
+            let tableHtml = `<table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:13px; text-align:center;" border="1">
+            <thead><tr style="background:#0284c7; color:white;"><th>التاريخ</th><th>البيان والمقاول</th><th>المبلغ</th></tr></thead><tbody>`;
+            
+            let totalSum = 0; 
+            registeredLaborExpenses.forEach(item => { 
+                let amtCalculated = parseInlineCalculation(item.amount); 
+                totalSum += parseFloat(amtCalculated || 0); 
+                tableHtml += `<tr><td style="padding:8px;">${item.date || '-'}</td><td style="padding:8px;">${item.desc || ''}</td><td style="padding:8px; color:#ef4444; font-weight:bold;">${parseFloat(amtCalculated).toLocaleString()} ج.م</td></tr>`; 
+            });
+            
+            tableHtml += `<tr style="font-weight:bold; background:#f1f5f9;"><td colspan="2" style="padding:10px;">الإجمالي الكلي</td><td style="padding:10px; color:#0284c7; font-size:15px;">${totalSum.toLocaleString()} ج.م</td></tr></tbody></table>`; 
+            
+            tablePlaceholder.innerHTML = tableHtml; 
+            expenseZone.style.display = "flex"; 
+            
+            let opt = { margin: 10, filename: `مسحوبات_العمال_${SELECTED_PROJECT}.pdf`, html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }; 
+            html2pdf().set(opt).from(expenseZone).save().then(() => { expenseZone.style.display = "none"; });
         }
 
         function toggleThemeFast() { triggerHapticFeedback(); let current = document.documentElement.getAttribute("data-theme") || "dark"; let next = current === "dark" ? "light" : (current === "light" ? "oled" : "dark"); document.documentElement.setAttribute("data-theme", next); localStorage.setItem("theme", next); }
-        function selectIconCategory(cat) { document.querySelectorAll('#catGroup .icon-selector-item').forEach(el => el.classList.remove('selected')); let activeElement = document.getElementById('item-cat-' + cat); if(activeElement) activeElement.classList.add('selected'); document.getElementById('expenseCategory').value = cat; }
-        function selectIconIncomeCategory(cat) { document.querySelectorAll('#incomeCatGroup .icon-selector-item').forEach(el => el.classList.remove('selected')); let activeElement = document.getElementById('item-inc-' + cat.replace(' ', '_')); if(activeElement) activeElement.classList.add('selected'); document.getElementById('incomeCategory').value = cat; }
-        function setDynamicGreeting(userLabel) { let currentHour = new Date().getHours(); let greetingWord = currentHour >= 12 ? "مساء الخير" : "صباح الخير"; document.getElementById("dynamicGreeting").innerText = `${greetingWord} م / ${userLabel} ☕`; }
+        function selectIconCategory(cat) { triggerHapticFeedback(); document.querySelectorAll('#catGroup .icon-selector-item').forEach(el => el.classList.remove('selected')); let activeElement = document.getElementById('item-cat-' + cat); if(activeElement) activeElement.classList.add('selected'); document.getElementById('expenseCategory').value = cat; }
+        function selectIconIncomeCategory(cat) { triggerHapticFeedback(); document.querySelectorAll('#incomeCatGroup .icon-selector-item').forEach(el => el.classList.remove('selected')); let activeElement = document.getElementById('item-inc-' + cat.replace(' ', '_')); if(activeElement) activeElement.classList.add('selected'); document.getElementById('incomeCategory').value = cat; }
+        function setDynamicGreeting(userLabel) { let currentHour = new Date().getHours(); let greetingWord = currentHour >= 12 ? "مساء الخير" : "صباح الخير"; document.getElementById("dynamicGreeting").innerText = `${greetingWord} م/ ${userLabel} ☕`; }
         function toggleCustomDropdown(type) { if(type === 'active') { document.getElementById("customProjectDropdown").classList.toggle("open"); document.getElementById("customArchiveDropdown").classList.remove("open"); } else { document.getElementById("customArchiveDropdown").classList.toggle("open"); document.getElementById("customProjectDropdown").classList.remove("open"); } }
         
-        function toggleLaborSubPanel() { let p = document.getElementById("laborSubPanel"); let m = document.getElementById("materialsSubPanel"); p.style.display = (p.style.display === 'flex') ? 'none' : 'flex'; m.style.display = 'none'; }
-        function toggleMaterialsSubPanel() { let m = document.getElementById("materialsSubPanel"); let p = document.getElementById("laborSubPanel"); m.style.display = (m.style.display === 'flex') ? 'none' : 'flex'; p.style.display = 'none'; }
-
         function listenToGlobalProjectStatuses() {
             database.ref('project_info').on('value', (snap) => {
                 globalProjectStatuses = snap.val() || {}; let serverProjects = Object.keys(globalProjectStatuses);
@@ -939,233 +908,78 @@
             let activeHtml = ""; let archiveHtml = "";
             PROJECT_LIST.forEach(proj => {
                 let statusInfo = globalProjectStatuses[proj] ? globalProjectStatuses[proj].status : "جاري العمل";
-                if(statusInfo === "مكتمل") {
-                    archiveHtml += `<div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}', 'archive')"><div class="dropdown-item-text-zone" style="color:var(--revenue-color);"><i class="fas fa-box-archive" style="color:var(--revenue-color); font-size:11px;"></i> ${proj} (مؤرشف)</div><i class="fas fa-trash-can project-hard-trash-btn" onclick="triggerHardDeleteProject('${proj}', event)"></i></div>`;
-                } else {
-                    let dotColor = (statusInfo === "متوقف مؤقتا") ? "var(--danger)" : "var(--success)";
-                    activeHtml += `<div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}', 'active')"><div class="dropdown-item-text-zone"><i class="fas fa-map-location-dot" style="color:${dotColor}; font-size:11px;"></i> ${proj}</div></div>`;
-                }
+                if(statusInfo === "مكتمل") { archiveHtml += `<div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}', 'archive')"><div class="dropdown-item-text-zone" style="color:var(--text-dim);"><i class="fas fa-box-archive"></i> ${proj} (مؤرشف)</div><i class="fas fa-trash-can project-hard-trash-btn" onclick="triggerHardDeleteProject('${proj}', event)"></i></div>`; } 
+                else { activeHtml += `<div class="dropdown-option-item" onclick="selectCustomProjectOption('${proj}', 'active')"><div class="dropdown-item-text-zone"><i class="fas fa-map-location-dot" style="color:${statusInfo==="متوقف مؤقتا"?"var(--danger)":"var(--success)"};"></i> ${proj}</div></div>`; }
             });
-            activeContainer.innerHTML = activeHtml || `<div style="padding:10px; font-size:11px; color:var(--text-dim);">لا توجد مواقع نشطة..</div>`;
-            archiveContainer.innerHTML = archiveHtml || `<div style="padding:10px; font-size:11px; color:var(--text-dim);">الأرشيف فارغ..</div>`;
+            activeContainer.innerHTML = activeHtml || `<div style="padding:10px; font-size:12px; color:var(--text-dim);">لا توجد مواقع نشطة..</div>`;
+            archiveContainer.innerHTML = archiveHtml || `<div style="padding:10px; font-size:12px; color:var(--text-dim);">الأرشيف فارغ..</div>`;
         }
 
-        function selectCustomProjectOption(proj, type) { SELECTED_PROJECT = proj; if(type === 'active') { document.getElementById("dropdownSelectedLabel").innerText = proj; document.getElementById("archiveDropdownSelectedLabel").innerText = "تصفح مشاريع الأرشيف.."; document.getElementById("mainInputTransactionCard").style.display = "block"; } else { document.getElementById("archiveDropdownSelectedLabel").innerText = proj; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل.."; document.getElementById("mainInputTransactionCard").style.display = (ACCOUNTS_ROLES[currentUser] && ACCOUNTS_ROLES[currentUser].role === 'admin') ? "block" : "none"; } document.getElementById("customProjectDropdown").classList.remove("open"); document.getElementById("customArchiveDropdown").classList.remove("open"); onProjectChange(proj); }
+        function selectCustomProjectOption(proj, type) { SELECTED_PROJECT = proj; if(type === 'active') { document.getElementById("dropdownSelectedLabel").innerText = proj; document.getElementById("archiveDropdownSelectedLabel").innerText = "تصفح الأرشيف.."; document.getElementById("mainInputTransactionCard").style.display = "block"; } else { document.getElementById("archiveDropdownSelectedLabel").innerText = proj; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع.."; document.getElementById("mainInputTransactionCard").style.display = (ACCOUNTS_ROLES[currentUser] && ACCOUNTS_ROLES[currentUser].role === 'admin') ? "block" : "none"; } document.getElementById("customProjectDropdown").classList.remove("open"); document.getElementById("customArchiveDropdown").classList.remove("open"); onProjectChange(proj); }
         function setupDropdownOutsideClickListener() { document.addEventListener("click", (e) => { let d1 = document.getElementById("customProjectDropdown"); let d2 = document.getElementById("customArchiveDropdown"); if (d1 && !d1.contains(e.target)) d1.classList.remove("open"); if (d2 && !d2.contains(e.target)) d2.classList.remove("open"); }); }
         
+        // منع توقف الكود غصب عن المتصفح حتى لو الـ Firebase اتأخر
         function showGlobalAppModal(config) { 
-            document.getElementById("globalModalIcon").className = config.icon || "fas fa-info-circle"; document.getElementById("globalModalIcon").style.color = config.iconColor || "var(--primary)"; document.getElementById("globalModalTitle").innerText = config.title || "تنبيه النظام"; document.getElementById("globalModalBody").innerText = config.body || ""; 
+            if(!document.getElementById("globalModalIcon")) return;
+            document.getElementById("globalModalIcon").className = config.icon || "fas fa-info-circle"; document.getElementById("globalModalIcon").style.color = config.iconColor || "var(--primary)"; document.getElementById("globalModalTitle").innerText = config.title || "تنبيه"; document.getElementById("globalModalBody").innerText = config.body || ""; 
             let inputContainer = document.getElementById("globalModalInputContainer"); let inputField = document.getElementById("globalModalInputField"); if(config.showInput) { inputContainer.style.display = "block"; inputField.value = config.inputValue || ""; } else { inputContainer.style.display = "none"; } 
             let confirmBtn = document.getElementById("globalModalConfirmBtn"); confirmBtn.style.background = config.confirmColor || "var(--primary)"; confirmBtn.innerText = config.confirmText || "تأكيد"; 
             confirmBtn.onclick = function() { if(config.onConfirm) config.onConfirm(config.showInput ? inputField.value : null); closeGlobalAppModal(); resetAllSwipeCards(); }; 
             let modalEl = document.getElementById("globalAppModal"); if(modalEl) modalEl.style.setProperty('display', 'flex', 'important'); 
         }
-        
-        function closeGlobalAppModal() { 
-            let modalEl = document.getElementById("globalAppModal"); 
-            if(modalEl) modalEl.style.setProperty('display', 'none', 'important'); 
-            let addEng = document.getElementById("addEngineerFormContainer"); if(addEng) addEng.style.display="none";
-            let projInd = document.getElementById("projectIndicatorsFormContainer"); if(projInd) projInd.style.display="none";
-            resetAllSwipeCards(); 
-        }
+        function closeGlobalAppModal() { let modalEl = document.getElementById("globalAppModal"); if(modalEl) modalEl.style.setProperty('display', 'none', 'important'); let addEng = document.getElementById("addEngineerFormContainer"); if(addEng) addEng.style.display="none"; let projInd = document.getElementById("projectIndicatorsFormContainer"); if(projInd) projInd.style.display="none"; resetAllSwipeCards(); }
 
-        function startVoiceRecognition(targetId) {
-            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; if (!window.SpeechRecognition) return;
-            try { let recognition = new window.SpeechRecognition(); recognition.lang = 'ar-EG'; recognition.onresult = function(event) { if (event.results && event.results[0]) { let text = event.results[0][0].transcript; document.getElementById(targetId).value = text; if (targetId === 'liveSearchInput') handleLiveSearch(); } }; recognition.start(); } catch(e) {}
-        }
+        function startVoiceRecognition(targetId) { triggerHapticFeedback(); window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; if (!window.SpeechRecognition) return alert("المتصفح لا يدعم التسجيل الصوتي"); try { let recognition = new window.SpeechRecognition(); recognition.lang = 'ar-EG'; recognition.onresult = function(event) { if (event.results && event.results[0]) { let text = event.results[0][0].transcript; document.getElementById(targetId).value = text; if (targetId === 'liveSearchInput') handleLiveSearch(); } }; recognition.start(); } catch(e) {} }
         function setupGlobalScreenCloseListeners() { document.body.addEventListener("click", (e) => { if(!e.target.closest('.log-item') && !e.target.closest('.swipe-btn')) { resetAllSwipeCards(); } }); }
-        
-        function bindSwipeGesturesToElements() {
-            document.querySelectorAll(".log-item").forEach(card => {
-                let touchStartX = 0; let touchStartY = 0; let isScrollDetected = false;
-                card.addEventListener("touchstart", (e) => { touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY; isScrollDetected = false; }, {passive: true});
-                card.addEventListener("touchmove", (e) => {
-                    if (isScrollDetected) return;
-                    let moveX = e.touches[0].clientX; let moveY = e.touches[0].clientY; let diffX = touchStartX - moveX; let diffY = touchStartY - moveY;
-                    if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 10) { isScrollDetected = true; card.style.transform = "translateX(0)"; return; }
-                    if(diffX > 15 && diffX < 140) { card.style.transform = `translateX(-${diffX}px)`; }
-                }, {passive: true});
-                card.addEventListener("touchend", (e) => {
-                    if (isScrollDetected) return; let endX = e.changedTouches[0].clientX; let diffX = touchStartX - endX;
-                    if(diffX >= 45) { triggerHapticFeedback(); card.style.transform = `translateX(-120px)`; } 
-                    else { card.style.transform = `translateX(0)`; }
-                });
-            });
-
-            document.querySelectorAll(".swipe-btn").forEach(btn => {
-                btn.addEventListener("touchstart", (e) => { e.stopPropagation(); }, {passive: true});
-                btn.addEventListener("touchend", (e) => {
-                    e.preventDefault(); e.stopPropagation(); triggerHapticFeedback();
-                    if (typeof btn.onclick === 'function') { btn.onclick(); }
-                    else if (btn.hasAttribute('onclick')) { eval(btn.getAttribute('onclick')); }
-                });
-            });
-        }
         function resetAllSwipeCards() { document.querySelectorAll(".log-item").forEach(card => { card.style.transform = "translateX(0)"; }); }
 
-        function triggerInlineEditItem(id, currentDesc, currentAmount) {
-            resetAllSwipeCards();
-            showGlobalAppModal({
-                title: "تعديل بيانات البند المالي", body: "صيغة التعديل (البيان | المبلغ):", icon: "fas fa-edit", iconColor: "var(--info)", showInput: true, inputValue: `${currentDesc} | ${currentAmount}`, confirmText: "حفظ التعديل", confirmColor: "var(--info)",
-                onConfirm: function(val) {
-                    if(val && val.includes('|')) {
-                        let parts = val.split('|'); let newDesc = parts[0].trim(); let newAmt = parseFloat(parts[1].trim());
-                        if(newDesc !== "" && !isNaN(newAmt)) { database.ref('transactions').child(id).update({ desc: newDesc, amount: newAmt }); }
-                    }
-                }
-            });
+        function updateReceiptLabel() {
+            let fileInput = document.getElementById("receiptImage");
+            let labelText = document.getElementById("receiptLabelText");
+            if(fileInput.files.length > 0) { labelText.innerText = "✅ تم إرفاق الفاتورة (" + fileInput.files[0].name.substring(0,10) + "...)"; labelText.parentElement.style.borderColor = "var(--success)"; labelText.parentElement.style.color = "var(--success)"; labelText.parentElement.style.background = "rgba(16,185,129,0.1)"; } 
+            else { labelText.innerText = "تصوير وإرفاق الفاتورة للضمان"; labelText.parentElement.style.borderColor = "var(--primary)"; labelText.parentElement.style.color = "var(--primary)"; labelText.parentElement.style.background = "rgba(255,107,0,0.05)"; }
         }
 
-        function listenToProjectLaborData(proj) {
-            database.ref('project_labors').child(proj).on('value', (snap) => {
-                currentProjectLaborList = []; let data = snap.val(); let html = "";
-                if(data) { for(let key in data) { currentProjectLaborList.push({...data[key], id: key}); html += `<div style="background:rgba(255,255,255,0.02); padding:6px; border:1px solid var(--border); border-radius:8px; display:flex; justify-content:space-between; align-items:center;"><span><b>${data[key].name}</b>: ${parseFloat(data[key].amount).toLocaleString()} ج.م</span><i class="fas fa-trash-can" style="color:var(--danger);" onclick="deleteLaborEntry('${key}')"></i></div>`; } }
-                document.getElementById("laborEntriesList").innerHTML = html || `<div style="color:var(--text-dim); text-align:center; font-size:10px;">لا توجد سحبيات مسجلة للموقع...</div>`;
-            });
-        }
-
-        function saveLaborEntry() { let name = document.getElementById("labWorkerName").value.trim(); let amountRaw = document.getElementById("labAmount").value.trim(); let amt = parseInlineCalculation(amountRaw); if(!name || isNaN(amt) || amt <= 0) return alert("برجاء إدخال البيانات."); database.ref('project_labors').child(SELECTED_PROJECT).push({ name: name, amount: amt, date: new Date().toISOString().split('T')[0] }).then(() => { document.getElementById("labWorkerName").value = ""; document.getElementById("labAmount").value = ""; triggerHapticFeedback(); }); }
-        function deleteLaborEntry(key) { if(confirm("هل تريد حذف هذا القيد؟")) { database.ref('project_labors').child(SELECTED_PROJECT).child(key).remove(); } }
-
-        function transferLaborToExpenses() {
-            if(currentProjectLaborList.length === 0) return alert("لا توجد بنود."); let total = currentProjectLaborList.reduce((sum, item) => sum + parseFloat(item.amount), 0);
-            if(confirm(`ترحيل إجمالي عمالة وقدره (${total.toLocaleString()} ج.م) كبند مصروفات رسمي؟`)) { database.ref('transactions').push({ project: SELECTED_PROJECT, engineer: currentUser, type: 'expense', category: 'عمالة', amount: total, desc: `[ترحيل تلقائي] - إجمالي سحبيات عمال موقع ${SELECTED_PROJECT}`, date: new Date().toISOString().split('T')[0], ts: Date.now() }).then(() => { database.ref('project_labors').child(SELECTED_PROJECT).remove(); document.getElementById("laborSubPanel").style.display = 'none'; triggerHapticFeedback(); }); }
-        }
-
-        function listenToProjectMaterialsData(proj) {
-            database.ref('project_materials').child(proj).on('value', (snap) => {
-                currentProjectMaterialsMap = snap.val() || {};
-                let html = ""; let selectHtml = "";
-                
-                for(let id in currentProjectMaterialsMap) {
-                    let mat = currentProjectMaterialsMap[id];
-                    let target = parseFloat(mat.total_needed) || 0;
-                    let delivered = parseFloat(mat.delivered) || 0;
-                    let remaining = target - delivered; if(remaining < 0) remaining = 0;
-                    let percentage = target > 0 ? Math.min(100, Math.round((delivered / target) * 100)) : 0;
-                    
-                    let barColor = percentage >= 100 ? 'var(--success)' : (percentage > 50 ? 'var(--info)' : 'var(--primary)');
-                    
-                    selectHtml += `<option value="${id}">${mat.name}</option>`;
-                    
-                    html += `
-                        <div class="mat-item-row-ui">
-                             <div style="display:flex; justify-content:space-between; font-size:12px; font-weight:700;">
-                                  <span><i class="fas fa-cube" style="color:var(--purple)"></i> ${mat.name}</span>
-                                  <i class="fas fa-trash-can" style="color:var(--text-dim); font-size:11px; cursor:pointer;" onclick="deleteMaterialItem('${id}')"></i>
-                             </div>
-                             <div style="display:grid; grid-template-columns: repeat(3, 1fr); font-size:10px; color:var(--text-dim); text-align:center; padding:2px 0;">
-                                  <div>المقايسة: <b style="color:var(--text-main);">${target}</b></div>
-                                  <div>وصل: <b style="color:var(--success);">${delivered}</b></div>
-                                  <div>فاضل: <b style="color:var(--danger);">${remaining}</b></div>
-                             </div>
-                             <div style="display:flex; align-items:center; gap:8px;">
-                                  <div class="mat-bar-wrapper" style="flex:1;"><div class="mat-bar-fill" style="width:${percentage}%; background-color:${barColor};"></div></div>
-                                  <span style="font-size:9px; font-weight:900; color:var(--text-main); min-width:24px; text-align:left;">${percentage}%</span>
-                             </div>
-                        </div>`;
-                }
-                
-                document.getElementById("projectMaterialsDisplayList").innerHTML = html || `<div style="color:var(--text-dim); text-align:center; font-size:10px; padding:10px;">لا توجد خامات مثبتة في مقايسة الموقع الحالي...</div>`;
-                document.getElementById("deliveryMatSelect").innerHTML = selectHtml || `<option value="">(ثبّت خامة أولاً)</option>`;
-            });
-        }
-
-        function addMaterialTarget() {
-            let name = document.getElementById("newMatName").value.trim();
-            let targetQty = parseFloat(document.getElementById("newMatTarget").value);
-            if(!name || isNaN(targetQty) || targetQty <= 0) return alert("يرجى إدخال اسم الخامة والكمية المطلوبة بالمقايسة.");
-            
-            database.ref('project_materials').child(SELECTED_PROJECT).push({
-                name: name, total_needed: targetQty, delivered: 0
-            }).then(() => {
-                document.getElementById("newMatName").value = ""; document.getElementById("newMatTarget").value = ""; triggerHapticFeedback();
-            });
-        }
-
-        function logMaterialDelivery() {
-            let matId = document.getElementById("deliveryMatSelect").value;
-            let qty = parseFloat(document.getElementById("deliveryQty").value);
-            if(!matId || isNaN(qty) || qty <= 0) return alert("يرجى اختيار صنف الخامة وإدخال الشحنة المستلمة.");
-            
-            let currentDelivered = parseFloat(currentProjectMaterialsMap[matId].delivered) || 0;
-            let newDelivered = currentDelivered + qty;
-            
-            database.ref('project_materials').child(SELECTED_PROJECT).child(matId).update({
-                delivered: newDelivered
-            }).then(() => {
-                document.getElementById("deliveryQty").value = ""; triggerHapticFeedback();
-                showGlobalAppModal({ title: "تم التوريد الميداني", body: `✅ تم إثبات وصول كمية قدرها (${qty}) لبند (${currentProjectMaterialsMap[matId].name}) بنجاح.`, icon: "fas fa-truck-moving", iconColor: "var(--success)" });
-            });
-        }
-
-        function deleteMaterialItem(key) { if(confirm("هل تريد حذف هذا البند نهائياً من مقايسة الموقع؟")) { database.ref('project_materials').child(SELECTED_PROJECT).child(key).remove(); } }
-
-        function generateLaborExpensesPDFReport() {
-            let registeredLaborExpenses = globalTransactions.filter(item => item && item.type === 'expense' && item.category === 'عمالة'); if(registeredLaborExpenses.length === 0) return;
-            let expenseZone = document.getElementById("laborExpensesPdfHiddenArea"); let tablePlaceholder = document.getElementById("laborExpensesPdfTablePlaceholder");
-            let tableHtml = `<table style="width:100%; border-collapse:collapse; margin-top:15px; color:white;"><thead><tr style="background:#ff6b00; color:black;"><th>التاريخ</th><th>البيان المالي للعملية</th><th>المبلغ</th></tr></thead><tbody>`;
-            let totalSum = 0; registeredLaborExpenses.forEach(item => { let amtCalculated = parseInlineCalculation(item.amount); totalSum += parseFloat(amtCalculated || 0); tableHtml += `<tr style="border-bottom:1px solid #333; text-align:center;"><td>${item.date || '-'}</td><td>${item.desc || ''}</td><td style="color:#ef4444;">${parseFloat(amtCalculated).toLocaleString()} ج.م</td></tr>`; });
-            tableHtml += `<tr><td>الإجمالي</td><td colspan="2">${totalSum.toLocaleString()} ج.م</td></tr></tbody></table>`; tablePlaceholder.innerHTML = tableHtml; expenseZone.style.display = "flex"; 
-            let opt = { margin: 12, filename: `عمالة_${SELECTED_PROJECT}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }; html2pdf().set(opt).from(expenseZone).save().then(() => { expenseZone.style.display = "none"; });
-        }
-
-        function generateProjectPDFReport() { 
-            toggleSidebar(false);
-            let area = document.getElementById("pdfExportArea"); let logoHeader = document.getElementById("pdfHeaderLogo"); logoHeader.style.display = "block"; document.getElementById("pdfProjectMeta").innerText = `موقع: ${SELECTED_PROJECT} | تاريخ: ${new Date().toLocaleDateString('ar-EG')}`; let opt = { margin: 10, filename: `Report_${SELECTED_PROJECT}.pdf`, html2canvas: { scale: 2, backgroundColor: '#030712' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }; html2pdf().set(opt).from(area).save().then(() => { logoHeader.style.display = "none"; }); 
-        }
-
-        function handleSecureLogin() {
-            let user = document.getElementById("loginUsername").value.trim().toLowerCase(); let pass = document.getElementById("loginPassword").value.trim();
-            if(LOCAL_MOCK[user] && LOCAL_MOCK[user] === pass) { localStorage.setItem("active_session_user", user); activateUserInterface(user); }
-            else { showGlobalAppModal({ title: "خطأ", body: "❌ البيانات غير صحيحة!", icon: "fas fa-times-circle", iconColor: "var(--danger)" }); }
-        }
-
-        function autoLoginSession() { let savedUser = localStorage.getItem("active_session_user"); if(savedUser && ACCOUNTS_ROLES[savedUser]) activateUserInterface(savedUser); }
-        
-        function activateUserInterface(user) { 
-            currentUser = user; let account = ACCOUNTS_ROLES[user]; 
-            document.getElementById("headerUserNameSpan").innerText = "م / " + account.label; document.getElementById("headerUserBadge").style.display = "flex"; document.getElementById("sidebarUserName").innerText = "م / " + account.label; setDynamicGreeting(account.label); document.getElementById("loginBox").style.display = "none"; document.getElementById("menuBtn").classList.add("visible"); document.getElementById("mainContent").classList.add("visible"); document.getElementById("appGlobalHeader").classList.add("visible-now"); document.getElementById("calcTrigger").classList.add("visible"); document.getElementById("projectSelectorCard").classList.add("visible-now"); 
-            let companyBtn = document.getElementById("item-inc-دفعة_شركة"); if(companyBtn) { companyBtn.style.display = (user === 'ahmed') ? 'flex' : 'none'; }
-            
-            // إظهار زر إضافة مهندس للمديرين فقط
-            let addEngBtn = document.getElementById("addEngineerBtn");
-            if(addEngBtn) {
-                addEngBtn.style.display = (account.role === 'admin') ? 'flex' : 'none';
-            }
-
-            updateFabVisibilityState(); switchTab(currentMode); 
-        }
-
-        function triggerLogOut() {
-            showGlobalAppModal({
-                title: "تسجيل الخروج", body: "هل تريد الخروج؟", icon: "fas fa-door-open", confirmText: "خروج", confirmColor: "var(--danger)",
-                onConfirm: function() { if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); localStorage.clear(); toggleSidebar(false); document.getElementById("appGlobalHeader").classList.remove("visible-now"); document.getElementById("projectSelectorCard").classList.remove("hide-completely", "visible-now"); document.getElementById("calcTrigger").classList.remove("visible"); document.getElementById("calcPanel").style.display = "none"; document.getElementById("fastInputFab").classList.remove("visible"); document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("loginBox").style.display = "block"; document.getElementById("menuBtn").classList.remove("visible"); document.getElementById("mainContent").classList.remove("visible"); document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjectActionsZone").classList.remove("active-now"); SELECTED_PROJECT = ""; currentUser = null; }
-            });
-        }
-
-        function askDelItem(id, desc) { showGlobalAppModal({ title: "تأكيد الحذف", body: `هل تريد مسح العملية: (${desc})؟`, icon: "fas fa-trash-alt", confirmText: "حذف نهائي", confirmColor: "var(--danger)", onConfirm: function() { database.ref('transactions').child(id).remove(); } }); }
-
-        function handleAdd() {
+        async function handleAdd() {
             let amountRaw = document.getElementById("amount").value; let dsc = document.getElementById("desc").value.trim(); let amt = parseInlineCalculation(amountRaw);
-            if(!amt || amt <= 0 || !dsc) return showGlobalAppModal({ title: "بيانات ناقصة", body: "❌ يرجى ملء الحقول أولاً بشكل صحيح.", icon: "fas fa-exclamation-circle" });
+            if(!amt || amt <= 0 || !dsc) return showGlobalAppModal({ title: "بيانات غير مكتملة", body: "❌ يرجى ملء حقل المبلغ والبيان أولاً.", icon: "fas fa-exclamation-triangle", iconColor: "var(--danger)" });
             let finalCategory = currentMode === 'expense' ? document.getElementById("expenseCategory").value : document.getElementById("incomeCategory").value;
+            
             let txObject = { project: SELECTED_PROJECT, engineer: currentUser, type: currentMode, category: finalCategory, amount: amt, desc: dsc, date: new Date().toISOString().split('T')[0], ts: Date.now() };
+
+            let fileInput = document.getElementById("receiptImage");
+            if (fileInput.files && fileInput.files.length > 0 && currentMode === 'expense') {
+                showLoad(true);
+                let file = fileInput.files[0];
+                try {
+                    let storageRef = storage.ref('receipts/' + Date.now() + '_' + file.name);
+                    await storageRef.put(file);
+                    txObject.receiptUrl = await storageRef.getDownloadURL();
+                } catch(e) {
+                    console.error(e);
+                }
+                showLoad(false);
+            }
 
             if(navigator.onLine) { database.ref('transactions').push(txObject).then(() => { finishTxSuccessfully(); }); }
             else { txObject.isOffline = true; txObject.id = 'offline_' + Date.now(); let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); offlineList.push(txObject); localStorage.setItem('perfect_steel_offline_txs', JSON.stringify(offlineList)); globalTransactions.unshift(txObject); renderUI(globalTransactions); finishTxSuccessfully(); }
         }
 
-        function finishTxSuccessfully() { document.getElementById("amount").value = ""; document.getElementById("desc").value = ""; selectIconIncomeCategory('عام'); selectIconCategory('خامات'); triggerHapticFeedback(); }
+        function finishTxSuccessfully() { 
+            document.getElementById("amount").value = ""; document.getElementById("desc").value = ""; 
+            let rImg = document.getElementById("receiptImage"); rImg.value = ""; updateReceiptLabel();
+            selectIconIncomeCategory('عام'); selectIconCategory('خامات'); triggerHapticFeedback(); 
+        }
+
         function checkAndSyncOfflineTransactions() { if(!navigator.onLine) return; let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); if(offlineList.length === 0) return; showLoad(true); let promises = offlineList.map(tx => { delete tx.isOffline; delete tx.id; return database.ref('transactions').push(tx); }); Promise.all(promises).then(() => { localStorage.removeItem('perfect_steel_offline_txs'); showLoad(false); triggerHapticFeedback(); }).catch(() => showLoad(false)); }
         window.addEventListener('online', checkAndSyncOfflineTransactions);
 
         function onProjectChange(proj) {
             let account = ACCOUNTS_ROLES[currentUser]; document.getElementById("headerProjName").innerText = proj; document.getElementById("headerProjBadge").style.display = "flex"; document.getElementById("projectSelectorCard").classList.add("hide-completely");
-            let financeContent = document.getElementById("financeContent"); financeContent.style.display = "flex"; document.getElementById("sidebarProjInfoBlock").classList.add("visible"); 
-            document.getElementById("sidebarProjectActionsZone").classList.add("active-now");
+            document.getElementById("adminGlobalDashboardView").style.display = "none"; document.getElementById("appGlobalHeader").style.display = "flex";
+            let financeContent = document.getElementById("financeContent"); financeContent.style.display = "flex"; document.getElementById("sidebarProjInfoBlock").classList.add("visible"); document.getElementById("sidebarProjectActionsZone").classList.add("active-now");
 
-            updateFabVisibilityState(); listenToProjectInfo(proj); listenToProjectLaborData(proj); listenToProjectMaterialsData(proj); showLoad(true);
+            updateFabVisibilityState(); listenToProjectInfo(proj); listenToProjectLaborData(proj); listenToProjectMaterialsData(proj); listenToSuppliers(proj); listenToAttendance(proj); showLoad(true);
             if (firebaseTransactionsRef) firebaseTransactionsRef.off();
             firebaseTransactionsRef = database.ref('transactions');
             firebaseTransactionsRef.on('value', (snap) => {
@@ -1176,13 +990,16 @@
             }, () => showLoad(false));
         }
 
-        function buildEngineerFilterPills(items) {
-            let engineersInProject = new Set(); items.forEach(i => { if(i.engineer) engineersInProject.add(i.engineer); });
-            let wrapper = document.getElementById("engFilterWrapper"); if(engineersInProject.size <= 1) { wrapper.innerHTML = ""; return; }
-            let html = `<div class="eng-pill ${activeEngineerFilter==='all'?'active':''}" onclick="filterByEngineer('all')">كل المهندسين</div>`;
-            engineersInProject.forEach(eng => { html += `<div class="eng-pill ${activeEngineerFilter===eng?'active':''}" onclick="filterByEngineer('${eng}')">م / ${(ACCOUNTS_ROLES[eng]?ACCOUNTS_ROLES[eng].label:eng)}</div>`; }); wrapper.innerHTML = html;
+        function buildEngineerFilterPills(transactionsList) {
+            let engSet = new Set();
+            transactionsList.forEach(tx => { if(tx.engineer) engSet.add(tx.engineer); });
+            let filterHtml = `<button class="eng-pill ${activeEngineerFilter === 'all' ? 'active' : ''}" onclick="filterByEngineer('all')">كل المهندسين</button>`;
+            engSet.forEach(engKey => {
+                let engLabel = ACCOUNTS_ROLES[engKey] ? ACCOUNTS_ROLES[engKey].label : engKey;
+                filterHtml += `<button class="eng-pill ${activeEngineerFilter === engKey ? 'active' : ''}" onclick="filterByEngineer('${engKey}')">م/ ${engLabel}</button>`;
+            });
+            document.getElementById("engFilterWrapper").innerHTML = filterHtml;
         }
-        function filterByEngineer(eng) { triggerHapticFeedback(); activeEngineerFilter = eng; renderUI(globalTransactions); }
 
         function listenToProjectInfo(projectName) {
             if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); firebaseProjectInfoRef = database.ref('project_info').child(projectName);
@@ -1196,21 +1013,45 @@
             });
         }
 
-        function quickCash(val) { let input = document.getElementById("amount"); let current = parseInlineCalculation(input.value) || 0; input.value = current + val; }
-        function toggleCalc() { let panel = document.getElementById("calcPanel"); panel.style.display = (panel.style.display === "flex") ? "none" : "flex"; }
-        function pressCalc(key) { let screen = document.getElementById("calcScreen"); if (key === 'C') { calcExpression = ""; screen.innerText = "0"; } else if (key === 'del') { calcExpression = calcExpression.slice(0, -1); screen.innerText = calcExpression || "0"; } else if (key === '=') { try { let result = eval(calcExpression); screen.innerText = Number(result.toFixed(2)).toLocaleString(); calcExpression = result.toString(); } catch(e) { screen.innerText = "Error"; calcExpression = ""; } } else { if(screen.innerText === "0" || screen.innerText === "خطأ") calcExpression = ""; calcExpression += key; screen.innerText = calcExpression; } }
-        function pushCalcToInput() { let screen = document.getElementById("calcScreen").innerText.replace(/,/g, ''); let val = parseFloat(screen); if (!isNaN(val) && val > 0) { document.getElementById("amount").value = val; toggleCalc(); } }
-        function toggleSidebar(open) { document.getElementById("sidebarMenu").classList.toggle("open", open); document.getElementById("sidebarOverlay").style.display = open ? "block" : "none"; }
-
-        function filterLogs(category) { activeFilter = category; document.querySelectorAll('.filter-pills-container .pill-btn').forEach(btn => btn.classList.remove('active')); if(category === 'all') document.getElementById('pill-all').classList.add('active'); else if(category === 'خامات') document.getElementById('pill-materials').classList.add('active'); else if(category === 'عمالة') document.getElementById('pill-labor').classList.add('active'); else if(category === 'نثريات') document.getElementById('pill-nethria').classList.add('active'); else if(category === 'نقل') document.getElementById('pill-shipping').classList.add('active'); renderUI(globalTransactions); }
-        function handleLiveSearch() { renderUI(globalTransactions); }
-        document.addEventListener('keydown', function(e) { if (e.key === 'Enter' && e.target.id === 'loginPassword') handleSecureLogin(); });
+        function handleSecureLogin() { 
+            triggerHapticFeedback(); 
+            let user = document.getElementById("loginUsername").value.trim().toLowerCase(); 
+            let pass = document.getElementById("loginPassword").value.trim(); 
+            if(LOCAL_MOCK[user] && LOCAL_MOCK[user] === pass) { 
+                localStorage.setItem("active_session_user", user); 
+                activateUserInterface(user); 
+            } else { 
+                alert("❌ بيانات الدخول غير صحيحة!"); 
+            } 
+        }
         
-        function resetProjectSelection() { if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); document.getElementById("projectSelectorCard").classList.remove("hide-completely"); document.getElementById("projectSelectorCard").classList.add("visible-now"); document.getElementById("headerProjBadge").style.display = "none"; SELECTED_PROJECT = ""; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل.."; document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("sidebarProjectActionsZone").classList.remove("active-now"); filterLogs('all'); document.getElementById("smartAlertBanner").style.display = "none"; document.getElementById("laborSubPanel").style.display = "none"; document.getElementById("materialsSubPanel").style.display = "none"; activeEngineerFilter = 'all'; updateFabVisibilityState(); }
+        function autoLoginSession() { let savedUser = localStorage.getItem("active_session_user"); if(savedUser && ACCOUNTS_ROLES[savedUser]) activateUserInterface(savedUser); }
+        
+        function activateUserInterface(user) { 
+            currentUser = user; let account = ACCOUNTS_ROLES[user]; 
+            document.getElementById("headerUserNameSpan").innerText = "م/ " + account.label; document.getElementById("headerUserBadge").style.display = "flex"; document.getElementById("sidebarUserName").innerText = "م/ " + account.label; setDynamicGreeting(account.label); document.getElementById("loginBox").style.display = "none"; document.getElementById("menuBtn").classList.add("visible"); document.getElementById("mainContent").classList.add("visible"); document.getElementById("appGlobalHeader").classList.add("visible-now"); document.getElementById("calcTrigger").classList.add("visible"); document.getElementById("projectSelectorCard").classList.add("visible-now"); 
+            let companyBtn = document.getElementById("item-inc-دفعة_شركة"); if(companyBtn) { companyBtn.style.display = (user === 'ahmed') ? 'flex' : 'none'; }
+            
+            let isAdmin = account.role === 'admin';
+            let addEngBtn = document.getElementById("addEngineerBtn"); if(addEngBtn) addEngBtn.style.display = isAdmin ? 'flex' : 'none';
+            let admDashBtn = document.getElementById("adminGlobalDashboardBtn"); if(admDashBtn) admDashBtn.style.display = isAdmin ? 'flex' : 'none';
+
+            updateFabVisibilityState(); switchTab(currentMode); 
+        }
+
+        function triggerLogOut() { triggerHapticFeedback(); if (confirm("تأكيد تسجيل الخروج؟")) { if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); localStorage.clear(); toggleSidebar(false); document.getElementById("appGlobalHeader").classList.remove("visible-now"); document.getElementById("projectSelectorCard").classList.remove("hide-completely", "visible-now"); document.getElementById("calcTrigger").classList.remove("visible"); document.getElementById("calcPanel").style.display = "none"; document.getElementById("fastInputFab").classList.remove("visible"); document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("loginBox").style.display = "block"; document.getElementById("menuBtn").classList.remove("visible"); document.getElementById("mainContent").classList.remove("visible"); document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjectActionsZone").classList.remove("active-now"); document.getElementById("adminGlobalDashboardView").style.display = "none"; SELECTED_PROJECT = ""; currentUser = null; } }
+        
+        function resetProjectSelection() { triggerHapticFeedback(); if (firebaseTransactionsRef) firebaseTransactionsRef.off(); if (firebaseProjectInfoRef) firebaseProjectInfoRef.off(); document.getElementById("projectSelectorCard").classList.remove("hide-completely"); document.getElementById("projectSelectorCard").classList.add("visible-now"); document.getElementById("headerProjBadge").style.display = "none"; SELECTED_PROJECT = ""; document.getElementById("dropdownSelectedLabel").innerText = "اختر موقع العمل.."; document.getElementById("financeContent").style.display = "none"; document.getElementById("sidebarProjInfoBlock").classList.remove("visible"); document.getElementById("sidebarProjectActionsZone").classList.remove("active-now"); document.getElementById("adminGlobalDashboardView").style.display = "none"; document.getElementById("appGlobalHeader").style.display = "flex"; filterLogs('all'); document.getElementById("smartAlertBanner").style.display = "none"; document.querySelectorAll('.sub-panel').forEach(p=>p.style.display='none'); activeEngineerFilter = 'all'; updateFabVisibilityState(); }
         function showLoad(s) { let loader = document.getElementById("loading"); if(loader) { loader.style.setProperty('display', s ? 'flex' : 'none', s ? 'important' : ''); } }
         
         function animateValue(obj, start, end, duration) { if (start === end) { obj.innerText = end.toLocaleString(); return; } let range = end - start; let current = start; let increment = end > start ? Math.ceil(range / 15) : Math.floor(range / 15); let timer = setInterval(() => { current += increment; if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) { clearInterval(timer); current = end; } obj.innerText = current.toLocaleString(); }, 20); }
-        function switchTab(mode) { currentMode = mode; document.getElementById("incBtn").className = "tab-btn " + (mode==='income'?'active':''); document.getElementById("expBtn").className = "tab-btn " + (mode==='expense'?'active':''); let catGroup = document.getElementById("catGroup"); let incomeCatGroup = document.getElementById("incomeCatGroup"); if(mode === 'expense') { if(catGroup) catGroup.style.display = 'block'; if(incomeCatGroup) incomeCatGroup.style.display = 'none'; } else { if(catGroup) catGroup.style.display = 'none'; if(incomeCatGroup) incomeCatGroup.style.display = 'block'; selectIconIncomeCategory('عام'); } }
+        function switchTab(mode) { 
+            triggerHapticFeedback(); currentMode = mode; 
+            document.getElementById("incBtn").className = "tab-btn " + (mode==='income'?'active':''); document.getElementById("expBtn").className = "tab-btn " + (mode==='expense'?'active':''); 
+            let catGroup = document.getElementById("catGroup"); let incomeCatGroup = document.getElementById("incomeCatGroup"); let receiptGrp = document.getElementById("receiptUploadGroup");
+            if(mode === 'expense') { if(catGroup) catGroup.style.display = 'block'; if(incomeCatGroup) incomeCatGroup.style.display = 'none'; if(receiptGrp) receiptGrp.style.display = 'block'; } 
+            else { if(catGroup) catGroup.style.display = 'none'; if(incomeCatGroup) incomeCatGroup.style.display = 'block'; if(receiptGrp) receiptGrp.style.display = 'none'; selectIconIncomeCategory('عام'); } 
+        }
 
         function updatePerfectSteelDonutChart(mat, lab, ship, neth) {
             let canvas = document.getElementById('perfectSteelPieChart'); if(!canvas) return;
@@ -1218,6 +1059,55 @@
             if (chartInstance) { chartInstance.data.datasets[0].data = [mat, lab, ship, neth]; chartInstance.update(); } 
             else { let ctx = canvas.getContext('2d'); chartInstance = new Chart(ctx, { type: 'doughnut', data: { labels: ['خامات', 'عمالة', 'نقل', 'نثريات'], datasets: [{ data: [mat, lab, ship, neth], backgroundColor: ['#FF6B00', '#0EA5E9', '#FBBF24', '#EF4444'], borderWidth: 0 }] }, options: { plugins: { legend: { display: false } }, cutout: '75%', responsive: true, maintainAspectRatio: false } }); }
         }
+
+        function askDelItem(id, desc) { if (confirm("تأكيد مسح [" + desc + "] نهائياً؟")) { if(id.startsWith('offline_')) { let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); offlineList = offlineList.filter(tx => tx.id !== id); localStorage.setItem('perfect_steel_offline_txs', JSON.stringify(offlineList)); globalTransactions = globalTransactions.filter(tx => tx.id !== id); renderUI(globalTransactions); triggerHapticFeedback(); } else { database.ref('transactions').child(id).remove().then(() => { triggerHapticFeedback(); }); } } }
+        
+        function triggerInlineEditItem(id, desc, amt) { let newVal = prompt("تعديل مبلغ: " + desc, amt); if(newVal !== null) { let parsed = parseInlineCalculation(newVal); if(parsed && parsed > 0) { if(id.startsWith('offline_')) { let offlineList = JSON.parse(localStorage.getItem('perfect_steel_offline_txs') || '[]'); let target = offlineList.find(tx => tx.id === id); if(target) target.amount = parsed; localStorage.setItem('perfect_steel_offline_txs', JSON.stringify(offlineList)); let memTarget = globalTransactions.find(tx => tx.id === id); if(memTarget) memTarget.amount = parsed; renderUI(globalTransactions); triggerHapticFeedback(); } else { database.ref('transactions').child(id).update({ amount: parsed }).then(() => { triggerHapticFeedback(); }); } } else { alert("قيمة غير مقبولة."); } } }
+
+        // ====== الدوال الناقصة اللي رجعناها ======
+        function quickCash(val) { triggerHapticFeedback(); let input = document.getElementById("amount"); let current = parseInlineCalculation(input.value) || 0; input.value = current + val; }
+        function toggleCalc() { triggerHapticFeedback(); let panel = document.getElementById("calcPanel"); panel.style.display = (panel.style.display === "flex") ? "none" : "flex"; }
+        function pressCalc(key) { triggerHapticFeedback(); let screen = document.getElementById("calcScreen"); if (key === 'C') { calcExpression = ""; screen.innerText = "0"; } else if (key === 'del') { calcExpression = calcExpression.slice(0, -1); screen.innerText = calcExpression || "0"; } else if (key === '=') { try { let result = eval(calcExpression); screen.innerText = Number(result.toFixed(2)).toLocaleString(); calcExpression = result.toString(); } catch(e) { screen.innerText = "Error"; calcExpression = ""; } } else { if(screen.innerText === "0" || screen.innerText === "خطأ") calcExpression = ""; calcExpression += key; screen.innerText = calcExpression; } }
+        function pushCalcToInput() { triggerHapticFeedback(); let screen = document.getElementById("calcScreen").innerText.replace(/,/g, ''); let val = parseFloat(screen); if (!isNaN(val) && val > 0) { document.getElementById("amount").value = val; toggleCalc(); } }
+        function toggleSidebar(open) { triggerHapticFeedback(); document.getElementById("sidebarMenu").classList.toggle("open", open); document.getElementById("sidebarOverlay").style.display = open ? "block" : "none"; }
+        
+        function filterLogs(category) { triggerHapticFeedback(); activeFilter = category; document.querySelectorAll('.filter-pills-container .pill-btn').forEach(btn => btn.classList.remove('active')); if(category === 'all') document.getElementById('pill-all').classList.add('active'); else if(category === 'خامات') document.getElementById('pill-materials').classList.add('active'); else if(category === 'عمالة') document.getElementById('pill-labor').classList.add('active'); else if(category === 'نثريات') document.getElementById('pill-nethria').classList.add('active'); else if(category === 'نقل') document.getElementById('pill-shipping').classList.add('active'); renderUI(globalTransactions); }
+        function handleLiveSearch() { renderUI(globalTransactions); }
+        document.addEventListener('keydown', function(e) { if (e.key === 'Enter' && e.target.id === 'loginPassword') handleSecureLogin(); });
+        
+        function generateProjectPDFReport() {
+            let targetArea = document.getElementById("pdfExportArea");
+            document.getElementById("pdfHeaderLogo").style.display = "block";
+            targetArea.style.background = "#ffffff"; targetArea.style.padding = "20px"; targetArea.style.color = "#000000";
+            
+            document.querySelectorAll("#pdfExportArea .val").forEach(el => el.style.color = "#000000");
+            document.querySelectorAll("#pdfExportArea h4").forEach(el => el.style.color = "#555555");
+            document.getElementById("pdfProjectMeta").innerText = `موقع: ${SELECTED_PROJECT} | تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}`;
+
+            let opt = { margin: 10, filename: `مستخلص_${SELECTED_PROJECT}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+            html2pdf().set(opt).from(targetArea).save().then(() => {
+                document.getElementById("pdfHeaderLogo").style.display = "none";
+                targetArea.style.background = "transparent"; targetArea.style.padding = "0"; targetArea.style.color = "var(--text-main)";
+                document.getElementById("netBalance").style.color = "var(--success)";
+                document.getElementById("totalIncome").style.color = "var(--success)";
+                document.getElementById("totalExpense").style.color = "var(--danger)";
+                document.querySelectorAll("#pdfExportArea h4").forEach(el => el.style.color = "var(--text-dim)");
+            });
+        }
+
+        function exportToExcelCSVSheet() {
+            if(globalTransactions.length === 0) return alert("لا توجد بيانات للتصدير");
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
+            csvContent += "التاريخ,النوع,التصنيف,البيان,المبلغ,المهندس\r\n";
+            globalTransactions.forEach(function(tx) {
+                let row = [ tx.date, tx.type === 'income' ? 'إيراد' : 'مصروف', tx.category, tx.desc ? tx.desc.replace(/,/g, '،') : '', tx.amount, ACCOUNTS_ROLES[tx.engineer] ? ACCOUNTS_ROLES[tx.engineer].label : tx.engineer ];
+                csvContent += row.join(",") + "\r\n";
+            });
+            let encodedUri = encodeURI(csvContent);
+            let link = document.createElement("a"); link.setAttribute("href", encodedUri); link.setAttribute("download", `تقرير_${SELECTED_PROJECT}.csv`);
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        }
+        // ===========================================
 
         function renderUI(items) {
             let query = document.getElementById("liveSearchInput").value.trim().toLowerCase(); let filteredItems = items.filter(i => i && typeof i.desc === 'string' && typeof i.category === 'string');
@@ -1245,9 +1135,9 @@
             
             if(netCard && netBalanceText) {
                 let currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
-                if(finalNetValue <= 500) { netCard.style.background = currentTheme === 'light' ? "#FEE2E2" : "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "var(--danger)"; netBalanceText.style.color = "var(--danger)"; } 
-                else if(finalNetValue <= 5000) { netCard.style.background = currentTheme === 'light' ? "#FFEDD5" : "linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "var(--primary)"; netBalanceText.style.color = "var(--primary)"; } 
-                else { netCard.style.background = currentTheme === 'light' ? "#DCFCE7" : "linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(3, 7, 18, 0.4) 100%)"; netCard.style.borderColor = "rgba(16, 185, 129, 0.3)"; netBalanceText.style.color = "var(--success)"; }
+                if(finalNetValue <= 500) { netCard.style.background = currentTheme === 'light' ? "#FEE2E2" : "linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%)"; netCard.style.borderColor = "var(--danger)"; netBalanceText.style.color = "var(--danger)"; } 
+                else if(finalNetValue <= 5000) { netCard.style.background = currentTheme === 'light' ? "#FFEDD5" : "linear-gradient(135deg, rgba(255, 107, 0, 0.2) 0%, rgba(0, 0, 0, 0.4) 100%)"; netCard.style.borderColor = "var(--primary)"; netBalanceText.style.color = "var(--primary)"; } 
+                else { netCard.style.background = currentTheme === 'light' ? "#DCFCE7" : "linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(0, 0, 0, 0.4) 100%)"; netCard.style.borderColor = "rgba(16, 185, 129, 0.3)"; netBalanceText.style.color = "var(--success)"; }
             }
 
             let pct = inc > 0 ? (exp / inc) * 100 : 0; if(pct > 100) pct = 100;
@@ -1256,9 +1146,7 @@
             filteredItems.forEach(i => {
                 let engLabel = ACCOUNTS_ROLES[i.engineer] ? ACCOUNTS_ROLES[i.engineer].label : (i.engineer || "عام"); 
                 let amtCalculated = parseInlineCalculation(i.amount); let amtVal = amtCalculated ? amtCalculated.toLocaleString() : "0";
-                let displayCategory = i.category;
                 let cloudIcon = i.isOffline ? `<i class="fas fa-cloud" style="color:var(--text-dim); margin-right:5px; font-size:11px;"></i>` : `<i class="fas fa-check-circle" style="color:var(--success) !important; margin-right:5px; font-size:11px;"></i>`;
-
                 let finalIconHtml = `<i class="fas fa-layer-group" style="color:var(--primary)"></i>`;
                 if(i.type === 'income') { finalIconHtml = `<i class="fas fa-money-bill-trend-up" style="color:var(--success)"></i>`; } 
                 else {
@@ -1266,6 +1154,8 @@
                     if(i.category === 'نقل') finalIconHtml = `<i class="fas fa-truck-ramp-box" style="color:var(--revenue-color)"></i>`;
                     if(i.category === 'نثريات') finalIconHtml = `<i class="fas fa-wallet" style="color:var(--danger)"></i>`;
                 }
+
+                let attachmentHtml = i.receiptUrl ? `<a href="${i.receiptUrl}" target="_blank" style="margin-right:8px; color:white; background:var(--primary); padding:4px 8px; border-radius:8px; font-size:10px;"><i class="fas fa-image"></i> فاتورة</a>` : "";
 
                 html += `
                     <div class="swipe-item-wrapper">
@@ -1277,22 +1167,40 @@
                             <div class="log-info-meta-holder">
                                  <div class="log-icon-box-ui">${finalIconHtml}</div>
                                  <div class="log-info">
-                                      <h5 style="margin: 0; font-size: 13px; font-weight: 700;">${i.desc || 'بدون بيان'}</h5>
-                                      <p style="margin: 4px 0 0; font-size: 11px; color: var(--text-dim); font-weight: 600;">${displayCategory || 'عام'} • م / ${engLabel} ${cloudIcon}</p>
+                                      <h5 style="margin: 0; font-size: 13px; font-weight: 700; color:var(--text-main);">${i.desc || 'بدون بيان'}</h5>
+                                      <p style="margin: 4px 0 0; font-size: 11px; color: var(--text-dim); font-weight: 600;">${i.category || 'عام'} • م/ ${engLabel} ${cloudIcon} ${attachmentHtml}</p>
                                  </div>
                             </div>
                             <div class="log-amount-holder">
                                 <div class="log-amount-data">
-                                     <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">${i.type==='income'?'+':'-'}${amtVal} ج.م</span>
+                                     <span class="amt" style="color:${i.type==='income'?'var(--success)':'var(--danger)'}">${i.type==='income'?'+':'-'}${amtVal} ج</span>
                                      <span class="date">${i.date || '-'}</span>
                                 </div>
-                                <i class="fas fa-angle-left" style="color:var(--text-dim); font-size:14px; margin-right:4px; padding:4px;"></i>
+                                <i class="fas fa-angle-left" style="color:rgba(255,255,255,0.1); font-size:18px; margin-right:4px;"></i>
                             </div>
                         </div>
                     </div>`;
             });
-            document.getElementById("logBody").innerHTML = html || `<div style="text-align:center; color:var(--text-dim); font-size:13px; padding:25px;">لا توجد عمليات...</div>`;
-            setTimeout(bindSwipeGesturesToElements, 80);
+            document.getElementById("logBody").innerHTML = html || `<div style="text-align:center; color:var(--text-dim); font-size:14px; padding:30px;"><i class="fas fa-box-open" style="font-size:30px; margin-bottom:10px; opacity:0.5;"></i><br>لا توجد بيانات مسجلة بعد...</div>`;
+            
+            setTimeout(() => {
+                document.querySelectorAll(".log-item").forEach(card => {
+                    let startX = 0, startY = 0, isScroll = false;
+                    card.ontouchstart = (e) => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; isScroll = false; };
+                    card.ontouchmove = (e) => {
+                        if(isScroll) return;
+                        let diffX = startX - e.touches[0].clientX, diffY = startY - e.touches[0].clientY;
+                        if (Math.abs(diffY) > Math.abs(diffX) && Math.abs(diffY) > 10) { isScroll = true; card.style.transform = "translateX(0)"; return; }
+                        if(diffX > 15 && diffX < 140) card.style.transform = `translateX(-${diffX}px)`;
+                    };
+                    card.ontouchend = (e) => {
+                        if(isScroll) return;
+                        let diffX = startX - e.changedTouches[0].clientX;
+                        if(diffX >= 45) { triggerHapticFeedback(); card.style.transform = `translateX(-120px)`; } 
+                        else card.style.transform = `translateX(0)`;
+                    };
+                });
+            }, 100);
         }
     </script>
 </body>
